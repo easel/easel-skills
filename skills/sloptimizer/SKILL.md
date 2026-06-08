@@ -19,6 +19,8 @@ writing and executable work.
    - Use `scripts/slop-audit.sh <paths...>` for Vale-backed prose findings.
    - Use `scripts/slop-audit.sh --changed` when the user asks about changed
      files in a git repo.
+   - Use `scripts/redundancy-audit.py <paths...>` when the draft set may repeat
+     the same point across files or sections.
 3. Apply the rubric:
    - Load `references/rubric.md` for prose and specificity checks.
    - Load `references/work-items.md` for task or acceptance-criteria cleanup.
@@ -32,6 +34,8 @@ writing and executable work.
 ## Output Rules
 
 - Prefer concrete edits over commentary.
+- Prefer the exact domain noun, field, artifact, command, status, metric, or
+  constraint over a broad synonym.
 - Replace broad adjectives with observable facts or delete them.
 - State actors, actions, inputs, outputs, evidence, and non-scope.
 - Flag unsupported claims instead of inventing justification.
