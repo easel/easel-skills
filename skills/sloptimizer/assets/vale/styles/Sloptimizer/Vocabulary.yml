@@ -1,0 +1,12 @@
+extends: substitution
+message: "Generic wording: consider '%s' instead of '%s'."
+ignorecase: true
+level: suggestion
+swap:
+  simply: directly
+  easily: with the named command or workflow
+  quickly: within the stated time or step count
+  efficiently: with the measured reduction or simpler path
+  effectively: with the observable outcome
+  intelligently: with the specific rule or model behavior
+

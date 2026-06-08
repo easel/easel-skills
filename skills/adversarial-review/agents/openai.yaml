@@ -1,0 +1,7 @@
+interface:
+  display_name: "Adversarial Review"
+  short_description: "Pressure-test plans with independent critics"
+  default_prompt: "Use $adversarial-review to pressure-test this plan before implementation."
+policy:
+  allow_implicit_invocation: true
+

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Sloptimizer"
+  short_description: "Remove vague AI slop from writing and tasks"
+  default_prompt: "Use $sloptimizer to tighten this draft and flag unsupported claims."
+policy:
+  allow_implicit_invocation: true
+

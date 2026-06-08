@@ -1,0 +1,16 @@
+extends: existence
+message: "AI-slop phrase: '%s'. Replace it with a specific behavior, constraint, or delete it."
+ignorecase: true
+level: warning
+tokens:
+  - seamless experience
+  - powerful automation
+  - complex problems
+  - sophisticated multi-agent
+  - unlocks? value
+  - elevate[s]? the
+  - transform[s]? the way
+  - comprehensive solution
+  - robust framework
+  - intuitive interface
+

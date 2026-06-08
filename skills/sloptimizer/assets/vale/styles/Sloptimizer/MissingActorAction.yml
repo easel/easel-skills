@@ -1,0 +1,13 @@
+extends: existence
+message: "Vague capability verb: '%s'. Name the actor and concrete action."
+ignorecase: true
+level: warning
+tokens:
+  - enables?
+  - supports?
+  - streamlines?
+  - facilitates?
+  - provides?
+  - improves?
+  - enhances?
+

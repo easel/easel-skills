@@ -1,0 +1,8 @@
+extends: occurrence
+message: "Repeated opening detected. Vary structure only when the sentence earns its place."
+scope: sentence
+ignorecase: true
+level: suggestion
+max: 1
+token: '^(This|The|It|By|With|When)\b'
+
