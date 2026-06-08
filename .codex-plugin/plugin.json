@@ -1,0 +1,35 @@
+{
+  "name": "easel-skills",
+  "version": "0.1.0",
+  "description": "Reusable agent skills for prose quality, adversarial review, and execution hygiene.",
+  "author": {
+    "name": "Easel",
+    "url": "https://github.com/easel"
+  },
+  "homepage": "https://github.com/easel/easel-skills",
+  "repository": "https://github.com/easel/easel-skills",
+  "keywords": [
+    "skills",
+    "writing",
+    "review",
+    "quality"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Easel Skills",
+    "shortDescription": "Reusable skills for prose cleanup, review, and execution hygiene.",
+    "longDescription": "Easel Skills packages portable agent skills including Sloptimizer for AI-slop reduction and Adversarial Review for structured multi-model critique.",
+    "developerName": "Easel",
+    "category": "Productivity",
+    "capabilities": [
+      "Write",
+      "Review"
+    ],
+    "websiteURL": "https://github.com/easel/easel-skills",
+    "defaultPrompt": [
+      "Use $sloptimizer to tighten this draft.",
+      "Use $adversarial-review to pressure-test this plan."
+    ],
+    "brandColor": "#2563EB"
+  }
+}
