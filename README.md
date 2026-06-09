@@ -24,6 +24,27 @@ codex plugin add easel-skills@easel
 Start a new Codex thread after installing or reinstalling so the skill metadata
 is loaded into the session.
 
+## Install With Claude Code
+
+Install from the Claude Code marketplace configuration:
+
+```bash
+claude plugin marketplace add easel/easel-skills
+claude plugin install easel-skills@easel
+```
+
+For local development:
+
+```bash
+git clone https://github.com/easel/easel-skills.git
+cd easel-skills
+claude plugin marketplace add "$PWD"
+claude plugin install easel-skills@easel
+```
+
+Start a new Claude Code session after installing or reinstalling so the skill
+metadata is loaded into the session.
+
 ## Manual Skill Install
 
 If you are not using the Codex plugin marketplace, copy the skills into the
@@ -58,6 +79,6 @@ docker build -t easel-skills-validate .
 docker run --rm easel-skills-validate
 ```
 
-The Docker check validates plugin metadata, marketplace wiring, skill
-frontmatter, agent metadata, Python syntax, shell syntax, and the bundled
-redundancy audit.
+The Docker check validates Codex and Claude plugin metadata, marketplace
+wiring, skill frontmatter, agent metadata, Python syntax, shell syntax, and the
+bundled redundancy audit.

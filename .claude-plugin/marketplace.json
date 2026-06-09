@@ -1,0 +1,16 @@
+{
+  "name": "easel",
+  "description": "Easel reusable agent skills marketplace",
+  "owner": {
+    "name": "Easel",
+    "url": "https://github.com/easel"
+  },
+  "plugins": [
+    {
+      "name": "easel-skills",
+      "source": "./",
+      "description": "Reusable skills for prose cleanup, adversarial review, and execution hygiene.",
+      "version": "0.1.0"
+    }
+  ]
+}

@@ -106,6 +106,38 @@ def validate_marketplace() -> None:
     require_string(entry, "category", "marketplace.plugins[easel-skills]")
 
 
+def validate_claude_plugin() -> None:
+    manifest = load_json(ROOT / ".claude-plugin" / "plugin.json")
+    if require_string(manifest, "name", "claude-plugin") != "easel-skills":
+        fail("claude-plugin.name must be easel-skills")
+    version = require_string(manifest, "version", "claude-plugin")
+    if SEMVER_RE.fullmatch(version) is None:
+        fail("claude-plugin.version must be semantic version syntax")
+    require_string(manifest, "description", "claude-plugin")
+    author = manifest.get("author")
+    if not isinstance(author, dict):
+        fail("claude-plugin.author must be an object")
+    require_string(author, "name", "claude-plugin.author")
+
+
+def validate_claude_marketplace() -> None:
+    marketplace = load_json(ROOT / ".claude-plugin" / "marketplace.json")
+    if require_string(marketplace, "name", "claude-marketplace") != "easel":
+        fail("claude-marketplace.name must be easel")
+    plugins = marketplace.get("plugins")
+    if not isinstance(plugins, list):
+        fail("claude-marketplace.plugins must be an array")
+    matches = [p for p in plugins if isinstance(p, dict) and p.get("name") == "easel-skills"]
+    if len(matches) != 1:
+        fail("claude-marketplace must contain exactly one easel-skills entry")
+    entry = matches[0]
+    if entry.get("source") != "./":
+        fail("claude-marketplace easel-skills source must be ./")
+    if entry.get("version") != "0.1.0":
+        fail("claude-marketplace easel-skills version must be 0.1.0")
+    require_string(entry, "description", "claude-marketplace.plugins[easel-skills]")
+
+
 def parse_frontmatter(path: Path) -> str:
     text = path.read_text(encoding="utf-8")
     if not text.startswith("---\n"):
@@ -171,6 +203,8 @@ def validate_marketplace_wrapper() -> None:
 def main() -> int:
     validate_plugin()
     validate_marketplace()
+    validate_claude_plugin()
+    validate_claude_marketplace()
     validate_marketplace_wrapper()
     validate_skills()
     validate_package_yaml()
