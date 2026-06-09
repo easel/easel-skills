@@ -1,6 +1,6 @@
 {
-  "name": "easel-skills",
-  "description": "Reusable agent skills for prose quality, adversarial review, and execution hygiene.",
+  "name": "all",
+  "description": "All Easel reusable agent skills.",
   "version": "0.1.1",
   "author": {
     "name": "Easel",

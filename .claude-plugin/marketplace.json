@@ -1,5 +1,5 @@
 {
-  "name": "easel",
+  "name": "easel-skills",
   "description": "Easel reusable agent skills marketplace",
   "owner": {
     "name": "Easel",
@@ -7,10 +7,22 @@
   },
   "plugins": [
     {
-      "name": "easel-skills",
-      "source": "./",
-      "description": "Reusable skills for prose cleanup, adversarial review, and execution hygiene.",
-      "version": "0.1.0"
+      "name": "all",
+      "source": "./plugins/all",
+      "description": "All Easel reusable skills.",
+      "version": "0.1.1"
+    },
+    {
+      "name": "sloptimizer",
+      "source": "./plugins/sloptimizer",
+      "description": "Audit and rewrite AI-generated prose, plans, specs, prompts, and work items.",
+      "version": "0.1.1"
+    },
+    {
+      "name": "adversarial-review",
+      "source": "./plugins/adversarial-review",
+      "description": "Pressure-test plans, specs, prompts, work items, code changes, or PRs.",
+      "version": "0.1.1"
     }
   ]
 }

@@ -1,14 +1,38 @@
 {
-  "name": "easel",
+  "name": "easel-skills",
   "interface": {
-    "displayName": "Easel"
+    "displayName": "Easel Skills"
   },
   "plugins": [
     {
-      "name": "easel-skills",
+      "name": "all",
       "source": {
         "source": "local",
-        "path": "./plugins/easel-skills"
+        "path": "./plugins/all"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "sloptimizer",
+      "source": {
+        "source": "local",
+        "path": "./plugins/sloptimizer"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "adversarial-review",
+      "source": {
+        "source": "local",
+        "path": "./plugins/adversarial-review"
       },
       "policy": {
         "installation": "AVAILABLE",

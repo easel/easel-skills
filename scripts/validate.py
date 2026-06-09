@@ -13,6 +13,13 @@ SEMVER_RE = re.compile(
     r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)"
     r"(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$"
 )
+PLUGIN_VERSION = "0.1.1"
+MARKETPLACE_NAME = "easel-skills"
+MARKETPLACE_PLUGINS = {
+    "all": "./plugins/all",
+    "sloptimizer": "./plugins/sloptimizer",
+    "adversarial-review": "./plugins/adversarial-review",
+}
 
 
 def fail(message: str) -> None:
@@ -80,30 +87,31 @@ def validate_plugin() -> None:
 
 def validate_marketplace() -> None:
     marketplace = load_json(ROOT / ".agents" / "plugins" / "marketplace.json")
-    if require_string(marketplace, "name", "marketplace") != "easel":
-        fail("marketplace.name must be easel")
+    if require_string(marketplace, "name", "marketplace") != MARKETPLACE_NAME:
+        fail(f"marketplace.name must be {MARKETPLACE_NAME}")
     plugins = marketplace.get("plugins")
     if not isinstance(plugins, list):
         fail("marketplace.plugins must be an array")
-    matches = [p for p in plugins if isinstance(p, dict) and p.get("name") == "easel-skills"]
-    if len(matches) != 1:
-        fail("marketplace must contain exactly one easel-skills entry")
-    entry = matches[0]
-    source = entry.get("source")
-    if (
-        not isinstance(source, dict)
-        or source.get("source") != "local"
-        or source.get("path") != "./plugins/easel-skills"
-    ):
-        fail("marketplace easel-skills source must be local path ./plugins/easel-skills")
-    policy = entry.get("policy")
-    if not isinstance(policy, dict):
-        fail("marketplace easel-skills policy must be an object")
-    if policy.get("installation") != "AVAILABLE":
-        fail("marketplace easel-skills policy.installation must be AVAILABLE")
-    if policy.get("authentication") != "ON_INSTALL":
-        fail("marketplace easel-skills policy.authentication must be ON_INSTALL")
-    require_string(entry, "category", "marketplace.plugins[easel-skills]")
+    seen = {p.get("name"): p for p in plugins if isinstance(p, dict)}
+    if set(seen) != set(MARKETPLACE_PLUGINS):
+        fail(f"marketplace.plugins must contain exactly {', '.join(sorted(MARKETPLACE_PLUGINS))}")
+    for name, expected_path in MARKETPLACE_PLUGINS.items():
+        entry = seen[name]
+        source = entry.get("source")
+        if (
+            not isinstance(source, dict)
+            or source.get("source") != "local"
+            or source.get("path") != expected_path
+        ):
+            fail(f"marketplace {name} source must be local path {expected_path}")
+        policy = entry.get("policy")
+        if not isinstance(policy, dict):
+            fail(f"marketplace {name} policy must be an object")
+        if policy.get("installation") != "AVAILABLE":
+            fail(f"marketplace {name} policy.installation must be AVAILABLE")
+        if policy.get("authentication") != "ON_INSTALL":
+            fail(f"marketplace {name} policy.authentication must be ON_INSTALL")
+        require_string(entry, "category", f"marketplace.plugins[{name}]")
 
 
 def validate_claude_plugin() -> None:
@@ -122,20 +130,21 @@ def validate_claude_plugin() -> None:
 
 def validate_claude_marketplace() -> None:
     marketplace = load_json(ROOT / ".claude-plugin" / "marketplace.json")
-    if require_string(marketplace, "name", "claude-marketplace") != "easel":
-        fail("claude-marketplace.name must be easel")
+    if require_string(marketplace, "name", "claude-marketplace") != MARKETPLACE_NAME:
+        fail(f"claude-marketplace.name must be {MARKETPLACE_NAME}")
     plugins = marketplace.get("plugins")
     if not isinstance(plugins, list):
         fail("claude-marketplace.plugins must be an array")
-    matches = [p for p in plugins if isinstance(p, dict) and p.get("name") == "easel-skills"]
-    if len(matches) != 1:
-        fail("claude-marketplace must contain exactly one easel-skills entry")
-    entry = matches[0]
-    if entry.get("source") != "./":
-        fail("claude-marketplace easel-skills source must be ./")
-    if entry.get("version") != "0.1.0":
-        fail("claude-marketplace easel-skills version must be 0.1.0")
-    require_string(entry, "description", "claude-marketplace.plugins[easel-skills]")
+    seen = {p.get("name"): p for p in plugins if isinstance(p, dict)}
+    if set(seen) != set(MARKETPLACE_PLUGINS):
+        fail(f"claude-marketplace.plugins must contain exactly {', '.join(sorted(MARKETPLACE_PLUGINS))}")
+    for name, expected_path in MARKETPLACE_PLUGINS.items():
+        entry = seen[name]
+        if entry.get("source") != expected_path:
+            fail(f"claude-marketplace {name} source must be {expected_path}")
+        if entry.get("version") != PLUGIN_VERSION:
+            fail(f"claude-marketplace {name} version must be {PLUGIN_VERSION}")
+        require_string(entry, "description", f"claude-marketplace.plugins[{name}]")
 
 
 def parse_frontmatter(path: Path) -> str:
@@ -191,13 +200,17 @@ def validate_package_yaml() -> None:
 
 
 def validate_marketplace_wrapper() -> None:
-    wrapper = ROOT / "plugins" / "easel-skills"
-    if not wrapper.is_dir():
-        fail("missing marketplace wrapper plugins/easel-skills")
-    for name in (".codex-plugin", "skills"):
-        path = wrapper / name
-        if not path.exists():
-            fail(f"marketplace wrapper missing plugins/easel-skills/{name}")
+    for name in MARKETPLACE_PLUGINS:
+        wrapper = ROOT / "plugins" / name
+        if not wrapper.is_dir():
+            fail(f"missing marketplace wrapper plugins/{name}")
+        for child in (".codex-plugin/plugin.json", ".claude-plugin/plugin.json", "skills"):
+            path = wrapper / child
+            if not path.exists():
+                fail(f"marketplace wrapper missing plugins/{name}/{child}")
+        manifest = load_json(wrapper / ".codex-plugin" / "plugin.json")
+        if require_string(manifest, "name", f"plugins/{name}/.codex-plugin/plugin") != name:
+            fail(f"plugins/{name}/.codex-plugin/plugin.json name must be {name}")
 
 
 def main() -> int:

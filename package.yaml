@@ -1,5 +1,5 @@
 name: easel-skills
-version: 0.1.0
+version: 0.1.1
 description: Reusable agent skills for quality, review, and execution hygiene
 type: plugin
 install:
@@ -8,4 +8,3 @@ install:
       target: .agents/skills/
     - source: skills/
       target: .claude/skills/
-

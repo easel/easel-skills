@@ -2,6 +2,8 @@ extends: existence
 message: "Unsupported claim: '%s'. Add evidence or use a concrete fact."
 ignorecase: true
 level: warning
+scope:
+  - ~heading
 tokens:
   - robust
   - comprehensive
@@ -13,4 +15,3 @@ tokens:
   - scalable
   - flexible
   - reliable
-

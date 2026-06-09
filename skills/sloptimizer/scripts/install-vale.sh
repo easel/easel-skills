@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-version="3.13.0"
+version="3.14.2"
 
 if command -v vale >/dev/null 2>&1; then
   echo "vale is already installed: $(vale --version)"
@@ -24,4 +24,3 @@ esac
 
 echo "Install Vale ${version} from https://github.com/errata-ai/vale/releases" >&2
 exit 1
-

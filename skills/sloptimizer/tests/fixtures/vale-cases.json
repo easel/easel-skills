@@ -1,0 +1,103 @@
+[
+  {
+    "name": "ai_slop_phrase",
+    "text": "This unlocks value for reviewers.",
+    "expected_rules": ["AISlop"]
+  },
+  {
+    "name": "unsupported_claim",
+    "text": "The system is production-ready.",
+    "expected_rules": ["UnsupportedClaim"]
+  },
+  {
+    "name": "missing_actor_action",
+    "text": "The interface supports export.",
+    "expected_rules": ["MissingActorAction"]
+  },
+  {
+    "name": "filler_transition",
+    "text": "To be clear, this section repeats the same point.",
+    "expected_rules": ["FillerTransition"]
+  },
+  {
+    "name": "token_cost",
+    "text": "Run this command in order to validate the draft.",
+    "expected_rules": ["TokenCost"]
+  },
+  {
+    "name": "generic_vocabulary",
+    "text": "The operator can simply rerun the check.",
+    "expected_rules": ["Vocabulary"]
+  },
+  {
+    "name": "repeated_opening",
+    "text": "This names the first issue. This names the second issue.",
+    "expected_rules": ["RepeatedOpening"]
+  },
+  {
+    "name": "reader_steering_phrase",
+    "text": "It is worth noting that the test failed on ARM.",
+    "expected_rules": ["ReaderSteeringPhrases"]
+  },
+  {
+    "name": "reader_steering_apostrophe",
+    "text": "It's worth checking the ARM failure before merging.",
+    "expected_rules": ["ReaderSteeringPhrases"]
+  },
+  {
+    "name": "reader_steering_single_word",
+    "text": "Notably, the test failed on ARM.",
+    "expected_rules": ["ReaderSteeringPhrases"]
+  },
+  {
+    "name": "reader_steering_here_is",
+    "text": "Here's what's interesting about the ARM failure.",
+    "expected_rules": ["ReaderSteeringPhrases"]
+  },
+  {
+    "name": "comparative_default_negative",
+    "text": "Model A beats Model B.",
+    "expected_rules": []
+  },
+  {
+    "name": "comparative_results_profile",
+    "profile": "results",
+    "text": "Model A beats Model B.",
+    "expected_rules": ["ComparativeHype"]
+  },
+  {
+    "name": "inline_code_negative",
+    "text": "The identifier `robust_framework` appears in the generated code.",
+    "expected_rules": []
+  },
+  {
+    "name": "fenced_code_negative",
+    "text": "```text\nThis provides a robust framework.\n```",
+    "expected_rules": []
+  },
+  {
+    "name": "link_target_negative",
+    "text": "Read [the setup guide](https://example.com/robust-framework) before editing.",
+    "expected_rules": []
+  },
+  {
+    "name": "model_name_negative",
+    "text": "Qwen3.6-27B-Instruct is the model name in the benchmark table.",
+    "expected_rules": []
+  },
+  {
+    "name": "numeric_range_negative",
+    "text": "The run used a 1-9 scoring range and three seeds.",
+    "expected_rules": []
+  },
+  {
+    "name": "frontmatter_negative",
+    "text": "---\ntitle: Robust Framework\n---\nThe page explains the migration.",
+    "expected_rules": []
+  },
+  {
+    "name": "heading_negative",
+    "text": "# Robust Framework\n\nThe page explains the migration.",
+    "expected_rules": []
+  }
+]

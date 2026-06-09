@@ -1,6 +1,6 @@
 {
-  "name": "easel-skills",
-  "description": "Reusable agent skills for prose quality, adversarial review, and execution hygiene.",
+  "name": "adversarial-review",
+  "description": "Pressure-test plans, specs, prompts, work items, code changes, or PRs.",
   "version": "0.1.1",
   "author": {
     "name": "Easel",
@@ -10,9 +10,8 @@
   "license": "MIT",
   "homepage": "https://github.com/easel/easel-skills",
   "keywords": [
-    "skills",
-    "writing",
     "review",
-    "quality"
+    "quality",
+    "planning"
   ]
 }

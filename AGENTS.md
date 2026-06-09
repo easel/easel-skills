@@ -26,6 +26,7 @@ skill explicitly declares an integration dependency.
 - Validate syntax after editing skills:
 
 ```bash
-python3 /home/erik/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills
+for skill in skills/*/; do
+  python3 /home/erik/.codex/skills/.system/skill-creator/scripts/quick_validate.py "$skill"
+done
 ```
-

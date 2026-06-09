@@ -1,7 +1,7 @@
 {
-  "name": "easel-skills",
+  "name": "adversarial-review",
   "version": "0.1.1",
-  "description": "Reusable agent skills for prose quality, adversarial review, and execution hygiene.",
+  "description": "Pressure-test plans, specs, prompts, work items, code changes, or PRs.",
   "author": {
     "name": "Easel",
     "url": "https://github.com/easel"
@@ -9,25 +9,22 @@
   "homepage": "https://github.com/easel/easel-skills",
   "repository": "https://github.com/easel/easel-skills",
   "keywords": [
-    "skills",
-    "writing",
     "review",
-    "quality"
+    "quality",
+    "planning"
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "Easel Skills",
-    "shortDescription": "Reusable skills for prose cleanup, review, and execution hygiene.",
-    "longDescription": "Easel Skills packages portable agent skills including Sloptimizer for AI-slop reduction and Adversarial Review for structured multi-model critique.",
+    "displayName": "Adversarial Review",
+    "shortDescription": "Pressure-test plans and changes.",
+    "longDescription": "Adversarial Review pressure-tests plans, specs, prompts, work items, code changes, and PRs for blocking issues and rework risks.",
     "developerName": "Easel",
     "category": "Productivity",
     "capabilities": [
-      "Write",
       "Review"
     ],
     "websiteURL": "https://github.com/easel/easel-skills",
     "defaultPrompt": [
-      "Use $sloptimizer to tighten this draft.",
       "Use $adversarial-review to pressure-test this plan."
     ],
     "brandColor": "#2563EB"

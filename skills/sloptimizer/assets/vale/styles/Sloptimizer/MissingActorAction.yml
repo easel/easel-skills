@@ -2,6 +2,8 @@ extends: existence
 message: "Vague capability verb: '%s'. Name the actor and concrete action."
 ignorecase: true
 level: warning
+scope:
+  - ~heading
 tokens:
   - enables?
   - supports?
@@ -10,4 +12,3 @@ tokens:
   - provides?
   - improves?
   - enhances?
-

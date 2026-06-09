@@ -1,7 +1,7 @@
 {
-  "name": "easel-skills",
+  "name": "sloptimizer",
   "version": "0.1.1",
-  "description": "Reusable agent skills for prose quality, adversarial review, and execution hygiene.",
+  "description": "Audit and rewrite AI-generated prose, plans, specs, prompts, and work items.",
   "author": {
     "name": "Easel",
     "url": "https://github.com/easel"
@@ -9,16 +9,15 @@
   "homepage": "https://github.com/easel/easel-skills",
   "repository": "https://github.com/easel/easel-skills",
   "keywords": [
-    "skills",
     "writing",
     "review",
     "quality"
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "Easel Skills",
-    "shortDescription": "Reusable skills for prose cleanup, review, and execution hygiene.",
-    "longDescription": "Easel Skills packages portable agent skills including Sloptimizer for AI-slop reduction and Adversarial Review for structured multi-model critique.",
+    "displayName": "Sloptimizer",
+    "shortDescription": "Remove AI-isms, vague claims, and task slop.",
+    "longDescription": "Sloptimizer audits and rewrites generated prose, work items, and plans with Vale-backed checks and deterministic source-level profile checks.",
     "developerName": "Easel",
     "category": "Productivity",
     "capabilities": [
@@ -27,8 +26,7 @@
     ],
     "websiteURL": "https://github.com/easel/easel-skills",
     "defaultPrompt": [
-      "Use $sloptimizer to tighten this draft.",
-      "Use $adversarial-review to pressure-test this plan."
+      "Use $sloptimizer to rewrite this draft and re-audit it."
     ],
     "brandColor": "#2563EB"
   }

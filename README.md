@@ -9,8 +9,11 @@ Install from the GitHub marketplace configuration:
 
 ```bash
 codex plugin marketplace add https://github.com/easel/easel-skills.git --ref main
-codex plugin add easel-skills@easel
+codex plugin add all@easel-skills
 ```
+
+Install individual skills with `sloptimizer@easel-skills` or
+`adversarial-review@easel-skills`.
 
 For local development:
 
@@ -18,7 +21,7 @@ For local development:
 git clone https://github.com/easel/easel-skills.git
 cd easel-skills
 codex plugin marketplace add "$PWD"
-codex plugin add easel-skills@easel
+codex plugin add all@easel-skills
 ```
 
 Start a new Codex thread after installing or reinstalling so the skill metadata
@@ -30,8 +33,11 @@ Install from the Claude Code marketplace configuration:
 
 ```bash
 claude plugin marketplace add https://github.com/easel/easel-skills.git
-claude plugin install easel-skills@easel
+claude plugin install all@easel-skills
 ```
+
+Install individual Claude Code skills with `sloptimizer@easel-skills` or
+`adversarial-review@easel-skills`.
 
 Use the explicit HTTPS URL for Claude Code. The `owner/repo` shorthand may try
 SSH depending on local Git configuration. For a private repository, make sure
@@ -43,7 +49,7 @@ For local development:
 git clone https://github.com/easel/easel-skills.git
 cd easel-skills
 claude plugin marketplace add "$PWD"
-claude plugin install easel-skills@easel
+claude plugin install all@easel-skills
 ```
 
 Start a new Claude Code session after installing or reinstalling so the skill
@@ -84,5 +90,5 @@ docker run --rm easel-skills-validate
 ```
 
 The Docker check validates Codex and Claude plugin metadata, marketplace
-wiring, skill frontmatter, agent metadata, Python syntax, shell syntax, and the
-bundled redundancy audit.
+wiring, skill frontmatter, agent metadata, Python syntax, shell syntax, the
+Sloptimizer Vale fixtures, and the bundled redundancy audit.
