@@ -8,7 +8,7 @@ hygiene.
 Install from the GitHub marketplace configuration:
 
 ```bash
-codex plugin marketplace add easel/easel-skills --ref main
+codex plugin marketplace add https://github.com/easel/easel-skills.git --ref main
 codex plugin add easel-skills@easel
 ```
 
@@ -29,9 +29,13 @@ is loaded into the session.
 Install from the Claude Code marketplace configuration:
 
 ```bash
-claude plugin marketplace add easel/easel-skills
+claude plugin marketplace add https://github.com/easel/easel-skills.git
 claude plugin install easel-skills@easel
 ```
+
+Use the explicit HTTPS URL for Claude Code. The `owner/repo` shorthand may try
+SSH depending on local Git configuration. For a private repository, make sure
+GitHub HTTPS credentials are available first, for example with `gh auth login`.
 
 For local development:
 
