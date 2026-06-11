@@ -1,0 +1,33 @@
+{
+  "name": "research-review",
+  "version": "0.2.0",
+  "description": "Research and review with source-backed evidence.",
+  "author": {
+    "name": "Easel",
+    "url": "https://github.com/easel"
+  },
+  "homepage": "https://github.com/easel/easel-skills",
+  "repository": "https://github.com/easel/easel-skills",
+  "keywords": [
+    "research",
+    "review",
+    "evidence"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Research Review",
+    "shortDescription": "Research and review with source-backed evidence.",
+    "longDescription": "Research Review helps agents investigate technical questions, compare options, verify current behavior, and make recommendations from cited primary sources.",
+    "developerName": "Easel",
+    "category": "Productivity",
+    "capabilities": [
+      "Research",
+      "Review"
+    ],
+    "websiteURL": "https://github.com/easel/easel-skills",
+    "defaultPrompt": [
+      "Use $research-review to research this question and return an evidence-backed recommendation."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

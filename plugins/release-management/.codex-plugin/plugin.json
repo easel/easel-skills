@@ -1,0 +1,33 @@
+{
+  "name": "release-management",
+  "version": "0.2.0",
+  "description": "Audit and execute deliberate software releases.",
+  "author": {
+    "name": "Easel",
+    "url": "https://github.com/easel"
+  },
+  "homepage": "https://github.com/easel/easel-skills",
+  "repository": "https://github.com/easel/easel-skills",
+  "keywords": [
+    "release",
+    "versioning",
+    "validation"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Release Management",
+    "shortDescription": "Audit and execute deliberate software releases.",
+    "longDescription": "Release Management audits repository state, version metadata, validation commands, marketplace manifests, commits, tags, and pushes before executing release steps.",
+    "developerName": "Easel",
+    "category": "Productivity",
+    "capabilities": [
+      "Review",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/easel/easel-skills",
+    "defaultPrompt": [
+      "Use $release-management to audit this repo and prepare the next release."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

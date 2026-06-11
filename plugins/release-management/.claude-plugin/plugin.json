@@ -1,0 +1,17 @@
+{
+  "name": "release-management",
+  "description": "Audit and execute deliberate software releases.",
+  "version": "0.2.0",
+  "author": {
+    "name": "Easel",
+    "url": "https://github.com/easel"
+  },
+  "repository": "https://github.com/easel/easel-skills",
+  "license": "MIT",
+  "homepage": "https://github.com/easel/easel-skills",
+  "keywords": [
+    "release",
+    "versioning",
+    "validation"
+  ]
+}

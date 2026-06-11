@@ -1,0 +1,13 @@
+extends: substitution
+message: "Token-cost filler: use '%s' instead of '%s'."
+ignorecase: true
+level: suggestion
+scope:
+  - ~heading
+swap:
+  in order to: to
+  due to the fact that: because
+  at this point in time: now
+  first and foremost: first
+  a number of: several
+  the vast majority of: most

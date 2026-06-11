@@ -1,0 +1,6 @@
+interface:
+  display_name: "Plan Lifecycle"
+  short_description: "Plan, refine, review, and hand off work"
+  default_prompt: "Use $plan-lifecycle to refine this plan, delegate specialist review, and make it execution-ready."
+policy:
+  allow_implicit_invocation: true

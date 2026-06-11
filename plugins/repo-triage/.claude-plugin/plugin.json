@@ -1,0 +1,17 @@
+{
+  "name": "repo-triage",
+  "description": "Summarize local repository state and branch readiness.",
+  "version": "0.2.0",
+  "author": {
+    "name": "Easel",
+    "url": "https://github.com/easel"
+  },
+  "repository": "https://github.com/easel/easel-skills",
+  "license": "MIT",
+  "homepage": "https://github.com/easel/easel-skills",
+  "keywords": [
+    "git",
+    "triage",
+    "review"
+  ]
+}

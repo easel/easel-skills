@@ -1,0 +1,6 @@
+interface:
+  display_name: "Data Mapping"
+  short_description: "Derive auditable mappings and survivorship rules"
+  default_prompt: "Use $data-mapping to derive source-to-target mappings, extraction rules, and survivorship logic from these schemas and examples."
+policy:
+  allow_implicit_invocation: true

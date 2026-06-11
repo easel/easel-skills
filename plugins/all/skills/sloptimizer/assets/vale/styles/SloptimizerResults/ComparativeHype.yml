@@ -1,0 +1,8 @@
+extends: existence
+message: "Comparative hype verb: '%s'. Scope the comparison to a metric, dataset, run, or time window."
+ignorecase: true
+level: suggestion
+scope:
+  - ~heading
+tokens:
+  - '\b(?:beats?|wins?|dominates?|crush(?:es|ed)?|outperform(?:s|ed)?)\b'

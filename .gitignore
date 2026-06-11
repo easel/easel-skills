@@ -1,4 +1,5 @@
 .DS_Store
 .vale-cache/
 tmp/
-
+reports/
+.session-analysis/

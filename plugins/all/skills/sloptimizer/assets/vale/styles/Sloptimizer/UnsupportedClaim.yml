@@ -1,0 +1,17 @@
+extends: existence
+message: "Unsupported claim: '%s'. Add evidence or use a concrete fact."
+ignorecase: true
+level: warning
+scope:
+  - ~heading
+tokens:
+  - robust
+  - comprehensive
+  - seamless
+  - powerful
+  - production-ready
+  - intuitive
+  - world-class
+  - scalable
+  - flexible
+  - reliable

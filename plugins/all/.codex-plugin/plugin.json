@@ -1,6 +1,6 @@
 {
   "name": "all",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "All Easel reusable agent skills.",
   "author": {
     "name": "Easel",
@@ -10,25 +10,36 @@
   "repository": "https://github.com/easel/easel-skills",
   "keywords": [
     "skills",
+    "planning",
     "writing",
     "review",
-    "quality"
+    "research",
+    "quality",
+    "data",
+    "release",
+    "git"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Easel Skills",
     "shortDescription": "Install all Easel reusable skills.",
-    "longDescription": "All Easel Skills packages portable agent skills including Sloptimizer for AI-slop reduction and Adversarial Review for structured critique.",
+    "longDescription": "All Easel Skills packages portable agent skills including Plan Lifecycle, Sloptimizer, Adversarial Review, Research Review, Repo Triage, Release Management, Data Quality, Data Documentation, and Data Mapping.",
     "developerName": "Easel",
     "category": "Productivity",
     "capabilities": [
+      "Plan",
       "Write",
-      "Review"
+      "Review",
+      "Research",
+      "Release",
+      "Data"
     ],
     "websiteURL": "https://github.com/easel/easel-skills",
     "defaultPrompt": [
+      "Use $plan-lifecycle to refine this plan and delegate specialist review.",
       "Use $sloptimizer to tighten this draft.",
-      "Use $adversarial-review to pressure-test this plan."
+      "Use $adversarial-review to pressure-test this plan.",
+      "Use $data-quality to generate validation rules from this schema."
     ],
     "brandColor": "#2563EB"
   }

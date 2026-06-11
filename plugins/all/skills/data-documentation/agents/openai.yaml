@@ -1,0 +1,6 @@
+interface:
+  display_name: "Data Documentation"
+  short_description: "Create evidence-backed table and column docs"
+  default_prompt: "Use $data-documentation to document these datasets, tables, and columns from the available evidence."
+policy:
+  allow_implicit_invocation: true

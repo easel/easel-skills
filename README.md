@@ -1,7 +1,7 @@
 # Easel Skills
 
-Reusable agent skills for prose quality, adversarial review, and execution
-hygiene.
+Reusable agent skills for planning, prose quality, adversarial review, repo
+triage, release management, data workflows, and execution hygiene.
 
 ## Install With Codex
 
@@ -12,8 +12,11 @@ codex plugin marketplace add https://github.com/easel/easel-skills.git --ref mai
 codex plugin add all@easel-skills
 ```
 
-Install individual skills with `sloptimizer@easel-skills` or
-`adversarial-review@easel-skills`.
+Install individual skills with `sloptimizer@easel-skills`,
+`adversarial-review@easel-skills`, `repo-triage@easel-skills`,
+`release-management@easel-skills`, `data-quality@easel-skills`,
+`data-documentation@easel-skills`, `data-mapping@easel-skills`,
+`research-review@easel-skills`, or `plan-lifecycle@easel-skills`.
 
 For local development:
 
@@ -36,8 +39,11 @@ claude plugin marketplace add https://github.com/easel/easel-skills.git
 claude plugin install all@easel-skills
 ```
 
-Install individual Claude Code skills with `sloptimizer@easel-skills` or
-`adversarial-review@easel-skills`.
+Install individual Claude Code skills with `sloptimizer@easel-skills`,
+`adversarial-review@easel-skills`, `repo-triage@easel-skills`,
+`release-management@easel-skills`, `data-quality@easel-skills`,
+`data-documentation@easel-skills`, `data-mapping@easel-skills`,
+`research-review@easel-skills`, or `plan-lifecycle@easel-skills`.
 
 Use the explicit HTTPS URL for Claude Code. The `owner/repo` shorthand may try
 SSH depending on local Git configuration. For a private repository, make sure
@@ -73,6 +79,22 @@ cp -R skills/* ~/.claude/skills/
   unsupported implementation promises.
 - `adversarial-review`: pressure-tests plans, specs, prompts, work items, code
   changes, or PRs with independent critical review.
+- `repo-triage`: summarizes local Git state, dirty worktrees, branch
+  comparisons, changed files, recent commits, and optional PR or issue context.
+- `release-management`: audits repository state, version metadata, validation
+  commands, marketplace manifests, commits, tags, and pushes before release
+  execution.
+- `data-quality`: generates and audits portable data validation rules from
+  schemas, profiles, sample rows, and business constraints.
+- `data-documentation`: creates evidence-backed dataset, table, and column
+  documentation from schemas, profiles, lineage, examples, and glossary terms.
+- `data-mapping`: derives source-to-target mappings, extraction rules,
+  canonical names, conflict policies, and survivorship specs.
+- `research-review`: researches technical questions, compares options, verifies
+  current behavior, and returns source-backed recommendations.
+- `plan-lifecycle`: creates, refines, reviews, and hands off implementation,
+  release, test, migration, data, and post-implementation plans while
+  delegating specialist checks to the narrower skills.
 
 ## Validate
 

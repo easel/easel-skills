@@ -1,0 +1,33 @@
+{
+  "name": "plan-lifecycle",
+  "version": "0.2.0",
+  "description": "Plan, refine, review, and hand off work.",
+  "author": {
+    "name": "Easel",
+    "url": "https://github.com/easel"
+  },
+  "homepage": "https://github.com/easel/easel-skills",
+  "repository": "https://github.com/easel/easel-skills",
+  "keywords": [
+    "planning",
+    "review",
+    "workflow"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Plan Lifecycle",
+    "shortDescription": "Plan, refine, review, and hand off work.",
+    "longDescription": "Plan Lifecycle coordinates research, repo triage, release planning, test strategy, data workflow planning, adversarial review, and handoff for implementation plans.",
+    "developerName": "Easel",
+    "category": "Productivity",
+    "capabilities": [
+      "Plan",
+      "Review"
+    ],
+    "websiteURL": "https://github.com/easel/easel-skills",
+    "defaultPrompt": [
+      "Use $plan-lifecycle to refine this plan, delegate specialist review, and make it execution-ready."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

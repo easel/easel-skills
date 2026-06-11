@@ -1,0 +1,32 @@
+{
+  "name": "repo-triage",
+  "version": "0.2.0",
+  "description": "Summarize local repository state and branch readiness.",
+  "author": {
+    "name": "Easel",
+    "url": "https://github.com/easel"
+  },
+  "homepage": "https://github.com/easel/easel-skills",
+  "repository": "https://github.com/easel/easel-skills",
+  "keywords": [
+    "git",
+    "triage",
+    "review"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Repo Triage",
+    "shortDescription": "Summarize local repository state and branch readiness.",
+    "longDescription": "Repo Triage inspects local Git state, dirty worktrees, branch comparisons, changed files, recent commits, upstream tracking, and optional PR or issue context.",
+    "developerName": "Easel",
+    "category": "Productivity",
+    "capabilities": [
+      "Review"
+    ],
+    "websiteURL": "https://github.com/easel/easel-skills",
+    "defaultPrompt": [
+      "Use $repo-triage to summarize the current repo state."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

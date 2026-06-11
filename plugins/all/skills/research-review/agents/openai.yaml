@@ -1,0 +1,6 @@
+interface:
+  display_name: "Research Review"
+  short_description: "Research and review with source-backed evidence"
+  default_prompt: "Use $research-review to research this question and return an evidence-backed recommendation."
+policy:
+  allow_implicit_invocation: true

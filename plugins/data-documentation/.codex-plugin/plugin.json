@@ -1,0 +1,33 @@
+{
+  "name": "data-documentation",
+  "version": "0.2.0",
+  "description": "Create evidence-backed table and column documentation.",
+  "author": {
+    "name": "Easel",
+    "url": "https://github.com/easel"
+  },
+  "homepage": "https://github.com/easel/easel-skills",
+  "repository": "https://github.com/easel/easel-skills",
+  "keywords": [
+    "data",
+    "documentation",
+    "catalog"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Data Documentation",
+    "shortDescription": "Create evidence-backed table and column documentation.",
+    "longDescription": "Data Documentation helps agents document datasets, tables, and columns from schemas, profiles, lineage, examples, constraints, and glossary evidence.",
+    "developerName": "Easel",
+    "category": "Productivity",
+    "capabilities": [
+      "Write",
+      "Review"
+    ],
+    "websiteURL": "https://github.com/easel/easel-skills",
+    "defaultPrompt": [
+      "Use $data-documentation to document these datasets, tables, and columns from the available evidence."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

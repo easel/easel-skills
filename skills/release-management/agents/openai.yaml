@@ -1,0 +1,6 @@
+interface:
+  display_name: "Release Management"
+  short_description: "Audit and execute deliberate software releases"
+  default_prompt: "Use $release-management to audit this repo and prepare the next release."
+policy:
+  allow_implicit_invocation: true

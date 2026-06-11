@@ -1,0 +1,17 @@
+{
+  "name": "data-mapping",
+  "description": "Derive auditable mappings and survivorship rules.",
+  "version": "0.2.0",
+  "author": {
+    "name": "Easel",
+    "url": "https://github.com/easel"
+  },
+  "repository": "https://github.com/easel/easel-skills",
+  "license": "MIT",
+  "homepage": "https://github.com/easel/easel-skills",
+  "keywords": [
+    "data",
+    "mapping",
+    "survivorship"
+  ]
+}

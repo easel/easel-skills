@@ -13,13 +13,8 @@ SEMVER_RE = re.compile(
     r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)"
     r"(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$"
 )
-PLUGIN_VERSION = "0.1.1"
+PLUGIN_VERSION = "0.2.0"
 MARKETPLACE_NAME = "easel-skills"
-MARKETPLACE_PLUGINS = {
-    "all": "./plugins/all",
-    "sloptimizer": "./plugins/sloptimizer",
-    "adversarial-review": "./plugins/adversarial-review",
-}
 
 
 def fail(message: str) -> None:
@@ -48,6 +43,87 @@ def require_string(obj: dict, key: str, label: str) -> str:
     if not isinstance(value, str) or not value.strip():
         fail(f"{label}.{key} must be a non-empty string")
     return value
+
+
+def marketplace_path(name: str) -> str:
+    return f"./plugins/{name}"
+
+
+def plugin_wrapper_dirs() -> set[str]:
+    plugins_root = ROOT / "plugins"
+    if not plugins_root.is_dir():
+        fail("missing plugins directory")
+    return {p.name for p in plugins_root.iterdir() if p.is_dir()}
+
+
+def repo_skill_names() -> set[str]:
+    skills_root = ROOT / "skills"
+    if not skills_root.is_dir():
+        fail("missing skills directory")
+    names = {p.name for p in skills_root.iterdir() if p.is_dir()}
+    if not names:
+        fail("skills directory must contain at least one skill")
+    return names
+
+
+def wrapper_skill_names(name: str) -> set[str]:
+    skills_root = ROOT / "plugins" / name / "skills"
+    if not skills_root.is_dir():
+        fail(f"marketplace wrapper plugins/{name}/skills must be a directory")
+    names = {p.name for p in skills_root.iterdir() if p.is_dir()}
+    if not names:
+        fail(f"marketplace wrapper plugins/{name}/skills must expose at least one skill")
+    return names
+
+
+def skill_file_map(path: Path) -> dict[str, bytes]:
+    files: dict[str, bytes] = {}
+    for child in sorted(path.rglob("*")):
+        if "__pycache__" in child.parts or child.suffix == ".pyc":
+            continue
+        if child.is_file():
+            files[str(child.relative_to(path))] = child.read_bytes()
+    return files
+
+
+def validate_skill_copy(source: Path, copy: Path) -> None:
+    source_files = skill_file_map(source)
+    copy_files = skill_file_map(copy)
+    if source_files != copy_files:
+        missing = sorted(set(source_files) - set(copy_files))
+        extra = sorted(set(copy_files) - set(source_files))
+        changed = sorted(
+            path
+            for path in set(source_files) & set(copy_files)
+            if source_files[path] != copy_files[path]
+        )
+        details = []
+        if missing:
+            details.append(f"missing files: {', '.join(missing[:5])}")
+        if extra:
+            details.append(f"extra files: {', '.join(extra[:5])}")
+        if changed:
+            details.append(f"changed files: {', '.join(changed[:5])}")
+        fail(
+            f"{copy.relative_to(ROOT)} must match {source.relative_to(ROOT)} "
+            f"({'; '.join(details)})"
+        )
+
+
+def marketplace_entries(plugins: object, label: str) -> dict[str, dict]:
+    if not isinstance(plugins, list):
+        fail(f"{label}.plugins must be an array")
+    seen: dict[str, dict] = {}
+    for index, entry in enumerate(plugins):
+        if not isinstance(entry, dict):
+            fail(f"{label}.plugins[{index}] must be an object")
+        name = require_string(entry, "name", f"{label}.plugins[{index}]")
+        if name in seen:
+            fail(f"{label}.plugins contains duplicate plugin name {name}")
+        seen[name] = entry
+    if not seen:
+        fail(f"{label}.plugins must contain at least one plugin")
+    return seen
 
 
 def validate_plugin() -> None:
@@ -85,18 +161,13 @@ def validate_plugin() -> None:
         fail("plugin.interface.capabilities must be a string array")
 
 
-def validate_marketplace() -> None:
+def validate_marketplace() -> set[str]:
     marketplace = load_json(ROOT / ".agents" / "plugins" / "marketplace.json")
     if require_string(marketplace, "name", "marketplace") != MARKETPLACE_NAME:
         fail(f"marketplace.name must be {MARKETPLACE_NAME}")
-    plugins = marketplace.get("plugins")
-    if not isinstance(plugins, list):
-        fail("marketplace.plugins must be an array")
-    seen = {p.get("name"): p for p in plugins if isinstance(p, dict)}
-    if set(seen) != set(MARKETPLACE_PLUGINS):
-        fail(f"marketplace.plugins must contain exactly {', '.join(sorted(MARKETPLACE_PLUGINS))}")
-    for name, expected_path in MARKETPLACE_PLUGINS.items():
-        entry = seen[name]
+    seen = marketplace_entries(marketplace.get("plugins"), "marketplace")
+    for name, entry in seen.items():
+        expected_path = marketplace_path(name)
         source = entry.get("source")
         if (
             not isinstance(source, dict)
@@ -112,6 +183,7 @@ def validate_marketplace() -> None:
         if policy.get("authentication") != "ON_INSTALL":
             fail(f"marketplace {name} policy.authentication must be ON_INSTALL")
         require_string(entry, "category", f"marketplace.plugins[{name}]")
+    return set(seen)
 
 
 def validate_claude_plugin() -> None:
@@ -128,23 +200,19 @@ def validate_claude_plugin() -> None:
     require_string(author, "name", "claude-plugin.author")
 
 
-def validate_claude_marketplace() -> None:
+def validate_claude_marketplace() -> set[str]:
     marketplace = load_json(ROOT / ".claude-plugin" / "marketplace.json")
     if require_string(marketplace, "name", "claude-marketplace") != MARKETPLACE_NAME:
         fail(f"claude-marketplace.name must be {MARKETPLACE_NAME}")
-    plugins = marketplace.get("plugins")
-    if not isinstance(plugins, list):
-        fail("claude-marketplace.plugins must be an array")
-    seen = {p.get("name"): p for p in plugins if isinstance(p, dict)}
-    if set(seen) != set(MARKETPLACE_PLUGINS):
-        fail(f"claude-marketplace.plugins must contain exactly {', '.join(sorted(MARKETPLACE_PLUGINS))}")
-    for name, expected_path in MARKETPLACE_PLUGINS.items():
-        entry = seen[name]
+    seen = marketplace_entries(marketplace.get("plugins"), "claude-marketplace")
+    for name, entry in seen.items():
+        expected_path = marketplace_path(name)
         if entry.get("source") != expected_path:
             fail(f"claude-marketplace {name} source must be {expected_path}")
         if entry.get("version") != PLUGIN_VERSION:
             fail(f"claude-marketplace {name} version must be {PLUGIN_VERSION}")
         require_string(entry, "description", f"claude-marketplace.plugins[{name}]")
+    return set(seen)
 
 
 def parse_frontmatter(path: Path) -> str:
@@ -199,26 +267,69 @@ def validate_package_yaml() -> None:
             fail(f"package.yaml missing {required}")
 
 
-def validate_marketplace_wrapper() -> None:
-    for name in MARKETPLACE_PLUGINS:
+def validate_marketplace_wrapper(marketplace_plugins: set[str]) -> None:
+    wrapper_dirs = plugin_wrapper_dirs()
+    if wrapper_dirs != marketplace_plugins:
+        missing = marketplace_plugins - wrapper_dirs
+        extra = wrapper_dirs - marketplace_plugins
+        details = []
+        if missing:
+            details.append(f"missing wrappers: {', '.join(sorted(missing))}")
+        if extra:
+            details.append(f"unlisted wrappers: {', '.join(sorted(extra))}")
+        fail(f"marketplace plugins must match plugins/ wrappers ({'; '.join(details)})")
+
+    all_skill_names = repo_skill_names()
+    for name in sorted(marketplace_plugins):
         wrapper = ROOT / "plugins" / name
-        if not wrapper.is_dir():
-            fail(f"missing marketplace wrapper plugins/{name}")
         for child in (".codex-plugin/plugin.json", ".claude-plugin/plugin.json", "skills"):
             path = wrapper / child
             if not path.exists():
                 fail(f"marketplace wrapper missing plugins/{name}/{child}")
-        manifest = load_json(wrapper / ".codex-plugin" / "plugin.json")
-        if require_string(manifest, "name", f"plugins/{name}/.codex-plugin/plugin") != name:
-            fail(f"plugins/{name}/.codex-plugin/plugin.json name must be {name}")
+        for manifest_path in (".codex-plugin/plugin.json", ".claude-plugin/plugin.json"):
+            manifest = load_json(wrapper / manifest_path)
+            if require_string(manifest, "name", f"plugins/{name}/{manifest_path}") != name:
+                fail(f"plugins/{name}/{manifest_path} name must be {name}")
+
+        exposed_skills = wrapper_skill_names(name)
+        if name == "all":
+            if exposed_skills != all_skill_names:
+                missing = all_skill_names - exposed_skills
+                extra = exposed_skills - all_skill_names
+                details = []
+                if missing:
+                    details.append(f"missing skills: {', '.join(sorted(missing))}")
+                if extra:
+                    details.append(f"unknown skills: {', '.join(sorted(extra))}")
+                fail(f"plugins/all/skills must expose all repo skills ({'; '.join(details)})")
+            for skill_name in sorted(all_skill_names):
+                validate_skill_copy(
+                    ROOT / "skills" / skill_name,
+                    wrapper / "skills" / skill_name,
+                )
+        else:
+            if name not in all_skill_names:
+                fail(f"plugins/{name} must match a repo skill named {name}")
+            if exposed_skills != {name}:
+                fail(f"plugins/{name}/skills must expose exactly the {name} skill")
+            validate_skill_copy(
+                ROOT / "skills" / name,
+                wrapper / "skills" / name,
+            )
 
 
 def main() -> int:
     validate_plugin()
-    validate_marketplace()
+    marketplace_plugins = validate_marketplace()
     validate_claude_plugin()
-    validate_claude_marketplace()
-    validate_marketplace_wrapper()
+    claude_marketplace_plugins = validate_claude_marketplace()
+    if marketplace_plugins != claude_marketplace_plugins:
+        fail(
+            ".agents and .claude marketplaces must contain the same plugins "
+            f"(agents: {', '.join(sorted(marketplace_plugins))}; "
+            f"claude: {', '.join(sorted(claude_marketplace_plugins))})"
+        )
+    validate_marketplace_wrapper(marketplace_plugins)
     validate_skills()
     validate_package_yaml()
     print("OK: package metadata is valid")

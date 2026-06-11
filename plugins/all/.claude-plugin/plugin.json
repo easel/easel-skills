@@ -1,7 +1,7 @@
 {
   "name": "all",
   "description": "All Easel reusable agent skills.",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": {
     "name": "Easel",
     "url": "https://github.com/easel"
@@ -11,8 +11,13 @@
   "homepage": "https://github.com/easel/easel-skills",
   "keywords": [
     "skills",
+    "planning",
     "writing",
     "review",
-    "quality"
+    "research",
+    "quality",
+    "data",
+    "release",
+    "git"
   ]
 }

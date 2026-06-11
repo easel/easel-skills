@@ -1,6 +1,6 @@
 {
   "name": "sloptimizer",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Audit and rewrite AI-generated prose, plans, specs, prompts, and work items.",
   "author": {
     "name": "Easel",

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Sloptimizer"
+  short_description: "Remove AI-isms, vague claims, and task slop"
+  default_prompt: "Use $sloptimizer to rewrite this draft and re-audit for AI-writing tells."
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Data Quality"
+  short_description: "Generate and audit data validation rules"
+  default_prompt: "Use $data-quality to generate and audit validation rules from this schema, profile, and sample data."
+policy:
+  allow_implicit_invocation: true

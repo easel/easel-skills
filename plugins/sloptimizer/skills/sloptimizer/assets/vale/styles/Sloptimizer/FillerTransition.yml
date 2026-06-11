@@ -1,0 +1,15 @@
+extends: existence
+message: "Filler transition: '%s'. Delete it unless it carries real structure."
+ignorecase: true
+level: suggestion
+scope:
+  - ~heading
+tokens:
+  - to be clear
+  - in conclusion
+  - it is important to note
+  - moreover
+  - furthermore
+  - additionally
+  - that said
+  - at the end of the day

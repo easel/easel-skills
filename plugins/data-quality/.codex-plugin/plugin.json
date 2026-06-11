@@ -1,0 +1,33 @@
+{
+  "name": "data-quality",
+  "version": "0.2.0",
+  "description": "Generate and audit portable data validation rules.",
+  "author": {
+    "name": "Easel",
+    "url": "https://github.com/easel"
+  },
+  "homepage": "https://github.com/easel/easel-skills",
+  "repository": "https://github.com/easel/easel-skills",
+  "keywords": [
+    "data",
+    "validation",
+    "quality"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Data Quality",
+    "shortDescription": "Generate and audit portable data validation rules.",
+    "longDescription": "Data Quality turns schemas, profiles, samples, and business constraints into practical validation rules and Great Expectations-style expectation JSON.",
+    "developerName": "Easel",
+    "category": "Productivity",
+    "capabilities": [
+      "Write",
+      "Review"
+    ],
+    "websiteURL": "https://github.com/easel/easel-skills",
+    "defaultPrompt": [
+      "Use $data-quality to generate and audit validation rules from this schema, profile, and sample data."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

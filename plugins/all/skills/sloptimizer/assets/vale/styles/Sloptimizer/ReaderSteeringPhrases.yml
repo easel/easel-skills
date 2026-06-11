@@ -1,0 +1,13 @@
+extends: existence
+message: "Reader-steering phrase: '%s'. State the concrete reason or consequence instead."
+ignorecase: true
+level: suggestion
+scope:
+  - ~heading
+tokens:
+  - '\bit(?:''|’|`)?s worth (?:noting|saying|flagging|mentioning|remembering|checking|exploring)\b'
+  - '\bit is worth (?:noting|saying|flagging|mentioning|remembering|checking|exploring)\b'
+  - '\b(?:honestly|interestingly|notably|importantly)\b'
+  - '\bwhat stands out\b'
+  - '\bhere(?:''|’|`)?s what(?:''|’|`)?s interesting\b'
+  - '\bthe (?:real|actual|genuine) (?:answer|approach|behavior|boundary|constraint|contract|default|design|gate|intent|problem|reason|result|source|takeaway|test|truth|value|version|workflow)\b'

@@ -1,0 +1,33 @@
+{
+  "name": "data-mapping",
+  "version": "0.2.0",
+  "description": "Derive auditable mappings and survivorship rules.",
+  "author": {
+    "name": "Easel",
+    "url": "https://github.com/easel"
+  },
+  "homepage": "https://github.com/easel/easel-skills",
+  "repository": "https://github.com/easel/easel-skills",
+  "keywords": [
+    "data",
+    "mapping",
+    "survivorship"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Data Mapping",
+    "shortDescription": "Derive auditable mappings and survivorship rules.",
+    "longDescription": "Data Mapping creates source-to-target mappings, filename and table-name extraction rules, canonical names, priority order, conflict policies, and survivorship specs.",
+    "developerName": "Easel",
+    "category": "Productivity",
+    "capabilities": [
+      "Write",
+      "Review"
+    ],
+    "websiteURL": "https://github.com/easel/easel-skills",
+    "defaultPrompt": [
+      "Use $data-mapping to derive source-to-target mappings, extraction rules, and survivorship logic from these schemas and examples."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

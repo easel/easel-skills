@@ -1,0 +1,6 @@
+interface:
+  display_name: "Repo Triage"
+  short_description: "Summarize local Git status and branch state"
+  default_prompt: "Use $repo-triage to summarize this repo's current branch, dirty worktree, changed files, and upstream status."
+policy:
+  allow_implicit_invocation: true
