@@ -13,7 +13,7 @@ SEMVER_RE = re.compile(
     r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)"
     r"(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$"
 )
-PLUGIN_VERSION = "0.2.0"
+PLUGIN_VERSION = "0.2.1"
 MARKETPLACE_NAME = "easel-skills"
 
 

@@ -1,6 +1,6 @@
 ---
 name: sloptimizer
-description: Audit and rewrite AI-generated prose, plans, specs, prompts, and work items by removing AI-isms, vague claims, filler, generic phrasing, missing actors, weak acceptance criteria, and unsupported implementation promises. Use when asked to reduce AI slop, make text sound less like AI, tighten writing, make a task executable, harden a spec, audit only, rewrite, or run Vale-backed prose checks.
+description: Audit and rewrite AI-generated prose, plans, specs, prompts, and work items by removing AI-isms, vague claims, filler, generic phrasing, missing actors, weak acceptance criteria, and unsupported implementation promises. Use when asked to reduce AI slop, make text sound less like AI, tighten writing, make writing as tight as possible, make prose unsummarizable or hard to summarize without losing meaning, make a task executable, harden a spec, audit only, rewrite, or run Vale-backed prose checks.
 ---
 
 # Sloptimizer
@@ -12,7 +12,10 @@ writing and executable work.
 
 Act as a strict editor and spec hardener. Remove filler, unsupported certainty,
 and vague promises; preserve real domain terms; and make the resulting text
-usable by a reader, reviewer, or executor without hidden context.
+usable by a reader, reviewer, or executor without hidden context. Default prose
+rewrites should be compact but not stripped: aim around 3 on a 1-10 verbosity
+scale where 10 is padded, 8 is default assistant prose, and 1 is mechanical
+telegraph style.
 
 ## Workflow
 
@@ -41,6 +44,8 @@ usable by a reader, reviewer, or executor without hidden context.
    - Load `references/rubric.md` for prose and specificity checks.
    - Load `references/ai-writing.md` for AI-ism cleanup, "make this sound less
      like AI", or human-voice rewrites.
+   - Load `references/density-voice.md` for "tight as possible",
+     "unsummarizable", compact-by-default, or voice-preserving compression.
    - Load `references/work-items.md` for task or acceptance-criteria cleanup.
    - Load `references/vale.md` when installing, pinning, or debugging Vale.
 5. Rewrite only when the edit adds clarity or executability. Preserve correct domain
@@ -57,6 +62,12 @@ usable by a reader, reviewer, or executor without hidden context.
 - Prefer the exact domain noun, field, artifact, command, status, metric, or
   constraint over a broad synonym.
 - Replace broad adjectives with observable facts or delete them.
+- For prose rewrites, optimize for idea density, not brevity alone: remove
+  compressible phrasing while preserving nuance, evidence, concrete examples,
+  and consequential distinctions. Explicit "tight" requests intensify this
+  pass; they do not change the basic standard.
+- Preserve voice when it carries judgment, rhythm, meter, texture, contrast, or
+  memorable specificity. Cut voice-like ornament when it does no work.
 - State actors, actions, inputs, outputs, evidence, and non-scope.
 - Flag unsupported claims instead of inventing justification.
 - Preserve cited sources, paths, commands, dates, and constraints that support

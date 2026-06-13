@@ -1,7 +1,7 @@
 {
   "name": "data-mapping",
   "description": "Derive auditable mappings and survivorship rules.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": {
     "name": "Easel",
     "url": "https://github.com/easel"

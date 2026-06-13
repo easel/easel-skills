@@ -25,6 +25,41 @@ Every retained sentence should do at least one job:
 - Explain why a choice follows from evidence.
 - Delimit scope or non-scope.
 
+## High-Density Prose
+
+All prose rewrites should optimize for consequence per word rather than
+shortness by itself. Requests to make writing tight, dense, compressed, or
+"unsummarizable" intensify the density pass but do not change the basic
+standard. Treat "unsummarizable" as a direction: the rewrite should be hard to
+summarize without losing meaning, not stripped to the minimum.
+
+Target dense-but-readable prose: roughly 3 on a 1-10 verbosity scale where 10
+is padded, 8 is default assistant prose, and 1 is mechanical telegraph style.
+Keep enough headroom for flow, rhythm, and voice; do not drive to the terse
+minimum unless the user explicitly asks for that.
+
+At 3/10, prose still has connective tissue, sentence rhythm, and one memorable
+detail or contrast when the passage earns it. It drops restatement, hedging,
+preface, throat-clearing, and generic summary.
+
+Keep words that:
+
+- Add an idea, example, mechanism, evidence, image, contrast, or consequence.
+- Preserve a distinction a summary would flatten.
+- Make the writer's judgment more specific.
+- Help a reader infer what is new, disputed, surprising, or costly.
+- Carry voice, rhythm, or meter that a flat rewrite would lose.
+
+Cut or rewrite words that:
+
+- Announce the point before making it.
+- Repeat a nearby idea with weaker nouns or broader verbs.
+- Add politeness or transition that changes no meaning and carries no rhythm.
+- Summarize what the next sentence already proves.
+
+Do not compress away useful texture. Dense prose can be longer than a terse
+summary when each added word carries information, tension, evidence, or voice.
+
 ## Precise Vocabulary
 
 Tight vocabulary preserves context for every downstream reader, reviewer, and

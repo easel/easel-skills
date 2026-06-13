@@ -62,6 +62,8 @@ These are judgment calls, not stable Vale rules:
 - The voice is sanded flat enough to remove useful human judgment.
 - The conclusion summarizes instead of landing a decision, caveat, or next
   action.
+- Most sentences restate one point at different levels of abstraction, so a
+  summary loses nothing.
 
 ## Data-Bearing Prose
 

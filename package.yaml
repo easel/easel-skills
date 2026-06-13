@@ -1,5 +1,5 @@
 name: easel-skills
-version: 0.2.0
+version: 0.2.1
 description: Reusable agent skills for planning, quality, research, review, repo triage, release management, data workflows, and execution hygiene
 type: plugin
 install:
