@@ -8,3 +8,5 @@ install:
       target: .agents/skills/
     - source: skills/
       target: .claude/skills/
+    - source: skills/
+      target: .grok/skills/

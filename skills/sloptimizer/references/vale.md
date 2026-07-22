@@ -21,8 +21,8 @@ so projects do not need to commit Vale configuration to use the skill.
 ## Commands
 
 ```bash
-skills/sloptimizer/scripts/slop-audit.sh docs/spec.md
-skills/sloptimizer/scripts/slop-audit.sh --changed
+scripts/slop-audit.sh docs/spec.md
+scripts/slop-audit.sh --changed
 ```
 
 The output is Vale's normal text output. Use the findings as a review aid, not

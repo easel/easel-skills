@@ -53,7 +53,7 @@ create noisy failures.
 When producing Great Expectations-style JSON, validate its basic structure:
 
 ```bash
-python3 skills/data-quality/scripts/validate_expectations.py path/to/suite.json
+python3 scripts/validate_expectations.py path/to/suite.json
 ```
 
 The script checks JSON syntax and expectation object shape only. It does not

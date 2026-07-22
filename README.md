@@ -3,6 +3,40 @@
 Reusable agent skills for planning, prose quality, adversarial review, repo
 triage, release management, data workflows, and execution hygiene.
 
+## Install With Grok
+
+Install the full package as a plugin:
+
+```bash
+grok plugin install https://github.com/easel/easel-skills.git --trust
+```
+
+Or add this repository as a marketplace source, then install the umbrella or
+individual plugins:
+
+```bash
+grok plugin marketplace add https://github.com/easel/easel-skills.git
+grok plugin install all --trust
+```
+
+Install individual plugins with `sloptimizer`, `adversarial-review`,
+`repo-triage`, `release-management`, `data-quality`, `data-documentation`,
+`data-mapping`, `research-review`, or `plan-lifecycle` when installing from the
+marketplace wrappers under `plugins/`.
+
+For local development:
+
+```bash
+git clone https://github.com/easel/easel-skills.git
+cd easel-skills
+grok plugin install "$PWD" --trust
+# or process-scoped only:
+# grok --plugin-dir "$PWD" ...
+```
+
+After install, confirm discovery with `grok inspect` or `/skills`. Start a new
+Grok session (or reload plugins) so skill metadata is available.
+
 ## Install With Codex
 
 Install from the GitHub marketplace configuration:
@@ -63,13 +97,14 @@ metadata is loaded into the session.
 
 ## Manual Skill Install
 
-If you are not using the Codex plugin marketplace, copy the skills into the
-agent skill directory used by your runtime:
+If you are not using a plugin marketplace, copy the skills into the agent skill
+directories used by your runtime:
 
 ```bash
-mkdir -p ~/.agents/skills ~/.claude/skills
+mkdir -p ~/.agents/skills ~/.claude/skills ~/.grok/skills
 cp -R skills/* ~/.agents/skills/
 cp -R skills/* ~/.claude/skills/
+cp -R skills/* ~/.grok/skills/
 ```
 
 ## Included Skills

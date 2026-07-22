@@ -63,9 +63,10 @@ anchored on its own assumptions. Keep the fresh-eyes reviewer isolated:
 - write the result to a separate file or transcript;
 - aggregate only after the independent pass is complete.
 
-Example direct harness command:
+Example direct harness commands:
 
 ```bash
+grok -p "$(cat review-target.md)" > findings-grok.md
 claude -p "$(cat review-target.md)" > findings-claude.md
 ```
 

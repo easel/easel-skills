@@ -59,7 +59,7 @@ and call out blockers or uncertainty without mutating the repository.
 When a repeatable local snapshot is useful, run:
 
 ```bash
-python3 skills/repo-triage/scripts/repo_snapshot.py [--base <ref>] [--limit 8]
+python3 scripts/repo_snapshot.py [--base <ref>] [--limit 8]
 ```
 
 The script is read-only and emits JSON for local Git state. Use it as evidence,

@@ -1,7 +1,7 @@
 # Optional Review Adapters
 
-The core skill does not require DDx, Fizeau, or any specific harness. Use these
-adapters only when the tool exists locally.
+The core skill does not require DDx, Fizeau, Grok, or any specific harness. Use
+these adapters only when the tool exists locally.
 
 ## Direct Harnesses
 
@@ -9,8 +9,15 @@ Use direct commands when available. Keep each reviewer independent and write
 outputs to separate files.
 
 ```bash
+grok -p "$(cat review-target.md)" > findings-grok.md
 codex exec "$(cat review-target.md)" > findings-codex.md
 claude -p "$(cat review-target.md)" > findings-claude.md
+```
+
+Grok also accepts a file prompt:
+
+```bash
+grok --prompt-file review-target.md > findings-grok.md
 ```
 
 Adjust command flags for the local harness. The important constraints are:
@@ -25,6 +32,7 @@ When `ddx` is available, use it as a router rather than a dependency of the
 skill:
 
 ```bash
+ddx run --harness grok --prompt review-target.md > findings-grok.md
 ddx run --harness codex --prompt review-target.md > findings-codex.md
 ddx run --harness claude --prompt review-target.md > findings-claude.md
 wait
