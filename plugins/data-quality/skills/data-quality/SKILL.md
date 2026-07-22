@@ -1,6 +1,10 @@
 ---
 name: data-quality
 description: Generate, audit, and refine portable data quality validation rules from schemas, sample rows, profile statistics, business constraints, and target validation frameworks. Use when drafting expectation suites, mapping constraints to checks, reviewing rule coverage, producing Great Expectations-style JSON, or improving data validation rules without assuming a product-specific domain.
+when-to-use: drafting expectation suites, mapping constraints to checks, reviewing rule coverage, or producing Great Expectations-style validation rules
+metadata:
+  short-description: "Generate and audit data validation rules"
+  author: Easel
 ---
 
 # Data Quality

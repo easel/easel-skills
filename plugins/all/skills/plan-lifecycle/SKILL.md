@@ -1,6 +1,10 @@
 ---
 name: plan-lifecycle
 description: Create, refine, review, and evolve implementation plans, release plans, test plans, migration plans, data plans, research plans, and work breakdowns through research, iteration, delegation, adversarial review, execution readiness, and post-implementation review. Use when asked to plan work, review this plan, refine this plan, make a release plan, make a test plan, break down work, turn findings into a plan, or compare implementation results against the original plan.
+when-to-use: plan work, review this plan, refine this plan, make a release or test plan, break down work, or compare implementation results against the original plan
+metadata:
+  short-description: "Plan, refine, review, and hand off work"
+  author: Easel
 ---
 
 # Plan Lifecycle

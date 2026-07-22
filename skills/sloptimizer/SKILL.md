@@ -1,6 +1,10 @@
 ---
 name: sloptimizer
 description: Audit and rewrite AI-generated prose, plans, specs, prompts, and work items by removing AI-isms, vague claims, filler, generic phrasing, missing actors, weak acceptance criteria, and unsupported implementation promises. Use when asked to reduce AI slop, make text sound less like AI, tighten writing, make writing as tight as possible, make prose unsummarizable or hard to summarize without losing meaning, make a task executable, harden a spec, audit only, rewrite, or run Vale-backed prose checks.
+when-to-use: reduce AI slop, make text sound less like AI, tighten writing, harden a spec, audit prose, rewrite work items, or run Vale-backed prose checks
+metadata:
+  short-description: "Remove AI-isms, vague claims, and task slop"
+  author: Easel
 ---
 
 # Sloptimizer

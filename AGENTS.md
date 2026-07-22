@@ -27,11 +27,20 @@ skill explicitly declares an integration dependency.
 
 ## Verification
 
-After editing skills, run the portable validation suite:
+After editing skills under `skills/`:
 
 ```bash
+bash scripts/sync-plugin-skills.sh
+python3 scripts/generate-plugin-index.py
 bash scripts/validate.sh
 ```
+
+`scripts/sync-plugin-skills.sh` copies canonical skills into marketplace
+wrappers and refreshes relative symlinks under `.agents/skills/` so Grok and
+compatible agents discover project skills while working in this repo.
+
+`scripts/generate-plugin-index.py` refreshes `.grok-plugin/plugin-index.json`
+for Grok marketplace catalog metadata.
 
 Optionally validate Grok plugin manifests:
 
@@ -41,5 +50,5 @@ grok plugin validate plugins/all
 ```
 
 Marketplace wrappers under `plugins/*/skills/` must stay byte-identical to
-`skills/`. Prefer editing `skills/` then syncing wrappers, or run
-`scripts/validate.sh` to catch drift.
+`skills/`. Prefer editing `skills/` then running the sync script rather than
+hand-editing wrapper copies.
