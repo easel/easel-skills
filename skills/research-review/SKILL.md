@@ -65,7 +65,7 @@ and turn findings into decisions, risks, or next actions.
 When producing a Markdown research report, run:
 
 ```bash
-python3 skills/research-review/scripts/check_research_report.py path/to/report.md
+python3 scripts/check_research_report.py path/to/report.md
 ```
 
 The script checks for a dated scope, findings or recommendation, and cited

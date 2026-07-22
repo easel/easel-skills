@@ -8,7 +8,8 @@ skill explicitly declares an integration dependency.
 - Easel skills must not depend on DDx, Fizeau, HELIX, or any product-specific
   runtime by default.
 - Product integrations may live as optional adapters inside a skill.
-- DDx, Fizeau, and other tools may depend on, vendor, or wrap Easel skills.
+- DDx, Fizeau, Grok, and other tools may depend on, vendor, or wrap Easel
+  skills.
 
 ## Skill Authoring
 
@@ -20,13 +21,25 @@ skill explicitly declares an integration dependency.
   them in prose.
 - Use generic vocabulary in core skill files. Product-specific terms belong in
   adapter references.
+- Document script invocations relative to the skill directory
+  (`python3 scripts/…`), not monorepo-rooted paths like
+  `python3 skills/<name>/scripts/…`.
 
 ## Verification
 
-- Validate syntax after editing skills:
+After editing skills, run the portable validation suite:
 
 ```bash
-for skill in skills/*/; do
-  python3 /home/erik/.codex/skills/.system/skill-creator/scripts/quick_validate.py "$skill"
-done
+bash scripts/validate.sh
 ```
+
+Optionally validate Grok plugin manifests:
+
+```bash
+grok plugin validate .
+grok plugin validate plugins/all
+```
+
+Marketplace wrappers under `plugins/*/skills/` must stay byte-identical to
+`skills/`. Prefer editing `skills/` then syncing wrappers, or run
+`scripts/validate.sh` to catch drift.

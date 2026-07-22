@@ -73,7 +73,7 @@ review.
 When producing a Markdown plan artifact, run:
 
 ```bash
-python3 skills/plan-lifecycle/scripts/check_plan.py path/to/plan.md
+python3 scripts/check_plan.py path/to/plan.md
 ```
 
 The script checks for core plan sections. It does not verify technical

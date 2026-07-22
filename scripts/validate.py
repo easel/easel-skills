@@ -262,6 +262,7 @@ def validate_package_yaml() -> None:
         "source: skills/",
         "target: .agents/skills/",
         "target: .claude/skills/",
+        "target: .grok/skills/",
     ):
         if required not in text:
             fail(f"package.yaml missing {required}")
