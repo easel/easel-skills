@@ -10,61 +10,61 @@
       "name": "all",
       "source": "./plugins/all",
       "description": "All Easel reusable skills.",
-      "version": "0.2.1"
+      "version": "0.3.0"
     },
     {
       "name": "sloptimizer",
       "source": "./plugins/sloptimizer",
       "description": "Audit and rewrite AI-generated prose, plans, specs, prompts, and work items.",
-      "version": "0.2.1"
+      "version": "0.3.0"
     },
     {
       "name": "adversarial-review",
       "source": "./plugins/adversarial-review",
       "description": "Pressure-test plans, specs, prompts, work items, code changes, or PRs.",
-      "version": "0.2.1"
+      "version": "0.3.0"
     },
     {
       "name": "release-management",
       "source": "./plugins/release-management",
       "description": "Audit repository state, version metadata, validation, marketplace manifests, commits, tags, and pushes.",
-      "version": "0.2.1"
+      "version": "0.3.0"
     },
     {
       "name": "repo-triage",
       "source": "./plugins/repo-triage",
       "description": "Summarize local Git state, branch comparisons, changed files, and optional PR or issue context.",
-      "version": "0.2.1"
+      "version": "0.3.0"
     },
     {
       "name": "data-quality",
       "source": "./plugins/data-quality",
       "description": "Generate and audit portable data validation rules.",
-      "version": "0.2.1"
+      "version": "0.3.0"
     },
     {
       "name": "data-documentation",
       "source": "./plugins/data-documentation",
       "description": "Create evidence-backed table and column documentation.",
-      "version": "0.2.1"
+      "version": "0.3.0"
     },
     {
       "name": "data-mapping",
       "source": "./plugins/data-mapping",
       "description": "Derive auditable mappings and survivorship rules.",
-      "version": "0.2.1"
+      "version": "0.3.0"
     },
     {
       "name": "research-review",
       "source": "./plugins/research-review",
       "description": "Research and review with source-backed evidence.",
-      "version": "0.2.1"
+      "version": "0.3.0"
     },
     {
       "name": "plan-lifecycle",
       "source": "./plugins/plan-lifecycle",
       "description": "Plan, refine, review, and hand off work.",
-      "version": "0.2.1"
+      "version": "0.3.0"
     }
   ]
 }

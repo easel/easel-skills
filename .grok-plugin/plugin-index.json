@@ -2,7 +2,7 @@
   "version": 1,
   "plugins": {
     "all": {
-      "version": "0.2.1",
+      "version": "0.3.0",
       "components": {
         "skills": [
           {
@@ -46,7 +46,7 @@
       "sha": "dfc84e11af94d0ea246c668f49c6c80ededae67a"
     },
     "sloptimizer": {
-      "version": "0.2.1",
+      "version": "0.3.0",
       "components": {
         "skills": [
           {
@@ -58,7 +58,7 @@
       "sha": "ccbecc7d6372934b88a2d6a71b1e0b3eca1f4079"
     },
     "adversarial-review": {
-      "version": "0.2.1",
+      "version": "0.3.0",
       "components": {
         "skills": [
           {
@@ -70,7 +70,7 @@
       "sha": "abc70b26286dec3ff5222454c4a57158186bdd9d"
     },
     "release-management": {
-      "version": "0.2.1",
+      "version": "0.3.0",
       "components": {
         "skills": [
           {
@@ -82,7 +82,7 @@
       "sha": "591bedc0926b762d28d3df97366dfe67d1a81553"
     },
     "repo-triage": {
-      "version": "0.2.1",
+      "version": "0.3.0",
       "components": {
         "skills": [
           {
@@ -94,7 +94,7 @@
       "sha": "789efdb01e5485a845ef894405fe50a918a9f922"
     },
     "data-quality": {
-      "version": "0.2.1",
+      "version": "0.3.0",
       "components": {
         "skills": [
           {
@@ -106,7 +106,7 @@
       "sha": "90b63fabd7990922d3158d27cf583fee8f21f19b"
     },
     "data-documentation": {
-      "version": "0.2.1",
+      "version": "0.3.0",
       "components": {
         "skills": [
           {
@@ -118,7 +118,7 @@
       "sha": "705a14f15f756f04befbf7f316e067f89442361c"
     },
     "data-mapping": {
-      "version": "0.2.1",
+      "version": "0.3.0",
       "components": {
         "skills": [
           {
@@ -130,7 +130,7 @@
       "sha": "075a0f8201cfc137870842db7d2aa269c91f27fa"
     },
     "research-review": {
-      "version": "0.2.1",
+      "version": "0.3.0",
       "components": {
         "skills": [
           {
@@ -142,7 +142,7 @@
       "sha": "a7eae5b44874aefd2f044d8c54c11c0301d416a9"
     },
     "plan-lifecycle": {
-      "version": "0.2.1",
+      "version": "0.3.0",
       "components": {
         "skills": [
           {

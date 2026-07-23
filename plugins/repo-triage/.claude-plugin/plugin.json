@@ -1,7 +1,7 @@
 {
   "name": "repo-triage",
   "description": "Summarize local repository state and branch readiness.",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "author": {
     "name": "Easel",
     "url": "https://github.com/easel"

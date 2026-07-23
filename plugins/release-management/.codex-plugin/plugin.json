@@ -1,6 +1,6 @@
 {
   "name": "release-management",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Audit and execute deliberate software releases.",
   "author": {
     "name": "Easel",

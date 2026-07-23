@@ -1,7 +1,7 @@
 {
   "name": "easel-skills",
   "description": "Reusable agent skills for planning, prose quality, adversarial review, research, repo triage, release management, data quality, documentation, mapping, and execution hygiene.",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "author": {
     "name": "Easel",
     "url": "https://github.com/easel"

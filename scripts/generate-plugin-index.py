@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PLUGIN_VERSION = "0.2.1"
+PLUGIN_VERSION = "0.3.0"
 FRONTMATTER_RE = re.compile(r"\A---\n(.*?)\n---", re.DOTALL)
 DESC_RE = re.compile(r"(?m)^description:\s*(.+?)(?=\n[a-zA-Z0-9_-]+:|\Z)", re.DOTALL)
 NAME_RE = re.compile(r"(?m)^name:\s*(\S+)\s*$")
