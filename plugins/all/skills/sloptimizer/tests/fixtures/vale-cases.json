@@ -99,5 +99,30 @@
     "name": "heading_negative",
     "text": "# Robust Framework\n\nThe page explains the migration.",
     "expected_rules": []
+  },
+  {
+    "name": "ai_slop_pivotal_moment",
+    "text": "The launch marks a pivotal moment for the company.",
+    "expected_rules": ["AISlop"]
+  },
+  {
+    "name": "ai_slop_highlighting",
+    "text": "The release adds search, highlighting the team's commitment.",
+    "expected_rules": ["AISlop"]
+  },
+  {
+    "name": "filler_at_its_core",
+    "text": "At its core, the tool is a queue.",
+    "expected_rules": ["FillerTransition"]
+  },
+  {
+    "name": "reader_steering_heres_the_thing",
+    "text": "Here's the thing about the ARM failure.",
+    "expected_rules": ["ReaderSteeringPhrases"]
+  },
+  {
+    "name": "reader_steering_hope_this_helps",
+    "text": "I hope this helps with the migration.",
+    "expected_rules": ["ReaderSteeringPhrases"]
   }
 ]
