@@ -37,6 +37,11 @@ grok plugin install "$PWD" --trust
 After install, confirm discovery with `grok inspect` or `/skills`. Start a new
 Grok session (or reload plugins) so skill metadata is available.
 
+When developing inside this repository, skills are also exposed as project
+skills via `.agents/skills/` symlinks (created by
+`scripts/sync-plugin-skills.sh`). `grok inspect` should list them with a
+`project` source without a separate install step.
+
 ## Install With Codex
 
 Install from the GitHub marketplace configuration:
@@ -133,9 +138,12 @@ cp -R skills/* ~/.grok/skills/
 
 ## Validate
 
-Run the portable validation script locally:
+After skill edits, sync wrappers and refresh the Grok plugin index, then run
+the portable validation suite:
 
 ```bash
+bash scripts/sync-plugin-skills.sh
+python3 scripts/generate-plugin-index.py
 bash scripts/validate.sh
 ```
 
@@ -148,4 +156,5 @@ docker run --rm easel-skills-validate
 
 The Docker check validates Codex and Claude plugin metadata, marketplace
 wiring, skill frontmatter, agent metadata, Python syntax, shell syntax, the
-Sloptimizer Vale fixtures, and the bundled redundancy audit.
+Sloptimizer Vale fixtures, and the bundled redundancy audit. The local suite
+also checks `.agents/skills` discovery links and `.grok-plugin/plugin-index.json`.

@@ -1,6 +1,10 @@
 ---
 name: data-mapping
 description: Derive portable source-to-target data mappings, filename and table-name extraction rules, merge and survivorship logic, canonical names, priority order, conflict policies, and auditable transformation specs from schemas, samples, and examples.
+when-to-use: source-to-target mappings, extraction rules, canonical names, conflict policies, merge logic, or survivorship specs
+metadata:
+  short-description: "Derive auditable mappings and survivorship rules"
+  author: Easel
 ---
 
 # Data Mapping

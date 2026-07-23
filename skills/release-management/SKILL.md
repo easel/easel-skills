@@ -1,6 +1,10 @@
 ---
 name: release-management
 description: Plan and execute software releases by auditing repository state, version metadata, validation commands, marketplace or package manifests, commits, tags, and pushes. Use when asked to prepare a release, cut a point release, verify release readiness, update marketplace metadata, or commit/tag/push release changes.
+when-to-use: prepare a release, cut a point release, verify release readiness, update marketplace metadata, or commit/tag/push release changes
+metadata:
+  short-description: "Audit and execute deliberate software releases"
+  author: Easel
 ---
 
 # Release Management

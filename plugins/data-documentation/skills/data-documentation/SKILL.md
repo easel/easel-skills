@@ -1,6 +1,10 @@
 ---
 name: data-documentation
 description: Generate evidence-backed documentation for datasets, tables, and columns from schemas, profiles, lineage, examples, constraints, and glossary terms. Use when asked to create, audit, refresh, structure, or cite data documentation while checking assumptions, stale fields, and optional machine-readable output.
+when-to-use: create, audit, refresh, structure, or cite data documentation while checking assumptions, stale fields, and optional machine-readable output
+metadata:
+  short-description: "Create evidence-backed table and column docs"
+  author: Easel
 ---
 
 # Data Documentation

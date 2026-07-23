@@ -1,6 +1,10 @@
 ---
 name: repo-triage
 description: Inspect and summarize a source repository's local Git state, including dirty worktree status, changed files, branch versus base comparison, recent commits, upstream tracking, ahead-behind counts, and optional PR or issue context when repository tools are available. Use for repo status reports, branch triage, change summaries, pre-PR checks, or understanding what work is in progress without modifying the worktree.
+when-to-use: repo status reports, branch triage, change summaries, pre-PR checks, or understanding in-progress work without modifying the worktree
+metadata:
+  short-description: "Summarize local Git status and branch state"
+  author: Easel
 ---
 
 # Repo Triage
