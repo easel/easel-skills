@@ -133,11 +133,17 @@ cp -R skills/* ~/.grok/skills/
 
 ## Validate
 
-Run the portable validation script locally:
+`skills/` is the source of truth. After skill edits, regenerate packaging
+artifacts and validate:
 
 ```bash
+bash scripts/prepare.sh
 bash scripts/validate.sh
 ```
+
+`prepare.sh` refreshes marketplace skill copies and
+`.grok-plugin/plugin-index.json`. `validate.sh` re-runs prepare and fails if
+generated paths would leave unstaged packaging drift.
 
 Run the same checks in Docker:
 
@@ -146,6 +152,8 @@ docker build -t easel-skills-validate .
 docker run --rm easel-skills-validate
 ```
 
-The Docker check validates Codex and Claude plugin metadata, marketplace
-wiring, skill frontmatter, agent metadata, Python syntax, shell syntax, the
-Sloptimizer Vale fixtures, and the bundled redundancy audit.
+The Docker image has no git metadata, so it skips the cleanliness check and
+still validates package metadata, skill frontmatter, syntax, Sloptimizer
+fixtures, and the redundancy audit. CI on GitHub runs the full git-aware suite.
+
+See `plugins/README.md` for how marketplace wrappers are generated.

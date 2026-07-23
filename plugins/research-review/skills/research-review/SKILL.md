@@ -1,6 +1,10 @@
 ---
 name: research-review
 description: Research and review a technical question, design, dependency, standard, or implementation approach using current, source-backed evidence. Use when asked to look up best practices, compare options, verify current behavior, review against docs or papers, summarize the state of the art, or make an evidence-backed recommendation.
+when-to-use: look up best practices, compare options, verify current behavior, review against docs or papers, or make an evidence-backed recommendation
+metadata:
+  short-description: "Research and review with source-backed evidence"
+  author: Easel
 ---
 
 # Research Review

@@ -1,6 +1,10 @@
 ---
 name: adversarial-review
 description: Pressure-test a plan, spec, prompt, output contract, work item, code change, or PR by asking one or more independent model harnesses to find blocking issues, contradictions, missing constraints, and rework risks. Use for lightweight plan review, fresh-eyes critique, high-stakes design review, cross-model critique, or multi-round validation before implementation.
+when-to-use: pressure-test a plan, fresh-eyes critique, high-stakes design review, cross-model critique, or multi-round validation before implementation
+metadata:
+  short-description: "Pressure-test plans with independent critics"
+  author: Easel
 ---
 
 # Adversarial Review

@@ -14,7 +14,8 @@ skill explicitly declares an integration dependency.
 ## Skill Authoring
 
 - Every skill must have a top-level `SKILL.md` with `name` and `description`
-  YAML frontmatter.
+  YAML frontmatter. Prefer also setting `when-to-use` and
+  `metadata.short-description` for harness discovery UI.
 - Keep `SKILL.md` concise. Move detailed rubrics, adapter instructions, and
   examples into `references/`.
 - Put deterministic checks in `scripts/` or `assets/` rather than rewriting
@@ -27,11 +28,18 @@ skill explicitly declares an integration dependency.
 
 ## Verification
 
-After editing skills, run the portable validation suite:
+Edit skills only under `skills/`. Marketplace wrappers under `plugins/*/skills/`
+are generated copies. After skill edits:
 
 ```bash
+bash scripts/prepare.sh
 bash scripts/validate.sh
 ```
+
+`scripts/prepare.sh` regenerates marketplace skill copies and
+`.grok-plugin/plugin-index.json`. `scripts/validate.sh` re-runs prepare and
+fails if those paths have unstaged drift, then runs package, syntax, and
+Sloptimizer checks.
 
 Optionally validate Grok plugin manifests:
 
@@ -40,6 +48,4 @@ grok plugin validate .
 grok plugin validate plugins/all
 ```
 
-Marketplace wrappers under `plugins/*/skills/` must stay byte-identical to
-`skills/`. Prefer editing `skills/` then syncing wrappers, or run
-`scripts/validate.sh` to catch drift.
+See `plugins/README.md` for the packaging model.

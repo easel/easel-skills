@@ -244,12 +244,68 @@ def validate_skills() -> None:
             fail(f"{skill_md.relative_to(ROOT)} frontmatter must include name")
         if not frontmatter_has_key(frontmatter, "description"):
             fail(f"{skill_md.relative_to(ROOT)} frontmatter must include description")
+        if not frontmatter_has_key(frontmatter, "when-to-use"):
+            fail(f"{skill_md.relative_to(ROOT)} frontmatter must include when-to-use")
+        if "short-description:" not in frontmatter:
+            fail(
+                f"{skill_md.relative_to(ROOT)} frontmatter must include "
+                "metadata.short-description"
+            )
         agent_yaml = skill / "agents" / "openai.yaml"
         if agent_yaml.is_file():
             text = agent_yaml.read_text(encoding="utf-8")
             for key in ("display_name:", "short_description:", "default_prompt:"):
                 if key not in text:
                     fail(f"{agent_yaml.relative_to(ROOT)} missing {key}")
+
+
+def validate_plugin_index(marketplace_plugins: set[str]) -> None:
+    path = ROOT / ".grok-plugin" / "plugin-index.json"
+    index = load_json(path)
+    if index.get("version") != 1:
+        fail("plugin-index.version must be 1")
+    plugins = index.get("plugins")
+    if not isinstance(plugins, dict) or not plugins:
+        fail("plugin-index.plugins must be a non-empty object")
+    if set(plugins) != marketplace_plugins:
+        missing = marketplace_plugins - set(plugins)
+        extra = set(plugins) - marketplace_plugins
+        details = []
+        if missing:
+            details.append(f"missing: {', '.join(sorted(missing))}")
+        if extra:
+            details.append(f"extra: {', '.join(sorted(extra))}")
+        fail(f"plugin-index plugins must match marketplace ({'; '.join(details)})")
+
+    all_skill_names = repo_skill_names()
+    for name, entry in plugins.items():
+        if not isinstance(entry, dict):
+            fail(f"plugin-index.plugins.{name} must be an object")
+        if entry.get("version") != PLUGIN_VERSION:
+            fail(f"plugin-index.plugins.{name}.version must be {PLUGIN_VERSION}")
+        components = entry.get("components")
+        if not isinstance(components, dict):
+            fail(f"plugin-index.plugins.{name}.components must be an object")
+        skills = components.get("skills")
+        if not isinstance(skills, list) or not skills:
+            fail(f"plugin-index.plugins.{name}.components.skills must be non-empty")
+        skill_names = set()
+        for item in skills:
+            if not isinstance(item, dict):
+                fail(f"plugin-index.plugins.{name} skill entries must be objects")
+            skill_name = item.get("name")
+            description = item.get("description")
+            if not isinstance(skill_name, str) or not skill_name:
+                fail(f"plugin-index.plugins.{name} skill missing name")
+            if not isinstance(description, str) or not description.strip():
+                fail(f"plugin-index.plugins.{name} skill {skill_name} missing description")
+            skill_names.add(skill_name)
+        if name == "all":
+            if skill_names != all_skill_names:
+                fail("plugin-index all plugin must list every repo skill")
+        else:
+            if skill_names != {name}:
+                fail(f"plugin-index {name} plugin must list exactly skill {name}")
 
 
 def validate_package_yaml() -> None:
@@ -332,6 +388,7 @@ def main() -> int:
         )
     validate_marketplace_wrapper(marketplace_plugins)
     validate_skills()
+    validate_plugin_index(marketplace_plugins)
     validate_package_yaml()
     print("OK: package metadata is valid")
     return 0

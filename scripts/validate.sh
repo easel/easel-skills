@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Ensure marketplace wrappers and plugin-index match skills/.
+bash scripts/check-generated.sh
+
 python3 scripts/validate.py
 find scripts skills -name '*.py' -print0 | xargs -0 python3 -m py_compile
 while IFS= read -r -d '' script; do

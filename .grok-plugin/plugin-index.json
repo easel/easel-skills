@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "plugins": {
+    "all": {
+      "version": "0.2.1",
+      "components": {
+        "skills": [
+          {
+            "name": "adversarial-review",
+            "description": "Pressure-test a plan, spec, prompt, output contract, work item, code change, or PR by asking one or more independent model harnesses to\u2026"
+          },
+          {
+            "name": "data-documentation",
+            "description": "Generate evidence-backed documentation for datasets, tables, and columns from schemas, profiles, lineage, examples, constraints, and\u2026"
+          },
+          {
+            "name": "data-mapping",
+            "description": "Derive portable source-to-target data mappings, filename and table-name extraction rules, merge and survivorship logic, canonical names\u2026"
+          },
+          {
+            "name": "data-quality",
+            "description": "Generate, audit, and refine portable data quality validation rules from schemas, sample rows, profile statistics, business constraints\u2026"
+          },
+          {
+            "name": "plan-lifecycle",
+            "description": "Create, refine, review, and evolve implementation plans, release plans, test plans, migration plans, data plans, research plans, and work\u2026"
+          },
+          {
+            "name": "release-management",
+            "description": "Plan and execute software releases by auditing repository state, version metadata, validation commands, marketplace or package manifests\u2026"
+          },
+          {
+            "name": "repo-triage",
+            "description": "Inspect and summarize a source repository's local Git state, including dirty worktree status, changed files, branch versus base\u2026"
+          },
+          {
+            "name": "research-review",
+            "description": "Research and review a technical question, design, dependency, standard, or implementation approach using current, source-backed evidence\u2026"
+          },
+          {
+            "name": "sloptimizer",
+            "description": "Audit and rewrite AI-generated prose, plans, specs, prompts, and work items by removing AI-isms, vague claims, filler, generic phrasing\u2026"
+          }
+        ]
+      },
+      "sha": "ae1d702d737acb8f78530d879463308e7f405fe3"
+    },
+    "sloptimizer": {
+      "version": "0.2.1",
+      "components": {
+        "skills": [
+          {
+            "name": "sloptimizer",
+            "description": "Audit and rewrite AI-generated prose, plans, specs, prompts, and work items by removing AI-isms, vague claims, filler, generic phrasing\u2026"
+          }
+        ]
+      },
+      "sha": "b9d9d5a471bbf81e95d04c33fb935f18ffae4823"
+    },
+    "adversarial-review": {
+      "version": "0.2.1",
+      "components": {
+        "skills": [
+          {
+            "name": "adversarial-review",
+            "description": "Pressure-test a plan, spec, prompt, output contract, work item, code change, or PR by asking one or more independent model harnesses to\u2026"
+          }
+        ]
+      },
+      "sha": "abc70b26286dec3ff5222454c4a57158186bdd9d"
+    },
+    "release-management": {
+      "version": "0.2.1",
+      "components": {
+        "skills": [
+          {
+            "name": "release-management",
+            "description": "Plan and execute software releases by auditing repository state, version metadata, validation commands, marketplace or package manifests\u2026"
+          }
+        ]
+      },
+      "sha": "591bedc0926b762d28d3df97366dfe67d1a81553"
+    },
+    "repo-triage": {
+      "version": "0.2.1",
+      "components": {
+        "skills": [
+          {
+            "name": "repo-triage",
+            "description": "Inspect and summarize a source repository's local Git state, including dirty worktree status, changed files, branch versus base\u2026"
+          }
+        ]
+      },
+      "sha": "789efdb01e5485a845ef894405fe50a918a9f922"
+    },
+    "data-quality": {
+      "version": "0.2.1",
+      "components": {
+        "skills": [
+          {
+            "name": "data-quality",
+            "description": "Generate, audit, and refine portable data quality validation rules from schemas, sample rows, profile statistics, business constraints\u2026"
+          }
+        ]
+      },
+      "sha": "90b63fabd7990922d3158d27cf583fee8f21f19b"
+    },
+    "data-documentation": {
+      "version": "0.2.1",
+      "components": {
+        "skills": [
+          {
+            "name": "data-documentation",
+            "description": "Generate evidence-backed documentation for datasets, tables, and columns from schemas, profiles, lineage, examples, constraints, and\u2026"
+          }
+        ]
+      },
+      "sha": "705a14f15f756f04befbf7f316e067f89442361c"
+    },
+    "data-mapping": {
+      "version": "0.2.1",
+      "components": {
+        "skills": [
+          {
+            "name": "data-mapping",
+            "description": "Derive portable source-to-target data mappings, filename and table-name extraction rules, merge and survivorship logic, canonical names\u2026"
+          }
+        ]
+      },
+      "sha": "075a0f8201cfc137870842db7d2aa269c91f27fa"
+    },
+    "research-review": {
+      "version": "0.2.1",
+      "components": {
+        "skills": [
+          {
+            "name": "research-review",
+            "description": "Research and review a technical question, design, dependency, standard, or implementation approach using current, source-backed evidence\u2026"
+          }
+        ]
+      },
+      "sha": "a7eae5b44874aefd2f044d8c54c11c0301d416a9"
+    },
+    "plan-lifecycle": {
+      "version": "0.2.1",
+      "components": {
+        "skills": [
+          {
+            "name": "plan-lifecycle",
+            "description": "Create, refine, review, and evolve implementation plans, release plans, test plans, migration plans, data plans, research plans, and work\u2026"
+          }
+        ]
+      },
+      "sha": "75320dad77c160679d9b357df6dfc3bb3d98f71c"
+    }
+  }
+}

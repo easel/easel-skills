@@ -1,0 +1,33 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install rsync
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends rsync
+
+      - name: Validate package and skills
+        run: bash scripts/validate.sh
+
+      - name: Validate Grok plugin manifests
+        run: |
+          if command -v grok >/dev/null 2>&1; then
+            grok plugin validate .
+            grok plugin validate plugins/all
+          else
+            echo "grok CLI not installed; skipping grok plugin validate"
+          fi

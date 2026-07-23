@@ -20,5 +20,19 @@ Use this reference when a release includes plugin or skill marketplace metadata.
 1. Audit root manifests, marketplace files, wrapper manifests, and install docs.
 2. Add or remove entries so installable skills match the actual `skills/`
    directory.
-3. Validate from a clean checkout or Docker image when possible.
-4. Confirm generated or cache directories are ignored before committing.
+3. Regenerate derived packaging from canonical skills:
+
+```bash
+bash scripts/prepare.sh
+```
+
+   That refreshes `plugins/*/skills/**` and `.grok-plugin/plugin-index.json`.
+   Do not hand-edit wrapper skill trees.
+4. Validate from a clean checkout or Docker image when possible:
+
+```bash
+bash scripts/validate.sh
+```
+
+5. Confirm generated or cache directories are ignored before committing, and that
+   prepare left no uncommitted packaging drift.
