@@ -24,6 +24,11 @@ telegraph style.
 For pure prose, make the **minimum effective edit**. Do not invent a synthetic
 human voice, jokes, or opinions the author did not supply.
 
+**Precedence:** minimum effective edit is the default for prose and "less AI"
+requests. Apply the denser compression in `references/density-voice.md` only
+when the user asks for tight, compact, dense, or unsummarizable prose, or when
+the target is a work item or plan that must become executable.
+
 ## Workflow
 
 1. Choose the mode:

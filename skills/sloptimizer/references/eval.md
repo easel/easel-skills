@@ -20,7 +20,10 @@ line and a short fix, without rewriting the draft or claiming AI authorship.
    decisions?
 6. Are genuinely tangled sentences fixed while clear spoken cadence remains?
 
-## Patterns
+## Patterns (prose targets only)
+
+Skip this section when the target is a `work-item` or `plan`. Those use the
+section below instead.
 
 1. Are throat-clearing openers, faux-insight setups, binary contrasts, and
    negative listings removed or rewritten as direct claims?
@@ -30,7 +33,7 @@ line and a short fix, without rewriting the draft or claiming AI authorship.
    rhythm addressed?
 4. Are fake-profound kickers and summary-recap endings cut so the piece ends on
    a concrete takeaway or next action?
-5. Is chatbot residue ("I hope this helps," "Great question!") removed from
+5. Is chatbot residue ("I hope this helps!", "Great question!") removed from
    shipped prose?
 6. Is formatting slop removed when it is decorative rather than structural?
 
@@ -41,6 +44,8 @@ When the target is a work item or plan rather than prose:
 1. Can a competent agent execute the item from the text alone?
 2. Are actors, inputs, outputs, acceptance checks, and non-scope explicit?
 3. Are unsupported implementation promises flagged rather than polished?
+4. Prefer executability over prose pattern cleanup. Do not rewrite ticket text
+   solely to remove stylistic AI tells unless they hide the task.
 
 ## Final read
 

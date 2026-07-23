@@ -115,6 +115,10 @@ def find_raw_rules(text: str, profile: str) -> set[str]:
             if openings[opening] > 1:
                 found.add("RepeatedOpening")
                 break
+        if re.search(r"\bthe truth is[,:]", line, re.IGNORECASE):
+            found.add("TruthIsFiller")
+        if re.search(r"\bgreat question[.!]", line, re.IGNORECASE):
+            found.add("GreatQuestionChrome")
         if profile != "strict":
             continue
         if "\u2014" in line:
@@ -141,7 +145,10 @@ def rules_for_profile(profile: str) -> list[dict[str, object]]:
 
 def normalize_audit_checks(raw: str) -> set[str]:
     checks: set[str] = set()
-    for match in re.finditer(r"\b(?:Sloptimizer|SloptimizerResults|SloptimizerRaw)\.([A-Za-z]+)\b", raw):
+    for match in re.finditer(
+        r"\b(?:Sloptimizer|SloptimizerResults|SloptimizerRaw|SloptimizerStrict)\.([A-Za-z]+)\b",
+        raw,
+    ):
         checks.add(match.group(1))
     return checks
 

@@ -16,5 +16,4 @@ tokens:
   - '\blet that sink in\b'
   - '\bthe uncomfortable truth is\b'
   - '\bi hope this helps\b'
-  - '\bgreat question\b'
   - '\bthe (?:real|actual|genuine) (?:answer|approach|behavior|boundary|constraint|contract|default|design|gate|intent|problem|reason|result|source|takeaway|test|truth|value|version|workflow)\b'

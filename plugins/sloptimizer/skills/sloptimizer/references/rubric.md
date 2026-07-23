@@ -13,9 +13,8 @@
   facilitates, provides.
 - Token-cost padding: in order to, due to the fact that, at this point in time,
   first and foremost.
-- Phrase-level AI slop: unlock value, pivotal moment, highlighting the,
-  game-changer, deep dive (see `references/ai-writing.md` for structural
-  patterns Vale does not own).
+- Phrase-level AI slop: unlock value, pivotal moment, game-changer, delve into
+  (see `references/ai-writing.md` for structural patterns Vale does not own).
 <!-- vale on -->
 - Repeated paragraph openings that make prose sound templated.
 - Structural AI tells named in `references/ai-writing.md` (binary contrasts,
