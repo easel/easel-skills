@@ -58,6 +58,7 @@ def version_sources(root: Path) -> list[dict[str, str]]:
         "Cargo.toml",
         ".codex-plugin/plugin.json",
         ".claude-plugin/plugin.json",
+        ".grok-plugin/plugin-index.json",
     ]
     records: list[dict[str, str]] = []
     for rel in candidates:
@@ -98,6 +99,25 @@ def marketplace_entries(root: Path) -> list[dict[str, Any]]:
     return entries
 
 
+def packaging_artifacts(root: Path) -> dict[str, Any]:
+    """Summarize generated packaging inputs for release readiness."""
+    plugin_index = load_json(root / ".grok-plugin" / "plugin-index.json")
+    index_plugins: list[str] = []
+    if plugin_index and isinstance(plugin_index.get("plugins"), dict):
+        index_plugins = sorted(plugin_index["plugins"])
+
+    skill_dirs = sorted(
+        p.name for p in (root / "skills").iterdir() if p.is_dir()
+    ) if (root / "skills").is_dir() else []
+
+    return {
+        "prepare_script": (root / "scripts" / "prepare.sh").is_file(),
+        "plugin_index": ".grok-plugin/plugin-index.json" if plugin_index else None,
+        "plugin_index_plugins": index_plugins,
+        "canonical_skills": skill_dirs,
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("repo", nargs="?", default=".")
@@ -112,6 +132,7 @@ def main() -> int:
 
     versions = version_sources(root)
     version_values = sorted({record["version"] for record in versions})
+    packaging = packaging_artifacts(root)
     report = {
         "repo": str(root),
         "branch": branch,
@@ -123,6 +144,7 @@ def main() -> int:
         "distinct_versions": version_values,
         "recent_tags": recent_tags,
         "marketplace_entries": marketplace_entries(root),
+        "packaging": packaging,
     }
     print(json.dumps(report, indent=2))
     return 0
