@@ -99,5 +99,65 @@
     "name": "heading_negative",
     "text": "# Robust Framework\n\nThe page explains the migration.",
     "expected_rules": []
+  },
+  {
+    "name": "ai_slop_pivotal_moment",
+    "text": "The launch marks a pivotal moment for the company.",
+    "expected_rules": ["AISlop"]
+  },
+  {
+    "name": "ai_slop_delve",
+    "text": "This section will delve into the migration path.",
+    "expected_rules": ["AISlop"]
+  },
+  {
+    "name": "filler_at_its_core",
+    "text": "At its core, the tool is a queue.",
+    "expected_rules": ["FillerTransition"]
+  },
+  {
+    "name": "filler_truth_is_comma",
+    "text": "The truth is, the rollout failed on ARM.",
+    "expected_rules": ["TruthIsFiller"]
+  },
+  {
+    "name": "reader_steering_heres_the_thing",
+    "text": "Here's the thing about the ARM failure.",
+    "expected_rules": ["ReaderSteeringPhrases"]
+  },
+  {
+    "name": "reader_steering_hope_this_helps",
+    "text": "I hope this helps with the migration.",
+    "expected_rules": ["ReaderSteeringPhrases"]
+  },
+  {
+    "name": "reader_steering_great_question_bang",
+    "text": "Great question! The owner is the platform team.",
+    "expected_rules": ["GreatQuestionChrome"]
+  },
+  {
+    "name": "ui_highlighting_negative",
+    "text": "Use highlighting the selected row in the table.",
+    "expected_rules": []
+  },
+  {
+    "name": "truth_stored_negative",
+    "text": "The truth is stored encrypted at rest.",
+    "expected_rules": []
+  },
+  {
+    "name": "great_question_for_negative",
+    "text": "Great question for onboarding is who owns deploy keys.",
+    "expected_rules": []
+  },
+  {
+    "name": "deep_dive_path_negative",
+    "text": "Deep dive documentation lives under docs/deep-dive.md.",
+    "expected_rules": []
+  },
+  {
+    "name": "landscape_of_negative",
+    "text": "Landscape of competitors is out of scope.",
+    "expected_rules": []
   }
 ]

@@ -6,15 +6,19 @@
 - Unsupported quality claims: robust, comprehensive, seamless, powerful,
   production-ready, intuitive, world-class.
 - Filler transitions: in conclusion, to be clear, it is important to note,
-  moreover, furthermore.
+  moreover, furthermore, at its core, let's dive in.
 - Generic substitutes: simply, easily, quickly, efficiently, effectively,
   intelligently.
 - Missing actor/action phrasing: enables, supports, streamlines, improves,
   facilitates, provides.
 - Token-cost padding: in order to, due to the fact that, at this point in time,
   first and foremost.
+- Phrase-level AI slop: unlock value, pivotal moment, game-changer, delve into
+  (see `references/ai-writing.md` for structural patterns Vale does not own).
 <!-- vale on -->
 - Repeated paragraph openings that make prose sound templated.
+- Structural AI tells named in `references/ai-writing.md` (binary contrasts,
+  colon reveals, faux-insight setups, dramatic fragments, chatbot residue).
 
 ## Replacement Standard
 

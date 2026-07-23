@@ -21,6 +21,14 @@ rewrites should be compact but not stripped: aim around 3 on a 1-10 verbosity
 scale where 10 is padded, 8 is default assistant prose, and 1 is mechanical
 telegraph style.
 
+For pure prose, make the **minimum effective edit**. Do not invent a synthetic
+human voice, jokes, or opinions the author did not supply.
+
+**Precedence:** minimum effective edit is the default for prose and "less AI"
+requests. Apply the denser compression in `references/density-voice.md` only
+when the user asks for tight, compact, dense, or unsummarizable prose, or when
+the target is a work item or plan that must become executable.
+
 ## Workflow
 
 1. Choose the mode:
@@ -47,18 +55,37 @@ telegraph style.
 4. Apply the rubric:
    - Load `references/rubric.md` for prose and specificity checks.
    - Load `references/ai-writing.md` for AI-ism cleanup, "make this sound less
-     like AI", or human-voice rewrites.
+     like AI", or human-voice rewrites. Use its **named patterns** in detect
+     findings and change summaries.
    - Load `references/density-voice.md` for "tight as possible",
      "unsummarizable", compact-by-default, or voice-preserving compression.
    - Load `references/work-items.md` for task or acceptance-criteria cleanup.
    - Load `references/vale.md` when installing, pinning, or debugging Vale.
 5. Rewrite only when the edit adds clarity or executability. Preserve correct domain
    terms, headings, commands, paths, identifiers, tables, and legitimate lists.
-6. After rewriting, re-audit the changed text or files when practical. Check for
-   survivor patterns introduced by the rewrite before returning the result.
+6. After rewriting, re-audit the changed text or files when practical. Then load
+   `references/eval.md` and fix any failing checks before returning.
 7. When local tools are present, optionally use adapters:
    - `references/adapters-ddx.md` for DDx repositories.
    - `references/adapters-helix.md` for HELIX-governed artifacts.
+
+## Detect Output
+
+For `detect` mode, return findings as:
+
+- **pattern** name from `references/ai-writing.md`
+- **quote** of the exact line or phrase
+- **fix** in a few words
+
+Do not rewrite, score AI-authorship probability, or invent sources.
+
+## Rewrite Output
+
+For `rewrite` mode, return:
+
+1. The full edited draft (or the edited work item / plan).
+2. A short **What changed** section naming the patterns fixed and any claims
+   flagged rather than invented.
 
 ## Output Rules
 
@@ -71,7 +98,8 @@ telegraph style.
   and consequential distinctions. Explicit "tight" requests intensify this
   pass; they do not change the basic standard.
 - Preserve voice when it carries judgment, rhythm, meter, texture, contrast, or
-  memorable specificity. Cut voice-like ornament when it does no work.
+  memorable specificity. Cut voice-like ornament when it does no work. Never
+  manufacture edge the writer did not supply.
 - State actors, actions, inputs, outputs, evidence, and non-scope.
 - Flag unsupported claims instead of inventing justification.
 - Preserve cited sources, paths, commands, dates, and constraints that support

@@ -9,6 +9,21 @@ from pathlib import Path
 
 REPEATED_OPENING = "SloptimizerRaw.RepeatedOpening"
 
+# Patterns Vale existence rules cannot match reliably (trailing punctuation,
+# clause structure). Run on every profile as suggestions.
+DEFAULT_CHECKS = (
+    (
+        "SloptimizerRaw.TruthIsFiller",
+        re.compile(r"\bthe truth is[,:]", re.IGNORECASE),
+        "Throat-clearing 'the truth is,'. State the claim directly.",
+    ),
+    (
+        "SloptimizerRaw.GreatQuestionChrome",
+        re.compile(r"\bgreat question[.!]", re.IGNORECASE),
+        "Chatbot residue 'Great question!'. Delete assistant chrome.",
+    ),
+)
+
 STRICT_CHECKS = (
     (
         "SloptimizerStrict.EmDash",
@@ -74,22 +89,27 @@ def audit_repeated_opening(path: Path, line_number: int, line: str) -> None:
             return
 
 
+def audit_checks(path: Path, line_number: int, line: str, checks: tuple) -> None:
+    for check, pattern, message in checks:
+        match = pattern.search(line)
+        if not match:
+            continue
+        print(
+            f"{path}:{line_number}: suggestion {check}: {message} "
+            f"Match: {match.group(0)!r}"
+        )
+
+
 def audit_profile(profile: str, paths: list[Path]) -> None:
     for path in paths:
         if not path.is_file():
             continue
         for line_number, line in iter_audited_lines(path):
             audit_repeated_opening(path, line_number, line)
+            audit_checks(path, line_number, line, DEFAULT_CHECKS)
             if profile != "strict":
                 continue
-            for check, pattern, message in STRICT_CHECKS:
-                match = pattern.search(line)
-                if not match:
-                    continue
-                print(
-                    f"{path}:{line_number}: suggestion {check}: {message} "
-                    f"Match: {match.group(0)!r}"
-                )
+            audit_checks(path, line_number, line, STRICT_CHECKS)
 
 
 def main() -> int:
