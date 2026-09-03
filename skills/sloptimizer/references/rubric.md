@@ -18,7 +18,8 @@
 <!-- vale on -->
 - Repeated paragraph openings that make prose sound templated.
 - Structural AI tells named in `references/ai-writing.md` (binary contrasts,
-  colon reveals, faux-insight setups, dramatic fragments, chatbot residue).
+  colon reveals, faux-insight setups, dramatic fragments, chatbot residue,
+  meta-narration, enumerated parades).
 
 ## Replacement Standard
 

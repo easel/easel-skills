@@ -2,57 +2,79 @@
   {
     "name": "ai_slop_phrase",
     "text": "This unlocks value for reviewers.",
-    "expected_rules": ["AISlop"]
+    "expected_rules": [
+      "AISlop"
+    ]
   },
   {
     "name": "unsupported_claim",
     "text": "The system is production-ready.",
-    "expected_rules": ["UnsupportedClaim"]
+    "expected_rules": [
+      "UnsupportedClaim"
+    ]
   },
   {
     "name": "missing_actor_action",
     "text": "The interface supports export.",
-    "expected_rules": ["MissingActorAction"]
+    "expected_rules": [
+      "MissingActorAction"
+    ]
   },
   {
     "name": "filler_transition",
     "text": "To be clear, this section repeats the same point.",
-    "expected_rules": ["FillerTransition"]
+    "expected_rules": [
+      "FillerTransition"
+    ]
   },
   {
     "name": "token_cost",
     "text": "Run this command in order to validate the draft.",
-    "expected_rules": ["TokenCost"]
+    "expected_rules": [
+      "TokenCost"
+    ]
   },
   {
     "name": "generic_vocabulary",
     "text": "The operator can simply rerun the check.",
-    "expected_rules": ["Vocabulary"]
+    "expected_rules": [
+      "Vocabulary"
+    ]
   },
   {
     "name": "repeated_opening",
     "text": "This names the first issue. This names the second issue.",
-    "expected_rules": ["RepeatedOpening"]
+    "expected_rules": [
+      "RepeatedOpening"
+    ]
   },
   {
     "name": "reader_steering_phrase",
     "text": "It is worth noting that the test failed on ARM.",
-    "expected_rules": ["ReaderSteeringPhrases"]
+    "expected_rules": [
+      "ReaderSteeringPhrases"
+    ]
   },
   {
     "name": "reader_steering_apostrophe",
     "text": "It's worth checking the ARM failure before merging.",
-    "expected_rules": ["ReaderSteeringPhrases"]
+    "expected_rules": [
+      "ReaderSteeringPhrases"
+    ]
   },
   {
     "name": "reader_steering_single_word",
     "text": "Notably, the test failed on ARM.",
-    "expected_rules": ["ReaderSteeringPhrases"]
+    "expected_rules": [
+      "ReaderSteeringPhrases"
+    ]
   },
   {
     "name": "reader_steering_here_is",
     "text": "Here's what's interesting about the ARM failure.",
-    "expected_rules": ["ReaderSteeringPhrases"]
+    "expected_rules": [
+      "ReaderSteeringPhrases"
+    ]
   },
   {
     "name": "comparative_default_negative",
@@ -63,7 +85,9 @@
     "name": "comparative_results_profile",
     "profile": "results",
     "text": "Model A beats Model B.",
-    "expected_rules": ["ComparativeHype"]
+    "expected_rules": [
+      "ComparativeHype"
+    ]
   },
   {
     "name": "inline_code_negative",
@@ -103,37 +127,51 @@
   {
     "name": "ai_slop_pivotal_moment",
     "text": "The launch marks a pivotal moment for the company.",
-    "expected_rules": ["AISlop"]
+    "expected_rules": [
+      "AISlop"
+    ]
   },
   {
     "name": "ai_slop_delve",
     "text": "This section will delve into the migration path.",
-    "expected_rules": ["AISlop"]
+    "expected_rules": [
+      "AISlop"
+    ]
   },
   {
     "name": "filler_at_its_core",
     "text": "At its core, the tool is a queue.",
-    "expected_rules": ["FillerTransition"]
+    "expected_rules": [
+      "FillerTransition"
+    ]
   },
   {
     "name": "filler_truth_is_comma",
     "text": "The truth is, the rollout failed on ARM.",
-    "expected_rules": ["TruthIsFiller"]
+    "expected_rules": [
+      "TruthIsFiller"
+    ]
   },
   {
     "name": "reader_steering_heres_the_thing",
     "text": "Here's the thing about the ARM failure.",
-    "expected_rules": ["ReaderSteeringPhrases"]
+    "expected_rules": [
+      "ReaderSteeringPhrases"
+    ]
   },
   {
     "name": "reader_steering_hope_this_helps",
     "text": "I hope this helps with the migration.",
-    "expected_rules": ["ReaderSteeringPhrases"]
+    "expected_rules": [
+      "ReaderSteeringPhrases"
+    ]
   },
   {
     "name": "reader_steering_great_question_bang",
     "text": "Great question! The owner is the platform team.",
-    "expected_rules": ["GreatQuestionChrome"]
+    "expected_rules": [
+      "GreatQuestionChrome"
+    ]
   },
   {
     "name": "ui_highlighting_negative",
@@ -159,5 +197,51 @@
     "name": "landscape_of_negative",
     "text": "Landscape of competitors is out of scope.",
     "expected_rules": []
+  },
+  {
+    "name": "meta_narration_post_argues",
+    "text": "This post argues that bronze should hold typed tables.",
+    "expected_rules": [
+      "MetaNarration"
+    ]
+  },
+  {
+    "name": "meta_narration_argument_here",
+    "text": "The argument here is that typing belongs in bronze.",
+    "expected_rules": [
+      "MetaNarration"
+    ]
+  },
+  {
+    "name": "meta_narration_negative_docs",
+    "text": "This section describes the config file.",
+    "expected_rules": []
+  },
+  {
+    "name": "filler_the_point_is",
+    "text": "The point is, the table is typed.",
+    "expected_rules": [
+      "FillerTransition"
+    ]
+  },
+  {
+    "name": "enumerated_parade",
+    "text": "The first is reconciliation.\n\nThe second is schema drift.",
+    "expected_rules": [
+      "EnumeratedParade"
+    ]
+  },
+  {
+    "name": "enumerated_parade_negative_single",
+    "text": "The first is reconciliation.",
+    "expected_rules": []
+  },
+  {
+    "name": "negation_reversal_two_sentences",
+    "profile": "strict",
+    "text": "That is not a parser bug. It is a contract bug.",
+    "expected_rules": [
+      "NegationReversal"
+    ]
   }
 ]

@@ -36,6 +36,9 @@ section below instead.
 5. Is chatbot residue ("I hope this helps!", "Great question!") removed from
    shipped prose?
 6. Is formatting slop removed when it is decorative rather than structural?
+7. Is meta-narration ("this post argues") cut, are enumerated parades ("The
+   first is / The second is") rewritten, and is each coined term defined once
+   rather than re-described on every mention?
 
 ## Work items and plans
 
