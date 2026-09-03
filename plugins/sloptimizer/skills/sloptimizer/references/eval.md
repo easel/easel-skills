@@ -39,6 +39,9 @@ section below instead.
 7. Is meta-narration ("this post argues") cut, are enumerated parades ("The
    first is / The second is") rewritten, and is each coined term defined once
    rather than re-described on every mention?
+8. Are count previews ("four cases show") deleted or turned into a named list,
+   and are headings specific to the section rather than templates ("Where X
+   breaks", "Key takeaways")?
 
 ## Work items and plans
 

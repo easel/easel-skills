@@ -43,7 +43,7 @@
           }
         ]
       },
-      "sha": "17328db1ea20703ffb2cfe7814383fa34b8194b6"
+      "sha": "da69d695d18ab9c5feb6471a07423167637bd394"
     },
     "sloptimizer": {
       "version": "0.4.0",
@@ -55,7 +55,7 @@
           }
         ]
       },
-      "sha": "f90f14ac457347f57ecb0fbda043b10194b4e4ae"
+      "sha": "536870879c14ed3ad154ddf2416985cb5ad232d5"
     },
     "adversarial-review": {
       "version": "0.4.0",

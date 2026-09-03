@@ -243,5 +243,57 @@
     "expected_rules": [
       "NegationReversal"
     ]
+  },
+  {
+    "name": "count_preview_cases",
+    "text": "Four other cases are common enough to test it.",
+    "expected_rules": [
+      "CountPreview"
+    ]
+  },
+  {
+    "name": "count_preview_raises",
+    "text": "Making bronze produce a real table raises two operational questions.",
+    "expected_rules": [
+      "CountPreview"
+    ]
+  },
+  {
+    "name": "count_preview_negative_named",
+    "text": "Two requirements cannot be met without it: reconciliation and schema drift.",
+    "expected_rules": []
+  },
+  {
+    "name": "into_existence",
+    "text": "Two requirements forced the table into existence.",
+    "expected_rules": [
+      "AISlop"
+    ]
+  },
+  {
+    "name": "formulaic_heading_where_breaks",
+    "text": "## Where the raw-only definition breaks\n\nThe raw-only definition holds for typed sources.",
+    "expected_rules": [
+      "FormulaicHeading"
+    ]
+  },
+  {
+    "name": "formulaic_heading_that_forces",
+    "text": "## Two requirements that force the table into existence\n\nReconciliation needs typed keys.",
+    "expected_rules": [
+      "FormulaicHeading"
+    ]
+  },
+  {
+    "name": "formulaic_heading_negative",
+    "text": "## Reconciliation and schema drift\n\nReconciliation needs typed keys.",
+    "expected_rules": []
+  },
+  {
+    "name": "formulaic_heading_why_is",
+    "text": "## Why the table is the interface\n\nThe table has the source's keys.",
+    "expected_rules": [
+      "FormulaicHeading"
+    ]
   }
 ]

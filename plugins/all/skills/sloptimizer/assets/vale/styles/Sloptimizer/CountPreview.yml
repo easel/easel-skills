@@ -1,0 +1,8 @@
+extends: existence
+message: "Count preview: '%s'. Delete the sentence that announces how many items follow, or name the items in it."
+ignorecase: true
+level: suggestion
+scope: text
+tokens:
+  - '\b(?:two|three|four|five|six|seven|several) (?:other |further |more |key |main |operational |common )?(?:cases|reasons|arguments|requirements|questions|differences|points|things|patterns|lessons|ways|factors|problems|forces) (?:are common enough|are worth|show|shows|follow|follows|stand out|come to mind|place|places|make|makes|test|explain|drive|matter|need|needs|deserve|deserves|emerge|emerges)\b'
+  - '\b(?:raises?|there are|here are|consider|brings? up|leaves?) (?:two|three|four|five|six|seven|several) (?:other |further |more |key |main |operational |common )?(?:cases|reasons|arguments|requirements|questions|differences|points|things|patterns|lessons|ways|factors|problems)\b'

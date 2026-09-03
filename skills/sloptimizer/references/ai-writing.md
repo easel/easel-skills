@@ -178,6 +178,19 @@ is." The frame carries no information. Lead each paragraph with the item
 itself, or fold the items into one list. Raw check:
 `SloptimizerRaw.EnumeratedParade`.
 
+### Count previews
+
+"Four other cases are common enough to test it," "Three arguments place the
+table in bronze," "This raises two operational questions." The sentence only
+announces how many items follow. Delete it, or name the items in it with a
+colon. Vale: `CountPreview.yml`.
+
+### Formulaic headings
+
+"Where X breaks," "Why X is Y," "Why X matters," "What X gets wrong," "Two
+things that force Y," "Key takeaways." Templates that could head any section of any post. Name
+the section's subject. Raw check: `SloptimizerRaw.FormulaicHeading`.
+
 ### Coined-term triplets
 
 A three-adjective definition ("typed, validated, deduplicated") repeated every
