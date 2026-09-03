@@ -19,7 +19,7 @@
 - Repeated paragraph openings that make prose sound templated.
 - Structural AI tells named in `references/ai-writing.md` (binary contrasts,
   colon reveals, faux-insight setups, dramatic fragments, chatbot residue,
-  meta-narration, enumerated parades).
+  meta-narration, enumerated parades, count previews, formulaic headings).
 
 ## Replacement Standard
 

@@ -101,9 +101,23 @@ def find_rules(text: str, rules: list[dict[str, object]]) -> set[str]:
     return found
 
 
+FORMULAIC_HEADING_PATTERNS = (
+    re.compile(r"^where .+ breaks?(?: down)?$", re.IGNORECASE),
+    re.compile(r"^why .+$", re.IGNORECASE),
+    re.compile(r"^what .+ (?:gets? wrong|misses|means)$", re.IGNORECASE),
+    re.compile(r"^(?:\w+ ){1,3}that (?:forces?|makes?|breaks?|changes?|shapes?|drives?|matters?) .+$", re.IGNORECASE),
+    re.compile(r"^(?:why this matters|what i learned|key takeaways?|final thoughts|the bottom line|lessons learned|closing thoughts)$", re.IGNORECASE),
+)
+
+
 def find_raw_rules(text: str, profile: str) -> set[str]:
     clean = strip_markdown(text)
     found: set[str] = set()
+    for raw_line in text.splitlines():
+        heading = re.match(r"^\s*#{1,6}\s+(.*?)\s*#*\s*$", raw_line)
+        if heading and any(p.match(heading.group(1).strip()) for p in FORMULAIC_HEADING_PATTERNS):
+            found.add("FormulaicHeading")
+            break
     enumerated = sum(
         1
         for line in clean.splitlines()

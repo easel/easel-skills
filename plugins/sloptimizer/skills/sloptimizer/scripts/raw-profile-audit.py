@@ -9,6 +9,14 @@ from pathlib import Path
 
 REPEATED_OPENING = "SloptimizerRaw.RepeatedOpening"
 ENUMERATED_PARADE = "SloptimizerRaw.EnumeratedParade"
+FORMULAIC_HEADING = "SloptimizerRaw.FormulaicHeading"
+FORMULAIC_HEADING_PATTERNS = (
+    re.compile(r"^where .+ breaks?(?: down)?$", re.IGNORECASE),
+    re.compile(r"^why .+$", re.IGNORECASE),
+    re.compile(r"^what .+ (?:gets? wrong|misses|means)$", re.IGNORECASE),
+    re.compile(r"^(?:\w+ ){1,3}that (?:forces?|makes?|breaks?|changes?|shapes?|drives?|matters?) .+$", re.IGNORECASE),
+    re.compile(r"^(?:why this matters|what i learned|key takeaways?|final thoughts|the bottom line|lessons learned|closing thoughts)$", re.IGNORECASE),
+)
 ENUMERATED_OPENER = re.compile(
     r"^\s*(?:the |a )?(?:first|second|third|fourth|fifth)(?: \w+){0,2} (?:is|was|comes)\b",
     re.IGNORECASE,
@@ -94,6 +102,30 @@ def audit_repeated_opening(path: Path, line_number: int, line: str) -> None:
             return
 
 
+def iter_headings(path: Path):
+    in_fence = False
+    for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        if re.match(r"^\s*```", line):
+            in_fence = not in_fence
+            continue
+        match = re.match(r"^\s*#{1,6}\s+(.*?)\s*#*\s*$", line)
+        if in_fence or not match:
+            continue
+        yield line_number, scrub_inline(match.group(1)).strip()
+
+
+def audit_formulaic_heading(path: Path) -> None:
+    for line_number, heading in iter_headings(path):
+        for pattern in FORMULAIC_HEADING_PATTERNS:
+            if pattern.match(heading):
+                print(
+                    f"{path}:{line_number}: suggestion {FORMULAIC_HEADING}: "
+                    "Formulaic heading. Name the subject of the section instead of a template. "
+                    f"Match: {heading!r}"
+                )
+                break
+
+
 def audit_enumerated_parade(path: Path, lines: list[tuple[int, str]]) -> None:
     """Flag the second and later paragraphs that open 'The first is / The second is'."""
     seen = 0
@@ -126,6 +158,7 @@ def audit_profile(profile: str, paths: list[Path]) -> None:
         if not path.is_file():
             continue
         lines = list(iter_audited_lines(path))
+        audit_formulaic_heading(path)
         audit_enumerated_parade(path, lines)
         for line_number, line in lines:
             audit_repeated_opening(path, line_number, line)
