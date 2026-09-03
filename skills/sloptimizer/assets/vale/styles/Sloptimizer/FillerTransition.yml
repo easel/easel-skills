@@ -26,3 +26,4 @@ tokens:
   - put simply
   - in short
   - what matters here is
+  - 'with (?:the|that|this|those) [\w -]{1,30} (?:placed|settled|done|established|in place|defined|decided|behind us|out of the way)'

@@ -49,6 +49,15 @@ STRICT_CHECKS = (
         "Bold inline-header bullet. Use a normal heading, plain list item, or prose.",
     ),
     (
+        "SloptimizerStrict.CommaAndChain",
+        re.compile(
+            r"\b\w+, and (?:it|its|this|that|they|their|there) "
+            r"(?:is|are|was|were|has|have|had|belongs?|holds?|forms?|becomes?|means?|makes?|gives?|keeps?|needs?)\b",
+            re.IGNORECASE,
+        ),
+        "Comma-and clause chain. Split into two sentences or subordinate one clause.",
+    ),
+    (
         "SloptimizerStrict.NegationReversal",
         re.compile(
             r"\b(?:(?:it|this|that)(?:'|\u2019)?s|(?:it|this|that)\s+is) "

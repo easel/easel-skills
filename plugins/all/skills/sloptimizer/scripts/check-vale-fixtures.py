@@ -151,6 +151,13 @@ def find_raw_rules(text: str, profile: str) -> set[str]:
         if re.search(r"^\s*[-*]\s+\*\*[^*\n]{1,80}:\*\*", line):
             found.add("BoldInlineHeader")
         if re.search(
+            r"\b\w+, and (?:it|its|this|that|they|their|there) "
+            r"(?:is|are|was|were|has|have|had|belongs?|holds?|forms?|becomes?|means?|makes?|gives?|keeps?|needs?)\b",
+            line,
+            re.IGNORECASE,
+        ):
+            found.add("CommaAndChain")
+        if re.search(
             r"\b(?:(?:it|this|that)(?:'|\u2019)?s|(?:it|this|that)\s+is) "
             r"not (?:just |only )?[^.!?]{1,80}[,;.]\s+"
             r"(?:(?:it|this|that)(?:'|\u2019)?s|(?:it|this|that)\s+is) [^.!?]{1,80}",

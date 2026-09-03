@@ -42,6 +42,9 @@ section below instead.
 8. Are count previews ("four cases show") deleted or turned into a named list,
    and are headings specific to the section rather than templates ("Where X
    breaks", "Key takeaways")?
+9. Are comma-and clause chains split, framing openers ("With that settled,")
+   cut, tool-specific behavior scoped to the tool, and example values
+   obvious placeholders rather than real names?
 
 ## Work items and plans
 
