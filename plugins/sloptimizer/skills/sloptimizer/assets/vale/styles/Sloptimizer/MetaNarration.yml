@@ -1,0 +1,10 @@
+extends: existence
+message: "Meta-narration: '%s'. State the claim directly instead of narrating the document making it."
+ignorecase: true
+level: suggestion
+scope: text
+tokens:
+  - '\bthis (?:post|article|essay|piece|blog post|write-?up) (?:argues|proposes|gives|makes the case|takes the position|lays out|sets out|contends|suggests)\b'
+  - '\bthe (?:argument|position|case|claim) (?:argued |made |advanced )?here is\b'
+  - '\bthe (?:argument|position|case) (?:of|in) this (?:post|article|essay|piece)\b'
+  - '\bas (?:this|the) (?:post|article|essay|piece) (?:argues|argued|shows|showed|proposes|proposed)\b'

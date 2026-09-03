@@ -104,6 +104,17 @@ def find_rules(text: str, rules: list[dict[str, object]]) -> set[str]:
 def find_raw_rules(text: str, profile: str) -> set[str]:
     clean = strip_markdown(text)
     found: set[str] = set()
+    enumerated = sum(
+        1
+        for line in clean.splitlines()
+        if re.match(
+            r"^\s*(?:the |a )?(?:first|second|third|fourth|fifth)(?: \w+){0,2} (?:is|was|comes)\b",
+            line,
+            re.IGNORECASE,
+        )
+    )
+    if enumerated >= 2:
+        found.add("EnumeratedParade")
     for line in clean.splitlines():
         openings: dict[str, int] = {}
         for sentence in re.split(r"(?<=[.!?])\s+", line):
@@ -127,7 +138,7 @@ def find_raw_rules(text: str, profile: str) -> set[str]:
             found.add("BoldInlineHeader")
         if re.search(
             r"\b(?:(?:it|this|that)(?:'|\u2019)?s|(?:it|this|that)\s+is) "
-            r"not (?:just |only )?[^.!?]{1,80}[,;]\s+"
+            r"not (?:just |only )?[^.!?]{1,80}[,;.]\s+"
             r"(?:(?:it|this|that)(?:'|\u2019)?s|(?:it|this|that)\s+is) [^.!?]{1,80}",
             line,
             re.IGNORECASE,

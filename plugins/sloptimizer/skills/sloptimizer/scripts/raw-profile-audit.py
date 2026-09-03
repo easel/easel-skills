@@ -8,6 +8,11 @@ from pathlib import Path
 
 
 REPEATED_OPENING = "SloptimizerRaw.RepeatedOpening"
+ENUMERATED_PARADE = "SloptimizerRaw.EnumeratedParade"
+ENUMERATED_OPENER = re.compile(
+    r"^\s*(?:the |a )?(?:first|second|third|fourth|fifth)(?: \w+){0,2} (?:is|was|comes)\b",
+    re.IGNORECASE,
+)
 
 # Patterns Vale existence rules cannot match reliably (trailing punctuation,
 # clause structure). Run on every profile as suggestions.
@@ -39,7 +44,7 @@ STRICT_CHECKS = (
         "SloptimizerStrict.NegationReversal",
         re.compile(
             r"\b(?:(?:it|this|that)(?:'|\u2019)?s|(?:it|this|that)\s+is) "
-            r"not (?:just |only )?[^.!?]{1,80}[,;]\s+"
+            r"not (?:just |only )?[^.!?]{1,80}[,;.]\s+"
             r"(?:(?:it|this|that)(?:'|\u2019)?s|(?:it|this|that)\s+is) [^.!?]{1,80}",
             re.IGNORECASE,
         ),
@@ -89,6 +94,22 @@ def audit_repeated_opening(path: Path, line_number: int, line: str) -> None:
             return
 
 
+def audit_enumerated_parade(path: Path, lines: list[tuple[int, str]]) -> None:
+    """Flag the second and later paragraphs that open 'The first is / The second is'."""
+    seen = 0
+    for line_number, line in lines:
+        if not ENUMERATED_OPENER.match(line):
+            continue
+        seen += 1
+        if seen < 2:
+            continue
+        print(
+            f"{path}:{line_number}: suggestion {ENUMERATED_PARADE}: "
+            "Enumerated parade. Lead each paragraph with the item itself, or fold the items into one list. "
+            f"Match: {ENUMERATED_OPENER.match(line).group(0)!r}"
+        )
+
+
 def audit_checks(path: Path, line_number: int, line: str, checks: tuple) -> None:
     for check, pattern, message in checks:
         match = pattern.search(line)
@@ -104,7 +125,9 @@ def audit_profile(profile: str, paths: list[Path]) -> None:
     for path in paths:
         if not path.is_file():
             continue
-        for line_number, line in iter_audited_lines(path):
+        lines = list(iter_audited_lines(path))
+        audit_enumerated_parade(path, lines)
+        for line_number, line in lines:
             audit_repeated_opening(path, line_number, line)
             audit_checks(path, line_number, line, DEFAULT_CHECKS)
             if profile != "strict":

@@ -164,6 +164,28 @@ Repeated "A, B, and C" packaging, bold inline labels, TL;DR badges, and section
 formulas that make every paragraph look generated. Use normal headings, prose,
 or real lists.
 
+### Meta-narration
+
+"This post argues," "the argument here is," "this piece takes the position,"
+or a sentence that explains what a name means right after coining it ("The
+name says what the table is"). The document narrating itself is filler; state
+the claim and let the reader see it. Vale: `MetaNarration.yml`.
+
+### Enumerated parades
+
+Consecutive paragraphs opening "The first is," "The second is," "The third
+is." The frame carries no information. Lead each paragraph with the item
+itself, or fold the items into one list. Raw check:
+`SloptimizerRaw.EnumeratedParade`.
+
+### Coined-term triplets
+
+A three-adjective definition ("typed, validated, deduplicated") repeated every
+time the coined term appears. Define the term once, then use the name. This is
+the rule-of-three pattern applied to a single concept, and Vale does not own it
+because the same triple can be a legitimate subject ("bronze, silver, and
+gold").
+
 ## Rubric-Only Signals
 
 These are judgment calls, not stable Vale rules:
