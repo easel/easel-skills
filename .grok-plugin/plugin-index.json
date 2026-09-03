@@ -43,7 +43,7 @@
           }
         ]
       },
-      "sha": "14a10b5956d85e0c844f874c4cca9b6f53ec1289"
+      "sha": "17328db1ea20703ffb2cfe7814383fa34b8194b6"
     },
     "sloptimizer": {
       "version": "0.4.0",
@@ -55,7 +55,7 @@
           }
         ]
       },
-      "sha": "3817c6a18152152fcb4687378dba324f7a973f37"
+      "sha": "f90f14ac457347f57ecb0fbda043b10194b4e4ae"
     },
     "adversarial-review": {
       "version": "0.4.0",
@@ -67,7 +67,7 @@
           }
         ]
       },
-      "sha": "c5067fb93206ea5d73e7dfd5dbfe75b15e92fd19"
+      "sha": "0ad6148215e46b7114605e38650f6aa5a1bba50c"
     },
     "release-management": {
       "version": "0.4.0",
@@ -79,7 +79,7 @@
           }
         ]
       },
-      "sha": "a1e908654f23c84e0e34ec431ba8f3f2b5b783bd"
+      "sha": "0f96b406449cbe2986999a593933a55fd9322755"
     },
     "repo-triage": {
       "version": "0.4.0",
@@ -91,7 +91,7 @@
           }
         ]
       },
-      "sha": "e32e398da3eb461dbda684d09512f2cef38a5225"
+      "sha": "11da24f9d4f04a74ecc5e37d35393d48b8e71714"
     },
     "data-quality": {
       "version": "0.4.0",
@@ -103,7 +103,7 @@
           }
         ]
       },
-      "sha": "c30c27987ecb03b162d72638783a32d1f2439b8d"
+      "sha": "652fed3a9cbd9fb71e07bb980dfb3ecc3087f34d"
     },
     "data-documentation": {
       "version": "0.4.0",
@@ -115,7 +115,7 @@
           }
         ]
       },
-      "sha": "7e41061d0762bfcdd7a4530bf2b71f5b1ea13f56"
+      "sha": "ccd2893e35e2603cb81881a1a58a8bf8e2acec3a"
     },
     "data-mapping": {
       "version": "0.4.0",
@@ -127,7 +127,7 @@
           }
         ]
       },
-      "sha": "b3db881dfd02531da612c655266a150f472baf4f"
+      "sha": "5d602d6e56d1565c6ac0072ea164668d1051a5f5"
     },
     "research-review": {
       "version": "0.4.0",
@@ -139,7 +139,7 @@
           }
         ]
       },
-      "sha": "43b4c785bb608ec58d7b34d0ba9190b506b5fe59"
+      "sha": "71e548ce7bcc9a9c428afb8fcc411bd0883cfebe"
     },
     "plan-lifecycle": {
       "version": "0.4.0",
@@ -151,7 +151,7 @@
           }
         ]
       },
-      "sha": "3f13a5e4c48263fc076cf6ab1f55e2a36f2efd5b"
+      "sha": "7c1cf9f759f76ce42688b4bc1ce3262626c72f56"
     }
   }
 }
