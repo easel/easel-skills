@@ -295,5 +295,36 @@
     "expected_rules": [
       "FormulaicHeading"
     ]
+  },
+  {
+    "name": "framing_opener",
+    "text": "With the boundary placed, bronze holds two tables per source.",
+    "expected_rules": [
+      "FillerTransition"
+    ]
+  },
+  {
+    "name": "framing_opener_negative",
+    "text": "With the config file, the operator can rerun the check.",
+    "expected_rules": []
+  },
+  {
+    "name": "comma_and_chain_strict",
+    "profile": "strict",
+    "text": "Ingested is the typed table, and its form is the same for every transport.",
+    "expected_rules": [
+      "CommaAndChain"
+    ]
+  },
+  {
+    "name": "comma_and_chain_default_negative",
+    "text": "Ingested is the typed table, and its form is the same for every transport.",
+    "expected_rules": []
+  },
+  {
+    "name": "comma_and_list_negative_strict",
+    "profile": "strict",
+    "text": "The table has keys, types, and a checksum column.",
+    "expected_rules": []
   }
 ]

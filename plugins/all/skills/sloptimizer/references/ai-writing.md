@@ -191,6 +191,32 @@ colon. Vale: `CountPreview.yml`.
 things that force Y," "Key takeaways." Templates that could head any section of any post. Name
 the section's subject. Raw check: `SloptimizerRaw.FormulaicHeading`.
 
+### Comma-and clause chains
+
+"X is the typed table, and its form is the same for every transport." Two
+independent clauses joined with ", and" when a period would do. Split them, or
+subordinate one clause. Strict raw check: `SloptimizerStrict.CommaAndChain`.
+
+### Framing openers
+
+"With the boundary placed," "With that settled," "With the groundwork done,"
+opening a sentence. The phrase points backward and carries nothing. Delete it
+and start with the subject. Vale: `FillerTransition.yml`.
+
+### Unscoped tool behavior
+
+A specific product's behavior stated as a general fact: "snapshot mode replaces
+append" when only one tool has a snapshot mode. Name the tool and the case the
+behavior applies to ("in tablespec, for untyped sources"). Editorial; a
+generated draft drops the scope because the model knows the tool and the reader
+does not.
+
+### Real names in examples
+
+A colleague's, customer's, or author's name as an example value ("Jarrett",
+"Acme Health"). Use an obvious placeholder ("John Doe") so the example cannot be
+read as a record. Editorial.
+
 ### Coined-term triplets
 
 A three-adjective definition ("typed, validated, deduplicated") repeated every
