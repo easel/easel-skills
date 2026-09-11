@@ -69,6 +69,10 @@ and these profile-specific constraints:
   `## Content`.
 - Keep `avoid` from the profile: no em dashes, no bold-label bullets, no
   hedges, no "the real X", no "the catalog" or "the flow" shorthand.
+- No mannered prose in a title or body: the audience reads "the engine
+  behind delivery" as decoration and "under the hood" as evasion. State the
+  mechanism or the number; `SloptimizerHeadline.Mannered` and
+  `Sloptimizer.ManneredProse` flag the stock phrases.
 
 Rewrite the titles first and re-audit them before editing any body; a body
 written under a slop title inherits its shape.

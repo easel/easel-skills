@@ -5,7 +5,8 @@ Sentence-level Vale rules skip headings, and a headline has no terminal
 punctuation for the sentence splitters to work with, so the raw profile audit
 never sees the constructions that make a title read as generated: the
 contrastive reversal, the colon list, the imperative chain, the listicle
-count, stacked negation, the forced triplet, flattery, and the aphorism.
+count, stacked negation, the forced triplet, flattery, the aphorism, and the
+mannered phrase (a stock metaphor standing in for the literal claim).
 
 Usage:
     headline-audit.py [--all-lines] [--max-words N] [--format text|json] PATH...
@@ -27,6 +28,7 @@ from pathlib import Path
 
 PREFIX = "SloptimizerHeadline"
 DEFAULT_MAX_WORDS = 12
+MANNERED_RULE = Path(__file__).resolve().parent.parent / "assets/vale/styles/Sloptimizer/ManneredProse.yml"
 
 NUMBER = r"(?:two|three|four|five|six|seven|eight|nine|ten|\d+)"
 LISTICLE_NOUNS = (
@@ -82,7 +84,7 @@ def _reversal(h: str) -> str | None:
 
 def _colon(h: str) -> tuple[str, str] | None:
     """Return (rule, match) for a colon list or colon reveal."""
-    m = re.search(r"(?<!\d):(?!\d)\s*(.+)$", h)
+    m = re.search(r"(?<!\d):(?!\d|//)\s*(.+)$", h)
     if not m:
         return None
     tail = m.group(1).strip()
@@ -155,6 +157,30 @@ APHORISM = (
 )
 
 
+def _vale_tokens(path: Path) -> tuple[str, ...]:
+    """Read the `tokens:` list of a Vale existence rule so one file owns the phrases."""
+    if not path.is_file():
+        return ()
+    tokens: list[str] = []
+    in_tokens = False
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not raw.startswith((" ", "-")) and line.endswith(":"):
+            in_tokens = line == "tokens:"
+            continue
+        if in_tokens and line.startswith("- "):
+            token = line[2:].strip()
+            if len(token) >= 2 and token[0] == token[-1] and token[0] in "'\"":
+                token = token[1:-1].replace("''", "'") if token[0] == "'" else token[1:-1]
+            tokens.append(token)
+    return tuple(tokens)
+
+
+# Sentence prose gets these from Vale (`Sloptimizer.ManneredProse`); headings are
+# outside that rule's scope, so the headline audit reuses the same token list.
+MANNERED = _vale_tokens(MANNERED_RULE)
+
+
 def _first(h: str, patterns: tuple[str, ...]) -> str | None:
     for p in patterns:
         m = re.search(p, h, re.IGNORECASE)
@@ -204,6 +230,9 @@ def audit_headline(h: str, max_words: int = DEFAULT_MAX_WORDS) -> list[tuple[str
     m = _universal_claim(h)
     if m:
         out.append(("UniversalClaim", "Universal claim. Scope it: which teams, how many, measured where.", m))
+    m = _first(h, MANNERED)
+    if m:
+        out.append(("Mannered", "Mannered prose. Say what you mean in plain words: name the thing, the action, or the number.", m))
     n = words(h)
     if n > max_words:
         out.append(("Length", f"Headline is {n} words; aim under 10, hard stop {max_words}.", h))

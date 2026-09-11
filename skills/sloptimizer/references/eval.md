@@ -45,6 +45,11 @@ section below instead.
 9. Are comma-and clause chains split, framing openers ("With that settled,")
    cut, tool-specific behavior scoped to the tool, and example values
    obvious placeholders rather than real names?
+10. Is mannered prose gone: every stock metaphor or flourish ("earns its
+    keep", "under the hood", "a dial worth turning") replaced by the plain
+    statement a person would write, not by its literal gloss ("a parameter
+    worth varying"), while a metaphor the writer chose for a distinction
+    stays?
 
 ## Work items and plans
 

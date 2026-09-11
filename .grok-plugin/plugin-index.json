@@ -39,11 +39,11 @@
           },
           {
             "name": "sloptimizer",
-            "description": "Audit and rewrite AI-generated prose, plans, specs, prompts, and work items by removing AI-isms, vague claims, filler, generic phrasing\u2026"
+            "description": "Audit and rewrite AI-generated prose, plans, specs, prompts, and work items by removing AI-isms, mannered prose, vague claims, filler\u2026"
           }
         ]
       },
-      "sha": "502f081ab514ce862e58c575b5ffa2ebbfb561f4"
+      "sha": "13a4c0186456010e46f1a37b9ae3e6836bcfddc1"
     },
     "sloptimizer": {
       "version": "0.4.2",
@@ -51,11 +51,11 @@
         "skills": [
           {
             "name": "sloptimizer",
-            "description": "Audit and rewrite AI-generated prose, plans, specs, prompts, and work items by removing AI-isms, vague claims, filler, generic phrasing\u2026"
+            "description": "Audit and rewrite AI-generated prose, plans, specs, prompts, and work items by removing AI-isms, mannered prose, vague claims, filler\u2026"
           }
         ]
       },
-      "sha": "65720deb69d7ca130bf06504a12f101017a5a5ec"
+      "sha": "f8db4ccba5cc5be6bdf8a5bf726bdbb237730e8e"
     },
     "adversarial-review": {
       "version": "0.4.2",

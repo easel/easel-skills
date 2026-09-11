@@ -15,6 +15,11 @@
   first and foremost.
 - Phrase-level AI slop: unlock value, pivotal moment, game-changer, delve into
   (see `references/ai-writing.md` for structural patterns Vale does not own).
+- Mannered prose: a stock metaphor or flourish where a plain statement was
+  available: earns its keep, a dial worth turning, does the heavy lifting,
+  under the hood, moves the needle. Say what you mean.
+- Evaluative frames that announce value instead of stating it: a point worth
+  making, a parameter worth varying, it is worth noting.
 <!-- vale on -->
 - Repeated paragraph openings that make prose sound templated.
 - Structural AI tells named in `references/ai-writing.md` (binary contrasts,
@@ -78,6 +83,12 @@ agent. Prefer the exact noun that the surrounding system already uses.
   unless that is the intended meaning.
 - Replace value language with consequences: what changes, what is blocked, what
   is measured, or what evidence proves the claim.
+- Use the plain phrase when one exists. A metaphor stands in for a literal
+  claim only when the writer chose it to draw a distinction the plain phrase
+  cannot; the stock metaphor any model reaches for ("does the heavy
+  lifting") is mannered prose, and its literal gloss ("a parameter worth
+  varying") is not the target either. Write the action, the thing, or the
+  number a person would write.
 - Name uncertainty as an open question, assumption, risk, or blocker. Do not
   hide it behind hedges.
 

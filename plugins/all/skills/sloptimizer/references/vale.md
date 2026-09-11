@@ -4,8 +4,8 @@ Sloptimizer owns its Vale dependency and rule pack.
 
 ## Expected Version
 
-Use Vale `3.13.0` unless a project pins a newer compatible version. The audit
-script checks that `vale` is available before running.
+Use Vale `3.14.2` or newer (`scripts/install-vale.sh` pins that version).
+The audit script checks that `vale` is available before running.
 
 ## Rule Pack
 

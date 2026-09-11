@@ -3,8 +3,10 @@
 This reference folds useful AI-writing cleanup patterns into Sloptimizer so the
 skill can handle both deterministic checks and editorial rewrites. It adapts
 patterns from field skills such as Peter Yang's `no-ai-slop`, Hardik Pandya's
-`stop-slop`, and from Easel work on HELIX, Lucebox, and 7th Sense prose. Keep
-this provenance visible when editing or extending the pattern set.
+`stop-slop`, from Anthropic's definition of mannered prose in its Claude
+Fable 5.1 prompting guide, and from Easel work on HELIX, Lucebox, and 7th
+Sense prose. Keep this provenance visible when editing or extending the
+pattern set.
 
 ## Modes
 
@@ -17,8 +19,8 @@ this provenance visible when editing or extending the pattern set.
 ## Check Profiles
 
 - `default`: conservative prose checks for unsupported claims, vague capability
-  verbs, filler transitions, token-cost phrases, repeated openings, and
-  reader-steering phrases.
+  verbs, filler transitions, token-cost phrases, repeated openings,
+  reader-steering phrases, and mannered stock metaphors.
 - `results`: default checks plus benchmark and comparison verbs that need
   dataset, metric, run, or time-window scope.
 - `strict`: results checks plus source-level AI-tell checks for em dashes, bold
@@ -225,6 +227,49 @@ the rule-of-three pattern applied to a single concept, and Vale does not own it
 because the same triple can be a legitimate subject ("bronze, silver, and
 gold").
 
+### Mannered prose
+
+Metaphor or flourish standing in for a direct statement: "a dial worth
+turning" for a parameter to try, "earns its keep" for still matters, "does the
+heavy lifting", "under the hood", "moves the needle", "table stakes",
+"a first-class citizen". The phrase displays the writer instead of carrying
+the idea,
+and it is imprecise: the metaphor drags in connotations the writer did not
+choose. Say what you mean. Name the thing, the action, or the number.
+
+The rewrite target is what a person would write, not the literal gloss of
+the metaphor. "A parameter worth varying" is the gloss of "a dial worth
+turning", and no one writes it either; the "X worth Y-ing" frame announces
+value instead of stating it (Vale: `ReaderSteeringPhrases.yml`). Write the
+action: "Try batch sizes 8 through 64 before the full run."
+
+```text
+Mannered: The alignment check earns its keep on every review.
+Gloss:    The alignment check is still worth running on every review.
+Plain:    The alignment check caught 3 of the 4 drift cases in the last review.
+```
+
+Keep a metaphor the writer chose to make a distinction the literal phrase
+cannot make, once, in their own voice; see the guardrail in
+`references/density-voice.md`. Cut the stock one that any model would reach
+for. Related: false agency (the concept doing a human verb), fake-profound
+kickers (the metaphor as closing line), importance puffery. Vale:
+`ManneredProse.yml` for sentence prose; `SloptimizerHeadline.Mannered` reuses
+the same phrase list for titles.
+
+This pattern is model-neutral. To ask any model for the same thing directly,
+add to the prompt:
+
+```text
+Remove all mannered prose. Mannered prose substitutes metaphor and flourish
+for direct statement ("a dial worth turning" for a setting to try, "earns
+its keep" for still matters). The phrase exists to display the writer, not
+to convey the idea, and it is imprecise because the metaphor carries
+connotations the writer did not choose. Say what you mean: when a plain
+phrase is available, use it, and prefer the concrete action or number over
+an evaluative frame such as "worth varying".
+```
+
 ### Headline slop
 
 Titles carry the same tells in compressed form: a contrastive reversal ("a
@@ -233,7 +278,8 @@ failures repeat: drift, local decisions, lost context"), an imperative chain
 ("Write the brief, check alignment, plan the work"), a listicle count ("Five
 things change"), stacked negation ("no runtime, no tracker, and no
 technology choice"), flattery ("your best teams", "we hold ourselves to"),
-and the slogan ("X is the new Y"). Sentence checks skip headings, so these
+the slogan ("X is the new Y"), and the mannered phrase ("Documentation earns
+its keep"). Sentence checks skip headings, so these
 have their own rules and rewrite procedure in `references/headlines.md`. Raw
 check: `SloptimizerHeadline.*` from `scripts/headline-audit.py`.
 

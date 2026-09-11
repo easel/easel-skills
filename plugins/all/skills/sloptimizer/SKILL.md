@@ -1,7 +1,7 @@
 ---
 name: sloptimizer
-description: Audit and rewrite AI-generated prose, plans, specs, prompts, and work items by removing AI-isms, vague claims, filler, generic phrasing, missing actors, weak acceptance criteria, and unsupported implementation promises. Use when asked to reduce AI slop, make text sound less like AI, tighten writing, make writing as tight as possible, make prose unsummarizable or hard to summarize without losing meaning, make a task executable, harden a spec, audit only, rewrite, or run Vale-backed prose checks.
-when-to-use: reduce AI slop, make text sound less like AI, tighten writing, harden a spec, audit prose, rewrite work items, or run Vale-backed prose checks
+description: Audit and rewrite AI-generated prose, plans, specs, prompts, and work items by removing AI-isms, mannered prose, vague claims, filler, generic phrasing, missing actors, weak acceptance criteria, and unsupported implementation promises. Use when asked to reduce AI slop, remove mannered prose, make text sound less like AI, tighten writing, make writing as tight as possible, make prose unsummarizable or hard to summarize without losing meaning, make a task executable, harden a spec, audit only, rewrite, or run Vale-backed prose checks.
+when-to-use: reduce AI slop, remove mannered prose, make text sound less like AI, tighten writing, harden a spec, audit prose, rewrite work items, or run Vale-backed prose checks
 metadata:
   short-description: "Remove AI-isms, vague claims, and task slop"
   author: Easel
@@ -62,8 +62,8 @@ the target is a work item or plan that must become executable.
 4. Apply the rubric:
    - Load `references/rubric.md` for prose and specificity checks.
    - Load `references/ai-writing.md` for AI-ism cleanup, "make this sound less
-     like AI", or human-voice rewrites. Use its **named patterns** in detect
-     findings and change summaries.
+     like AI", "remove mannered prose", or human-voice rewrites. Use its
+     **named patterns** in detect findings and change summaries.
    - Load `references/headlines.md` for `headline` targets: the detection
      rules, the rewrite procedure, and the titles-only read.
    - Load `references/density-voice.md` for "tight as possible",
@@ -102,6 +102,9 @@ For `rewrite` mode, return:
 - Prefer the exact domain noun, field, artifact, command, status, metric, or
   constraint over a broad synonym.
 - Replace broad adjectives with observable facts or delete them.
+- Say what you mean. Replace a stock metaphor or flourish ("earns its keep",
+  "under the hood", "a dial worth turning") with the plain thing, action, or
+  number a person would write, not with the metaphor's literal gloss.
 - For prose rewrites, optimize for idea density, not brevity alone: remove
   compressible phrasing while preserving nuance, evidence, concrete examples,
   and consequential distinctions. Explicit "tight" requests intensify this

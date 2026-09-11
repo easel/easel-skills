@@ -26,6 +26,7 @@ findings.
 | `Flattery` | A compliment to the reader in place of a fact: `your best teams`, `teams like yours`, `we hold ourselves to`, `you already know`, `world-class`. | "the discipline your best teams already use" |
 | `Aphorism` | A slogan shape: `X is the new Y`, `the only X that matters`, a trailing `wins` or `matters`, `at scale`, `done right`, `changes everything`. | "Documentation is the new code review" |
 | `UniversalClaim` | A bare group noun as subject with a behavior verb (`Teams switch`, `Users want`), or `every`/`all` + a group noun, with no scope or number. | "Teams switch when every change traces back" |
+| `Mannered` | A stock metaphor in place of the claim: `earns its keep`, `under the hood`, `moves the needle`, `a dial worth turning`. Same phrase list as `Sloptimizer.ManneredProse`. | "Documentation earns its keep on every review" |
 | `Length` | More than 12 words (`--max-words`). The target is under 10. | any 13-word title |
 
 The audit is a suggestion, not proof. A title can pass every rule and still be
@@ -44,8 +45,9 @@ brief. Rewrite in this order:
    the problem is the body, not the title.
 2. **Name one concrete noun as the subject.** The artifact, the metric, the
    actor, the cost. Not `things`, `failures`, `the practice`, `teams` in
-   general. Drop the reader-compliment and the group generalization; keep
-   the fact the reader can check.
+   general, and not the metaphor for it (`the engine`, `the plumbing`).
+   Drop the reader-compliment and the group generalization; keep the fact
+   the reader can check.
 3. **Pick one plain verb.** Catches, costs, traces, ships, averages, fails.
    One imperative is fine for an ask (`Approve the pilot budget`); two joined
    by `and` are fine when the ask really has two decisions; three is a
