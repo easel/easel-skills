@@ -225,6 +225,18 @@ the rule-of-three pattern applied to a single concept, and Vale does not own it
 because the same triple can be a legitimate subject ("bronze, silver, and
 gold").
 
+### Headline slop
+
+Titles carry the same tells in compressed form: a contrastive reversal ("a
+methodology you adopt, not a platform you join"), a colon list ("Three
+failures repeat: drift, local decisions, lost context"), an imperative chain
+("Write the brief, check alignment, plan the work"), a listicle count ("Five
+things change"), stacked negation ("no runtime, no tracker, and no
+technology choice"), flattery ("your best teams", "we hold ourselves to"),
+and the slogan ("X is the new Y"). Sentence checks skip headings, so these
+have their own rules and rewrite procedure in `references/headlines.md`. Raw
+check: `SloptimizerHeadline.*` from `scripts/headline-audit.py`.
+
 ## Rubric-Only Signals
 
 These are judgment calls, not stable Vale rules:

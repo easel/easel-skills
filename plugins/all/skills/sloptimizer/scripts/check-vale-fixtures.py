@@ -178,7 +178,7 @@ def rules_for_profile(profile: str) -> list[dict[str, object]]:
 def normalize_audit_checks(raw: str) -> set[str]:
     checks: set[str] = set()
     for match in re.finditer(
-        r"\b(?:Sloptimizer|SloptimizerResults|SloptimizerRaw|SloptimizerStrict)\.([A-Za-z]+)\b",
+        r"\b(?:Sloptimizer|SloptimizerResults|SloptimizerRaw|SloptimizerStrict|SloptimizerHeadline)\.([A-Za-z]+)\b",
         raw,
     ):
         checks.add(match.group(1))

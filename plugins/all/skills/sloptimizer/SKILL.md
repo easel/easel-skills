@@ -39,11 +39,18 @@ the target is a work item or plan that must become executable.
    concise clarifying question or state the assumed mode.
 2. Classify the target:
    - `prose`: docs, posts, summaries, PR descriptions.
+   - `headline`: deck and slide titles, section headings, one-line claims,
+     titles-only outlines. Sentence rules skip these; use the headline rules.
    - `work-item`: tasks, tickets, implementation prompts.
    - `plan`: staged technical plans or specs.
    - `review`: completed output being checked against intent.
 3. Run deterministic checks when files are available:
    - Use `scripts/slop-audit.sh <paths...>` for Vale-backed prose findings.
+     Markdown headings in those files also go through the headline rules.
+   - Use `scripts/slop-audit.sh --target headline <paths...>` (or
+     `scripts/headline-audit.py --all-lines <paths...>`) when every line of the
+     file is a title, such as a titles-only outline or a pasted list of
+     headings. Exit 1 means at least one headline has a finding.
    - Use `scripts/slop-audit.sh --profile results <paths...>` for benchmark or
      comparison prose.
    - Use `scripts/slop-audit.sh --profile strict <paths...>` for house-style
@@ -57,6 +64,8 @@ the target is a work item or plan that must become executable.
    - Load `references/ai-writing.md` for AI-ism cleanup, "make this sound less
      like AI", or human-voice rewrites. Use its **named patterns** in detect
      findings and change summaries.
+   - Load `references/headlines.md` for `headline` targets: the detection
+     rules, the rewrite procedure, and the titles-only read.
    - Load `references/density-voice.md` for "tight as possible",
      "unsummarizable", compact-by-default, or voice-preserving compression.
    - Load `references/work-items.md` for task or acceptance-criteria cleanup.
