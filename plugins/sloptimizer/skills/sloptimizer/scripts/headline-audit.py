@@ -5,8 +5,10 @@ Sentence-level Vale rules skip headings, and a headline has no terminal
 punctuation for the sentence splitters to work with, so the raw profile audit
 never sees the constructions that make a title read as generated: the
 contrastive reversal, the colon list, the imperative chain, the listicle
-count, stacked negation, the forced triplet, flattery, the aphorism, and the
-mannered phrase (a stock metaphor standing in for the literal claim).
+count, stacked negation, the forced triplet, flattery, the aphorism, the
+mannered phrase (a stock metaphor standing in for the literal claim), the
+inventory count (the size of a catalog offered as the claim), and the hedge
+word that softens a claim instead of scoping it.
 
 Usage:
     headline-audit.py [--all-lines] [--max-words N] [--format text|json] PATH...
@@ -27,7 +29,8 @@ import sys
 from pathlib import Path
 
 PREFIX = "SloptimizerHeadline"
-DEFAULT_MAX_WORDS = 12
+DEFAULT_MAX_WORDS = 10
+TARGET_WORDS = 8
 MANNERED_RULE = Path(__file__).resolve().parent.parent / "assets/vale/styles/Sloptimizer/ManneredProse.yml"
 
 NUMBER = r"(?:two|three|four|five|six|seven|eight|nine|ten|\d+)"
@@ -43,6 +46,21 @@ GROUP_NOUNS = (
 GROUP_VERBS = (
     r"(?:switch|win|lose|choose|prefer|want|need|trust|buy|adopt|leave|stay|succeed|fail|"
     r"care|love|hate|ignore|struggle|expect|demand|know|forget|resist|deserve)"
+)
+COUNT = (
+    r"(?:\d[\d,]*|a dozen|dozens|hundreds|thousands|"
+    r"(?:twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)(?:-(?:one|two|three|four|five|six|seven|eight|nine))?|"
+    r"eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|"
+    r"two|three|four|five|six|seven|eight|nine|ten)"
+)
+INVENTORY_VERBS = (
+    r"(?:with|has|have|had|offers?|ships?|includes?|provides?|contains?|routes?|spans?|across|covers?|"
+    r"supports?|brings?|delivers?|packs?|features?|comes with|made (?:up )?of|consists? of|bundles?|"
+    r"holds?|carries|carry|adds?|lists?|boasts?|totals?|comprises?)"
+)
+HEDGES = (
+    r"\b(?:also|(?<!not )just|simply|really|actually|basically|essentially|arguably|perhaps|maybe|somewhat|"
+    r"quite|very|truly|genuinely|literally|surprisingly|frankly|honestly|fairly|rather|pretty)\b"
 )
 IMPERATIVE_VERBS = {
     "add", "adopt", "align", "ask", "audit", "build", "buy", "call", "check", "choose",
@@ -197,6 +215,18 @@ def _universal_claim(h: str) -> str | None:
     return m.group(0) if m else None
 
 
+def _inventory_count(h: str) -> str | None:
+    m = re.search(
+        rf"\b{INVENTORY_VERBS}\s+(?:(?:over|more than|about|nearly|some|up to|around|another)\s+)?{COUNT}\s+(?:[\w-]+\s+){{0,2}}?[A-Za-z][\w-]*s\b",
+        h, re.IGNORECASE)
+    return m.group(0) if m else None
+
+
+def _hedge(h: str) -> str | None:
+    m = re.search(HEDGES, h, re.IGNORECASE)
+    return m.group(0) if m else None
+
+
 def audit_headline(h: str, max_words: int = DEFAULT_MAX_WORDS) -> list[tuple[str, str, str]]:
     """Return (rule, message, match) findings for one headline."""
     h = h.strip()
@@ -233,9 +263,15 @@ def audit_headline(h: str, max_words: int = DEFAULT_MAX_WORDS) -> list[tuple[str
     m = _first(h, MANNERED)
     if m:
         out.append(("Mannered", "Mannered prose. Say what you mean in plain words: name the thing, the action, or the number.", m))
+    m = _inventory_count(h)
+    if m:
+        out.append(("InventoryCount", "Inventory count. The size of the catalog is body; the title says what it does for the reader.", m))
+    m = _hedge(h)
+    if m:
+        out.append(("Hedge", "Hedge or filler word. Delete it; if the claim needs softening, scope it with a number.", m))
     n = words(h)
     if n > max_words:
-        out.append(("Length", f"Headline is {n} words; aim under 10, hard stop {max_words}.", h))
+        out.append(("Length", f"Headline is {n} words; aim for {TARGET_WORDS} or fewer, hard stop {max_words}.", h))
     return out
 
 

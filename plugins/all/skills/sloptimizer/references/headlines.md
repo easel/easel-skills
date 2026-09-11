@@ -27,7 +27,9 @@ findings.
 | `Aphorism` | A slogan shape: `X is the new Y`, `the only X that matters`, a trailing `wins` or `matters`, `at scale`, `done right`, `changes everything`. | "Documentation is the new code review" |
 | `UniversalClaim` | A bare group noun as subject with a behavior verb (`Teams switch`, `Users want`), or `every`/`all` + a group noun, with no scope or number. | "Teams switch when every change traces back" |
 | `Mannered` | A stock metaphor in place of the claim: `earns its keep`, `under the hood`, `moves the needle`, `a dial worth turning`. Same phrase list as `Sloptimizer.ManneredProse`. | "Documentation earns its keep on every review" |
-| `Length` | More than 12 words (`--max-words`). The target is under 10. | any 13-word title |
+| `InventoryCount` | A verb of possession or coverage followed by a count of plural nouns: `ships with 53 templates`, `routes twenty-one modes`, `covers six hosts`. The size of the catalog is body; a count that is an outcome (`found three drifted specs`) is fine. | "HELIX answers with 53 document templates across a seven-activity loop" |
+| `Hedge` | A filler or softening adverb inside the title: `also`, `just`, `simply`, `really`, `actually`, `essentially`, `very`, `perhaps`, `somewhat`. | "Every layer also yields documents people outside engineering read" |
+| `Length` | More than 10 words (`--max-words`). The target is 8 or fewer: a title that fits one line at 36 pt. | any 11-word title |
 
 The audit is a suggestion, not proof. A title can pass every rule and still be
 a label; a title can trip `Triplet` on a legitimate three-item subject. Read
@@ -35,20 +37,26 @@ the findings against the rewrite procedure below before editing.
 
 ## Rewrite
 
-A headline is one sentence with a subject, a verb, and an object, under 10
-words if it can be, and it answers "so what" for the audience named in the
-brief. Rewrite in this order:
+A headline is one sentence with a subject, a verb, and an object, eight
+words or fewer if it can be and never more than ten, and it answers "so
+what" for the audience named in the brief. A title that needs a second line
+at 36 pt is carrying body text. Rewrite in this order:
 
 1. **Find the claim.** Ask what the slide or section proves. If the body
-   holds a number, the number goes in the title (`under 3 findings per run`,
-   `$180M is reachable`). If the body holds no number and no checkable fact,
-   the problem is the body, not the title.
+   holds a number that is an outcome, the number goes in the title (`under 3
+   findings per run`, `$180M is reachable`). If the number is the size of a
+   catalog, a menu, or a feature list (`53 templates`, `21 modes`), it stays
+   in the body: the title says what the catalog does for the reader. If the
+   body holds no number and no checkable fact, the problem is the body, not
+   the title.
 2. **Name one concrete noun as the subject.** The artifact, the metric, the
    actor, the cost. Not `things`, `failures`, `the practice`, `teams` in
    general, and not the metaphor for it (`the engine`, `the plumbing`).
    Drop the reader-compliment and the group generalization; keep the fact
    the reader can check.
-3. **Pick one plain verb.** Catches, costs, traces, ships, averages, fails.
+3. **Pick one plain verb, and no adverb.** Catches, costs, traces, ships,
+   averages, fails. Delete `also`, `just`, `simply`, `really`; a claim that
+   needs softening gets a number or a scope instead.
    One imperative is fine for an ask (`Approve the pilot budget`); two joined
    by `and` are fine when the ask really has two decisions; three is a
    process slide pretending to be a title.
@@ -78,6 +86,12 @@ After:  Alignment reviews audit documents instead of chat transcripts
 
 Before: Fewer than 3 alignment findings per run is the health bar we hold ourselves to
 After:  A healthy document set averages under 3 findings per run
+
+Before: HELIX answers with 53 document templates across a seven-activity loop
+After:  HELIX is a method you adopt in one activity at a time
+
+Before: Every layer also yields documents people outside engineering read
+After:  Sponsors and clients read the same documents
 ```
 
 ## Validate
