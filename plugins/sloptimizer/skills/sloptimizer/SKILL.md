@@ -1,7 +1,7 @@
 ---
 name: sloptimizer
-description: Audit and rewrite AI-generated prose, plans, specs, prompts, and work items by removing AI-isms, mannered prose, vague claims, filler, generic phrasing, missing actors, weak acceptance criteria, and unsupported implementation promises. Use when asked to reduce AI slop, remove mannered prose, make text sound less like AI, tighten writing, make writing as tight as possible, make prose unsummarizable or hard to summarize without losing meaning, make a task executable, harden a spec, audit only, rewrite, or run Vale-backed prose checks.
-when-to-use: reduce AI slop, remove mannered prose, make text sound less like AI, tighten writing, harden a spec, audit prose, rewrite work items, or run Vale-backed prose checks
+description: Audit and rewrite AI-generated prose, plans, specs, prompts, work items, deck titles, and slides by removing AI-isms, mannered prose, vague claims, filler, generic phrasing, missing actors, weak acceptance criteria, unsupported implementation promises, container titles, invented status labels, self-justifying sections, and aphoristic closers. Use when asked to reduce AI slop, remove mannered prose, make text sound less like AI, tighten writing, make writing as tight as possible, make prose unsummarizable or hard to summarize without losing meaning, make a task executable, harden a spec, audit only, rewrite, run Vale-backed prose checks, or unslop, de-slopify, or clean up the language on a slide, deck, or PowerPoint (including "this slide is an eye chart" or "reads AI-written").
+when-to-use: reduce AI slop, remove mannered prose, make text sound less like AI, tighten writing, harden a spec, audit prose, rewrite work items, unslop a slide or deck, clean up PowerPoint text, or run Vale-backed prose checks
 metadata:
   short-description: "Remove AI-isms, vague claims, and task slop"
   author: Easel
@@ -40,6 +40,9 @@ the target is a work item or plan that must become executable.
    - `prose`: docs, posts, summaries, PR descriptions.
    - `headline`: deck and slide titles, section headings, one-line claims,
      titles-only outlines. Sentence rules skip these; use the headline rules.
+   - `slide`: one slide or a deck, in PowerPoint, a `.pptx`, a Markdown deck,
+     or pasted shape text. The title is a `headline`; every other text shape
+     (subtitle, card labels, banners, closer) gets the slide checklist.
    - `work-item`: tasks, tickets, implementation prompts.
    - `plan`: staged technical plans or specs.
    - `review`: completed output being checked against intent.
@@ -53,6 +56,11 @@ the target is a work item or plan that must become executable.
      `scripts/headline-audit.py --all-lines <paths...>`) when every line of the
      file is a title, such as a titles-only outline or a pasted list of
      headings.
+   - Use `scripts/slop-audit.sh --target slide <deck.md>` for a Markdown deck
+     (`---` between slides) and `scripts/slop-audit.sh <deck.pptx>` for a
+     PowerPoint file, which `scripts/pptx-text.py` extracts with shape ids.
+     Titles get the headline rules, other shapes the slide rules, body text
+     the prose rules plus the slide-register phrase lists.
    - Use `scripts/slop-audit.sh --profile results <paths...>` for benchmark or
      comparison prose.
    - Use `scripts/slop-audit.sh --profile strict <paths...>` for house-style
@@ -73,6 +81,9 @@ the target is a work item or plan that must become executable.
      **named patterns** in detect findings and change summaries.
    - Load `references/headlines.md` for `headline` targets: the detection
      rules, the rewrite procedure, and the titles-only read.
+   - Load `references/slides.md` for `slide` targets: the shape checklist,
+     the rewrite order (title first, one pass, rebalance the layout, verify),
+     and the three-line report.
    - Load `references/density-voice.md` for "tight as possible",
      "unsummarizable", compact-by-default, or voice-preserving compression.
    - Load `references/work-items.md` for task or acceptance-criteria cleanup.
@@ -84,6 +95,8 @@ the target is a work item or plan that must become executable.
 7. When local tools are present, optionally use adapters:
    - `references/adapters-ddx.md` for DDx repositories.
    - `references/adapters-helix.md` for HELIX-governed artifacts.
+   - `references/adapters-powerpoint.md` for PowerPoint sessions with
+     Office.js tools, `.pptx` files, and Markdown decks.
 
 ## Detect Output
 
@@ -102,6 +115,11 @@ For `rewrite` mode, return:
 1. The full edited draft (or the edited work item / plan).
 2. A short **What changed** section naming the patterns fixed and any claims
    flagged rather than invented.
+
+For a `slide` target, the edited slide replaces the draft and **What
+changed** is three lines: what was cut, what was renamed, and what was left
+for the user's call (stale names, unsourced numbers, whether the slide
+should exist).
 
 ## Output Rules
 
@@ -127,6 +145,9 @@ For `rewrite` mode, return:
   item text.
 - For data-bearing prose, scope numbers and comparisons to the dataset, sample,
   run, metric, seed, quantization, source, or other comparability boundary.
+- For slides, delete rather than reword: a self-justifying section, an
+  aphoristic closer, or a restating banner comes out, and the layout closes
+  up around what remains without a new section to fill the space.
 
 ## Dependency Policy
 

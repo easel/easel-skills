@@ -26,6 +26,10 @@ pattern set.
 - `strict`: results checks plus source-level AI-tell checks for em dashes, bold
   inline-header bullets, and negation-reversal constructions.
 
+`--target slide` adds the `SloptimizerSlide` style to any profile: invented
+status vocabulary, internal taxonomy codes, and marketing register, which are
+tells on a slide and often the product's own vocabulary in a document.
+
 ## Rewrite Boundary
 
 Do not silently change numbers, legal claims, benchmark results, commands,
@@ -300,6 +304,72 @@ phrase is available, use it, and prefer the concrete action or number over
 an evaluative frame such as "worth varying".
 ```
 
+### Container title
+
+A slide or section title that names the box the content sits in ("Firm
+capabilities", "Foundations", "Platform layer", "Key considerations")
+instead of the thing the slide shows. Title it with what it shows; if it
+shows nothing concrete, the slide should not exist. Raw check:
+`SloptimizerHeadline.ContainerTitle` on slide titles and titles-only
+outlines. Document headings such as `## Overview` are a convention and are
+left alone.
+
+### Invented status vocabulary
+
+A label the author coined for a state: "portability reference",
+"representative workload", "working hypothesis", "proposed contract",
+"candidate, scope open", and the dressed-up hedges "fit unproven", "not
+committed", "directionally correct". Use a state the reader already knows
+(`In use / Built / Specified / Idea / Not adopted / Retired`) or the plain
+hedge ("not built", "not decided", "no owner yet"). Vale:
+`SloptimizerSlide/StatusJargon.yml`; the same tokens reach titles through
+`headline-audit.py --slide`.
+
+### Self-justifying section
+
+"Why we control it", "What stays fixed", "Design principles served P3 P4
+P7", "How to read this slide". The slide is arguing for itself. Delete the
+section; if one fact in it is load-bearing, move it into the subtitle. Raw
+check: `SelfJustifying` in `headline-audit.py --slide`.
+
+### Restatement stack
+
+Subtitle, banner, and takeaway saying the same idea in different words on
+one slide. Keep one shape and delete the others. Raw check:
+`SloptimizerSlide.Restatement` for lexical overlap within a slide; a
+paraphrase is editorial.
+
+### Trailing commentary
+
+A second sentence that explains why the first is there: "Verifies
+citations. Built as the worked example for moving a check between
+products." Keep the first sentence; if the second carries a status, move it
+into the status label. Raw check: `SloptimizerSlide.TrailingCommentary`.
+
+### Compound coinage
+
+A modifier-noun coinage the reader must decode ("matter-aware", "governed
+conversational access", "universal experience") or a marketing adjective
+standing in for a fact (leverage, differentiated, commoditize, seamless).
+Say the plain noun or verb: "firm-owned", "checked on every call", "the
+interface the firm controls". Vale: `SloptimizerSlide/MarketingRegister.yml`
+for the stock adjectives; a fresh coinage is editorial.
+
+### Shouting label
+
+A letterspaced all-caps section label that tells the reader what to think:
+"WHAT EXISTS AND WHERE IT STANDS", "WHY THE FIRM OWNS IT". Shorten to a
+plain noun ("Current list", "To add one") or delete. A two-word status in
+caps (`IN USE`) is a label, not a sentence, and passes. Raw check:
+`SloptimizerSlide.ShoutingLabel`.
+
+### Internal taxonomy code
+
+Zone, plane, pillar, and principle codes in text for a reader who does not
+have the map: "Zone 6", "Plane 11", "P3 P4 P7". Drop the code and name the
+thing. Vale: `SloptimizerSlide/InternalTaxonomy.yml`; titles through
+`headline-audit.py --slide`.
+
 ### Headline slop
 
 Titles carry the same tells in compressed form: a contrastive reversal ("a
@@ -312,6 +382,16 @@ the slogan ("X is the new Y"), and the mannered phrase ("Documentation earns
 its keep"). Sentence checks skip headings, so these
 have their own rules and rewrite procedure in `references/headlines.md`. Raw
 check: `SloptimizerHeadline.*` from `scripts/headline-audit.py`.
+
+### Slide slop
+
+A slide compounds the tells above: a container title over coined status
+labels, a self-justifying strip, an aphoristic closer, and a subtitle that
+restates the banner. The checklist, the rewrite order (title first, one
+pass, rebalance the layout, verify, report in three lines), and the
+per-pattern owners are in `references/slides.md`. Raw check:
+`scripts/headline-audit.py --slide` plus the `SloptimizerSlide` Vale style
+under `slop-audit.sh --target slide`.
 
 ## When The Pattern Is Fine
 
@@ -331,6 +411,11 @@ proportional-cutting principle in `references/eval.md` exists to catch.
 | Meta-narration | Reference documentation that must orient the reader: "This section describes the retry contract." |
 | Count preview | A number the reader needs up front, when the list is long or split across sections. |
 | Universal claim | A claim the draft then scopes or proves with a number. |
+| Container title | A section-divider slide whose only job is to name the next section, with no body to make a claim about. |
+| Invented status vocabulary | A state the audience already uses in its own tracker or glossary; the test is whether they can define it without the deck. |
+| Self-justifying section | A method slide the audience asked for ("How we measured"), placed before the results it qualifies. |
+| Shouting label | A one- or two-word status in caps (`IN USE`), which is a label, not a sentence. |
+| Trailing commentary | A second sentence that adds a checkable fact (a number, a date, a status), not a reason the first sentence is there. |
 
 The test is whether the phrasing does work the plain version cannot. When it
 does, leave it alone and say so in the change summary rather than preserving

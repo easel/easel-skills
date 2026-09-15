@@ -9,11 +9,18 @@ The audit script checks that `vale` is available before running.
 
 ## Rule Pack
 
-The bundled style is `Sloptimizer`, stored in:
+The bundled styles are stored under:
 
 ```text
-assets/vale/styles/Sloptimizer/
+assets/vale/styles/Sloptimizer/          every profile
+assets/vale/styles/SloptimizerResults/   --profile results and strict
+assets/vale/styles/SloptimizerSlide/     --target slide, added to any profile
 ```
+
+Write tokens as RE2-compatible regular expressions (no lookaround; inline
+flags such as `(?i:...)` are fine). `scripts/headline-audit.py` reads the
+`tokens` lists of `ManneredProse.yml` and the `SloptimizerSlide` rules with
+Python's `re`, so a token must compile in both engines.
 
 The script generates a temporary `.vale.ini` that points at the bundled style,
 so projects do not need to commit Vale configuration to use the skill.
@@ -23,6 +30,8 @@ so projects do not need to commit Vale configuration to use the skill.
 ```bash
 scripts/slop-audit.sh docs/spec.md
 scripts/slop-audit.sh --changed
+scripts/slop-audit.sh --target slide deck.md
+scripts/slop-audit.sh deck.pptx
 ```
 
 The output is Vale's normal text output followed by the raw-profile and

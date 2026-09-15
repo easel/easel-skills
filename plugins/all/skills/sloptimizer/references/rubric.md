@@ -20,12 +20,19 @@
   under the hood, moves the needle. Say what you mean.
 - Evaluative frames that announce value instead of stating it: a point worth
   making, a parameter worth varying, it is worth noting.
+- On slides, invented status vocabulary (portability reference, working
+  hypothesis, fit unproven) where a plain state (in use, built, not built)
+  was available, and internal taxonomy codes (Zone 6, P3) the audience
+  cannot decode.
 <!-- vale on -->
 - Repeated paragraph openings that make prose sound templated.
 - Structural AI tells named in `references/ai-writing.md` (binary contrasts,
   colon reveals, faux-insight setups, dramatic fragments, chatbot residue,
   meta-narration, enumerated parades, count previews, formulaic headings, comma-and clause chains, framing openers,
   unscoped tool behavior, real names in examples).
+- Slide tells named in `references/slides.md` (container titles,
+  self-justifying sections, aphoristic closers, restatement stacks, trailing
+  commentary, shouting labels).
 
 ## Replacement Standard
 

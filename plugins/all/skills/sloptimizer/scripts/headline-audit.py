@@ -11,14 +11,25 @@ inventory count (the size of a catalog offered as the claim), and the hedge
 word that softens a claim instead of scoping it.
 
 Usage:
-    headline-audit.py [--all-lines] [--max-words N] [--format text|json] PATH...
+    headline-audit.py [--all-lines | --slide] [--max-words N] [--format text|json] PATH...
 
 By default every Markdown heading (`#` to `######`) is a headline; a leading
 unit number (`### 3. Title`) is stripped. With `--all-lines` every non-blank
 line outside code fences, tables, and frontmatter is a headline, after
 stripping list markers, which is the shape of a titles-only outline.
 
-Exit 1 when any headline has a finding, 0 otherwise.
+With `--slide` the file is a deck: `---` separates slides, each heading is a
+slide title and gets the headline rules, and every other non-blank line is a
+text shape (subtitle, card label, banner, closer) and gets the shape rules
+that Vale cannot see: the shouting all-caps label, the container title, the
+self-justifying section, trailing commentary on the previous sentence, and
+lexical restatement of another shape on the same slide. `scripts/pptx-text.py`
+produces this layout from a .pptx. Titles-only outlines (`--all-lines`) get
+the container and self-justifying checks too, because a slide title that is a
+category label is the first slide tell; ordinary document headings do not,
+because `## Overview` is a documentation convention.
+
+Exit 1 when any headline or shape has a finding, 0 otherwise.
 """
 from __future__ import annotations
 
@@ -29,9 +40,53 @@ import sys
 from pathlib import Path
 
 PREFIX = "SloptimizerHeadline"
+SHAPE_PREFIX = "SloptimizerSlide"
 DEFAULT_MAX_WORDS = 10
 TARGET_WORDS = 8
-MANNERED_RULE = Path(__file__).resolve().parent.parent / "assets/vale/styles/Sloptimizer/ManneredProse.yml"
+STYLES = Path(__file__).resolve().parent.parent / "assets/vale/styles"
+MANNERED_RULE = STYLES / "Sloptimizer/ManneredProse.yml"
+# Slide-register phrase lists live in the SloptimizerSlide Vale style; headings
+# are outside those rules' scope, so slide titles get the same tokens here.
+SLIDE_TOKEN_RULES = (
+    ("StatusJargon", STYLES / "SloptimizerSlide/StatusJargon.yml",
+     "Invented status. Use a state the reader already knows: in use, built, specified, idea, not adopted, retired."),
+    ("Taxonomy", STYLES / "SloptimizerSlide/InternalTaxonomy.yml",
+     "Internal taxonomy code. The reader does not have the map; name the thing or drop the code."),
+    ("Marketing", STYLES / "SloptimizerSlide/MarketingRegister.yml",
+     "Marketing register. Say the plain noun or verb, or the fact the reader can check."),
+)
+RESTATEMENT_THRESHOLD = 0.5
+RESTATEMENT_MIN_WORDS = 4
+STOPWORDS = frozenset(
+    "the a an and or but of to in on for with by from at as is are was were be been being it its this that these those "
+    "we our you your they their he she his her not no do does did have has had will can into than then so if when what "
+    "which who how all any each every one two three".split()
+)
+CONTAINER_NOUNS = (
+    r"(?:capabilit(?:y|ies)|foundations?|layers?|overview|landscape|ecosystem|frameworks?|pillars?|principles|"
+    r"considerations|enablers|building blocks|components|dimensions|themes|elements|areas|aspects|fundamentals|"
+    r"essentials|basics|highlights|context|background|approach|philosophy|vision|stack|platform|architecture|"
+    r"framing|scope|summary|agenda|introduction|recap|takeaways|learnings|observations|reflections|opportunities|"
+    r"challenges|implications|next steps|key points|the ask|deep[- ]dive|overview and context)"
+)
+SELF_JUSTIFYING = (
+    r"^how to read (?:this|the)\b",
+    r"^how this (?:slide|page|view|diagram|map) (?:works|is organi[sz]ed|reads)\b",
+    r"^what this (?:slide|page|deck|diagram|view|map) (?:shows|means|is saying|tells)\b",
+    r"^reading (?:this|the) (?:slide|chart|diagram|map|table)\b",
+    r"^(?:a )?note on (?:how to read|reading|method|methodology)\b",
+    r"^(?:design |guiding |core |our )?principles? (?:served|applied|honou?red|met|addressed|upheld|in play)\b",
+    r"^why (?:we|our|us|the \w+|this|it|that) (?:own|control|built|build|chose|choose|keep|hold|matter|matters|care|need|exist)",
+    r"^why (?:this|it|that) (?:matters|is different|is hard|works)\b",
+    r"^what (?:stays|remains|does ?n[o'’]t change|we (?:control|own|keep|hold|guarantee))\b",
+    r"^(?:the |our |design )?rationale\b",
+)
+TRAILING_COMMENTARY = (
+    r"[.!?]\s+(?:Built|Designed|Intended|Meant|Chosen|Included|Added|Kept|Positioned|Shown|Placed|Retained|Selected)"
+    r"\s+(?:as|to|because|for|here|so|since)\b"
+)
+TRAILING_COMMENTARY += r"|[.!?]\s+(?:Serves|Acts|Exists|Stands|Functions)\s+(?:as|to|because|so)\b"
+TRAILING_COMMENTARY += r"|[.!?]\s+(?:This|It|That) (?:is|was) (?:the|our|a) (?:worked example|reference|proof point|test case|first step)\b"
 
 NUMBER = r"(?:two|three|four|five|six|seven|eight|nine|ten|\d+)"
 LISTICLE_NOUNS = (
@@ -172,6 +227,10 @@ APHORISM = (
     r"\bhere to stay\b",
     r"\bthe future of\b",
     r"\bwelcome to\b",
+    r"^that(?:'|’)?s what makes\b",
+    r"^that is what makes\b",
+    r"^(?:this|that) is (?:what|how|why) \w+ (?:works|matters|wins|scales|holds)\b",
+    r"\beverything else is (?:detail|plumbing|noise|downstream)\b",
 )
 
 
@@ -222,15 +281,121 @@ def _inventory_count(h: str) -> str | None:
     return m.group(0) if m else None
 
 
+def _container_title(h: str) -> str | None:
+    """A category label where a claim should be: 'Firm capabilities', 'Platform layer'."""
+    stripped = re.sub(r"[.!?:]+$", "", h.strip())
+    if words(stripped) > 4:
+        return None
+    m = re.fullmatch(rf"(?:[\w&/'’-]+\s+){{0,3}}{CONTAINER_NOUNS}", stripped, re.IGNORECASE)
+    return m.group(0) if m else None
+
+
+def _self_justifying(h: str) -> str | None:
+    return _first(h, SELF_JUSTIFYING)
+
+
+def _shouting_label(h: str) -> str | None:
+    """An all-caps section label long enough to be a sentence telling the reader what to think."""
+    letters = re.sub(r"[^A-Za-z]", "", h)
+    if len(letters) < 12 or letters != letters.upper():
+        return None
+    n = words(h)
+    starts_question = re.match(r"^(?:WHAT|WHY|HOW|WHERE|WHEN|WHO)\b", h.strip())
+    if n >= 4 or (n >= 2 and starts_question):
+        return h.strip()
+    return None
+
+
+def _trailing_commentary(h: str) -> str | None:
+    m = re.search(TRAILING_COMMENTARY, h)
+    return m.group(0) if m else None
+
+
+def _content_words(text: str) -> set[str]:
+    return {w for w in re.findall(r"[a-z][a-z'’-]+", text.lower()) if w not in STOPWORDS and len(w) > 2}
+
+
+def restatements(shapes: list[tuple[int, str]]) -> list[tuple[int, str, int]]:
+    """(line, text, other_line) for shapes on one slide that restate an earlier shape lexically."""
+    out: list[tuple[int, str, int]] = []
+    bags = [(line, text, _content_words(text)) for line, text in shapes]
+    for i, (line, text, bag) in enumerate(bags):
+        if len(bag) < RESTATEMENT_MIN_WORDS:
+            continue
+        for other_line, _, other in bags[:i]:
+            if len(other) < RESTATEMENT_MIN_WORDS:
+                continue
+            if len(bag & other) / len(bag | other) >= RESTATEMENT_THRESHOLD:
+                out.append((line, text, other_line))
+                break
+    return out
+
+
 def _hedge(h: str) -> str | None:
     m = re.search(HEDGES, h, re.IGNORECASE)
     return m.group(0) if m else None
 
 
-def audit_headline(h: str, max_words: int = DEFAULT_MAX_WORDS) -> list[tuple[str, str, str]]:
-    """Return (rule, message, match) findings for one headline."""
+SLIDE_TOKENS = tuple((rule, _vale_tokens(path), message) for rule, path, message in SLIDE_TOKEN_RULES)
+
+
+def audit_label(h: str) -> list[tuple[str, str, str]]:
+    """Rules for a title or label that stands alone on a slide or in a titles-only outline."""
+    out: list[tuple[str, str, str]] = []
+    m = _container_title(h)
+    if m:
+        out.append(("ContainerTitle", "Container title. Name what the slide shows, not the category it belongs to.", m))
+    m = _self_justifying(h)
+    if m:
+        out.append(("SelfJustifying", "Self-justifying section. The slide is arguing for itself; delete it or move the one load-bearing fact into the subtitle.", m))
+    m = _shouting_label(h)
+    if m:
+        out.append(("ShoutingLabel", "All-caps label telling the reader what to think. Shorten to a plain noun or delete.", m))
+    return out
+
+
+def audit_slide_tokens(h: str) -> list[tuple[str, str, str]]:
+    """The SloptimizerSlide Vale phrase lists, for headings Vale never sees."""
+    out: list[tuple[str, str, str]] = []
+    for rule, tokens, message in SLIDE_TOKENS:
+        m = _first(h, tokens)
+        if m:
+            out.append((rule, message, m))
+    return out
+
+
+def audit_shape(h: str) -> list[tuple[str, str, str]]:
+    """Rules for a non-title text shape on a slide: subtitle, card, banner, closer."""
+    h = h.strip()
+    out = audit_label(h)
+    m = _reversal(h)
+    if m:
+        out.append(("ContrastiveReversal", "Contrastive reversal. State the positive claim and drop the 'not X' half.", m))
+    m = _first(h, APHORISM)
+    if m:
+        out.append(("Aphorism", "Aphoristic closer. Delete it; do not replace it with another aphorism.", m))
+    m = _first(h, FLATTERY)
+    if m:
+        out.append(("Flattery", "Flattery. Replace the compliment with the fact the reader can check.", m))
+    m = _trailing_commentary(h)
+    if m:
+        out.append(("TrailingCommentary", "Second sentence is commentary on the first. Keep the first; move any status into the label.", m))
+    return out
+
+
+def audit_headline(h: str, max_words: int = DEFAULT_MAX_WORDS, *, label_rules: bool = False,
+                   slide_tokens: bool = False) -> list[tuple[str, str, str]]:
+    """Return (rule, message, match) findings for one headline.
+
+    `label_rules` adds the container/self-justifying/shouting checks (slide titles
+    and titles-only outlines); `slide_tokens` adds the SloptimizerSlide phrase lists.
+    """
     h = h.strip()
     out: list[tuple[str, str, str]] = []
+    if label_rules:
+        out.extend(audit_label(h))
+    if slide_tokens:
+        out.extend(audit_slide_tokens(h))
     m = _reversal(h)
     if m:
         out.append(("ContrastiveReversal", "Contrastive reversal. State the positive claim and drop the 'not X' half.", m))
@@ -281,9 +446,19 @@ def scrub_inline(text: str) -> str:
     return re.sub(r"\*\*([^*]+)\*\*", r"\1", text)
 
 
-def iter_headlines(path: Path, all_lines: bool):
+def iter_headlines(path: Path, all_lines: bool, slide: bool = False):
+    """Yield (line_number, text, kind, slide_index, shape).
+
+    kind is "headline" for a heading (or every line under --all-lines) and
+    "shape" for a non-heading line under --slide. slide_index increments at
+    each `---` separator or `<!-- slide N -->` marker so restatement is checked
+    within one slide only. shape is the last `<!-- slide N: shape ID "Name" -->`
+    marker written by pptx-text.py, or "" when the file has none.
+    """
     in_fence = False
     in_frontmatter = False
+    slide_index = 1
+    shape = ""
     for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
         if line_number == 1 and line.strip() == "---":
             in_frontmatter = True
@@ -297,24 +472,39 @@ def iter_headlines(path: Path, all_lines: bool):
             continue
         if in_fence:
             continue
+        stripped = line.strip()
+        if slide and (re.fullmatch(r"-{3,}|\*{3,}", stripped) or re.match(r"^<!--\s*slide \d+\s*-->$", stripped)):
+            slide_index += 1
+            shape = ""
+            continue
+        marker = re.match(r'^<!--\s*(slide \d+: (?:shape \S+(?: "[^"]*")?|table))\s*-->$', stripped)
+        if slide and marker:
+            shape = marker.group(1)
+            continue
         heading = re.match(r"^\s*#{1,6}\s+(.*?)\s*#*\s*$", line)
+        kind = "headline"
         if heading:
             text = heading.group(1)
-        elif all_lines:
-            stripped = line.strip()
-            if not stripped or stripped.startswith(("|", "<!--", "---", "**")):
+        elif all_lines or slide:
+            if not stripped or stripped.startswith(("|", "<!--", "---", "**", "![", "<")):
                 continue
             text = re.sub(r"^(?:[-*+]|\d+[.)])\s+", "", stripped)
+            text = re.sub(r"^>\s+", "", text)
+            if slide:
+                kind = "shape"
         else:
             continue
         text = re.sub(r"^\d+\.\s+", "", scrub_inline(text)).strip()
         if text:
-            yield line_number, text
+            yield line_number, text, kind, slide_index, shape
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--all-lines", action="store_true", help="treat every non-blank line as a headline")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--all-lines", action="store_true", help="treat every non-blank line as a headline")
+    mode.add_argument("--slide", action="store_true",
+                      help="deck layout: headings are slide titles, other lines are text shapes, --- separates slides")
     parser.add_argument("--max-words", type=int, default=DEFAULT_MAX_WORDS)
     parser.add_argument("--format", choices=("text", "json"), default="text")
     parser.add_argument("paths", nargs="+")
@@ -325,15 +515,34 @@ def main() -> int:
         path = Path(raw)
         if not path.is_file():
             continue
-        for line_number, headline in iter_headlines(path, args.all_lines):
-            for rule, message, match in audit_headline(headline, args.max_words):
-                findings.append({"path": str(path), "line": line_number, "rule": f"{PREFIX}.{rule}",
-                                 "message": message, "match": match, "headline": headline})
+        label_rules = args.all_lines or args.slide
+        shapes_by_slide: dict[int, list[tuple[int, str]]] = {}
+        shape_at: dict[int, str] = {}
+        for line_number, text, kind, slide_index, shape in iter_headlines(path, args.all_lines, args.slide):
+            if kind == "headline":
+                prefix = PREFIX
+                hits = audit_headline(text, args.max_words, label_rules=label_rules, slide_tokens=args.slide)
+            else:
+                prefix = SHAPE_PREFIX
+                hits = audit_shape(text)
+            for rule, message, match in hits:
+                findings.append({"path": str(path), "line": line_number, "rule": f"{prefix}.{rule}",
+                                 "message": message, "match": match, "headline": text, "shape": shape})
+            if args.slide:
+                shapes_by_slide.setdefault(slide_index, []).append((line_number, text))
+                shape_at[line_number] = shape
+        for shapes in shapes_by_slide.values():
+            for line_number, text, other_line in restatements(shapes):
+                findings.append({"path": str(path), "line": line_number, "rule": f"{SHAPE_PREFIX}.Restatement",
+                                 "message": f"Restates line {other_line} on the same slide. Keep one shape and delete the other.",
+                                 "match": text, "headline": text, "shape": shape_at.get(line_number, "")})
+        findings.sort(key=lambda f: (f["path"], f["line"]))
     if args.format == "json":
         print(json.dumps(findings, indent=2))
     else:
         for f in findings:
-            print(f"{f['path']}:{f['line']}: suggestion {f['rule']}: {f['message']} Match: {f['match']!r}")
+            where = f" [{f['shape']}]" if f.get("shape") else ""
+            print(f"{f['path']}:{f['line']}:{where} suggestion {f['rule']}: {f['message']} Match: {f['match']!r}")
     return 1 if findings else 0
 
 

@@ -376,5 +376,56 @@
     "name": "worth_gerund_negative",
     "text": "The manual is a book worth reading before the migration.",
     "expected_rules": []
+  },
+  {
+    "name": "slide_status_jargon_label",
+    "target": "slide",
+    "text": "The connector is a portability reference for the platform.",
+    "expected_rules": [
+      "StatusJargon"
+    ]
+  },
+  {
+    "name": "slide_dressed_up_hedge",
+    "target": "slide",
+    "text": "Candidate, scope open. Fit unproven.",
+    "expected_rules": [
+      "StatusJargon"
+    ]
+  },
+  {
+    "name": "slide_internal_taxonomy_zone_plane",
+    "target": "slide",
+    "text": "The check sits in Zone 6 and Plane 11.",
+    "expected_rules": [
+      "InternalTaxonomy"
+    ]
+  },
+  {
+    "name": "slide_internal_taxonomy_principle_codes",
+    "target": "slide",
+    "text": "The check sits under P3 P4 P7 in the platform map.",
+    "expected_rules": [
+      "InternalTaxonomy"
+    ]
+  },
+  {
+    "name": "slide_marketing_register",
+    "target": "slide",
+    "text": "We leverage a differentiated, governed conversational access layer.",
+    "expected_rules": [
+      "MarketingRegister"
+    ]
+  },
+  {
+    "name": "slide_plain_status_passes",
+    "target": "slide",
+    "text": "In use since March. Checks every citation in the matter file.",
+    "expected_rules": []
+  },
+  {
+    "name": "prose_target_skips_slide_style",
+    "text": "The connector is a portability reference for the platform.",
+    "expected_rules": []
   }
 ]

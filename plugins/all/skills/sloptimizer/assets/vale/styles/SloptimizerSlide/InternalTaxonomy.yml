@@ -1,0 +1,10 @@
+extends: existence
+message: "Internal taxonomy code: '%s'. The reader does not have the map. Name the thing or drop the code."
+ignorecase: false
+level: suggestion
+scope:
+  - ~heading
+tokens:
+  - '\b(?i:zone|plane|pillar|horizon|wave|workstream|swimlane|quadrant|lane|epic|theme)s? \d{1,2}\b'
+  - '\bP\d{1,2}(?:[ ,/]+P\d{1,2})+\b'
+  - '\b(?i:principle|pillar)s? P?\d{1,2}\b'

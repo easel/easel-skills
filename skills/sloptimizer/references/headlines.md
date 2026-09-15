@@ -30,6 +30,10 @@ findings.
 | `InventoryCount` | A verb of possession or coverage followed by a count of plural nouns: `ships with 53 templates`, `routes twenty-one modes`, `covers six hosts`. The size of the catalog is body; a count that is an outcome (`found three drifted specs`) is fine. | "HELIX answers with 53 document templates across a seven-activity loop" |
 | `Hedge` | A filler or softening adverb inside the title: `also`, `just`, `simply`, `really`, `actually`, `essentially`, `very`, `perhaps`, `somewhat`. | "Every layer also yields documents people outside engineering read" |
 | `Length` | More than 10 words (`--max-words`). The target is 8 or fewer: a title that fits one line at 36 pt. | any 11-word title |
+| `ContainerTitle` | The title is a category label, four words or fewer, ending in a grouping noun: `capabilities`, `foundations`, `layer`, `considerations`, `next steps`. Slide titles and titles-only outlines only (`--slide`, `--all-lines`); `## Overview` in a document is a convention. | "Firm capabilities" |
+| `SelfJustifying` | The title argues for the slide: `How to read this slide`, `Why we control it`, `Design principles served`, `What stays fixed`. Same modes as `ContainerTitle`. | "Why we own the interface" |
+| `ShoutingLabel` | An all-caps label of four or more words, or two or more opening with `WHAT`/`WHY`/`HOW`. A two-word status label in caps is fine. Same modes. | "WHAT EXISTS AND WHERE IT STANDS" |
+| `StatusJargon`, `Taxonomy`, `Marketing` | Under `--slide` only: the `SloptimizerSlide` Vale phrase lists (invented status labels, zone/plane/principle codes, marketing adjectives) applied to titles, which Vale's `~heading` scope never sees. | "Working hypothesis" |
 
 The audit is a suggestion, not proof. A title can pass every rule and still be
 a label; a title can trip `Triplet` on a legitimate three-item subject. Read
@@ -105,3 +109,7 @@ scripts/slop-audit.sh --target headline titles.md   # or the deck script itself
 
 On a deck script whose unit titles are Markdown headings, the default
 `slop-audit.sh <script>` already runs the headline rules on every heading.
+
+When the target is a finished slide rather than a title list, the other text
+shapes (subtitle, card labels, banners, closer) have their own checklist in
+`references/slides.md`; `slop-audit.sh --target slide` runs both.

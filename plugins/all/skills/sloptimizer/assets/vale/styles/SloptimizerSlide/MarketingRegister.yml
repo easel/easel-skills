@@ -1,0 +1,24 @@
+extends: existence
+message: "Marketing register: '%s'. Say the plain noun or verb, or the fact the reader can check."
+ignorecase: true
+level: suggestion
+scope:
+  - ~heading
+tokens:
+  - '\bleverag(?:e|es|ed|ing)\b'
+  - '\bdifferentiat(?:ed|ing|or|ors)\b'
+  - '\bcommoditi[sz](?:e|es|ed|ing|ation)\b'
+  - '\bbest[- ]of[- ]breed\b'
+  - '\benterprise[- ]grade\b'
+  - '\bfuture[- ]proof(?:ed|ing)?\b'
+  - '\bturnkey\b'
+  - '\bholistic(?:ally)?\b'
+  - '\bfrictionless\b'
+  - '\bnext[- ]gen(?:eration)?\b'
+  - '\bsynerg(?:y|ies|istic)\b'
+  - '\bvalue[- ]add(?:ed)?\b'
+  - '\bmission[- ]critical\b'
+  - '\bstate[- ]of[- ]the[- ]art\b'
+  - '\b(?:universal|unified|seamless|delightful) experience\b'
+  - '\bsingle (?:pane|source) of (?:glass|truth)\b'
+  - '\bgoverned (?:conversational|data|ai) access\b'

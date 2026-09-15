@@ -1,0 +1,30 @@
+extends: existence
+message: "Invented status: '%s'. Use a state the reader already knows (in use, built, specified, idea, not adopted, retired) or the plain hedge (not built, not decided, no owner yet)."
+ignorecase: true
+level: suggestion
+scope:
+  - ~heading
+tokens:
+  - '\bportability reference\b'
+  - '\brepresentative workload\b'
+  - '\bworking hypothesis\b'
+  - '\bproposed contract\b'
+  - '\bcandidate,? (?:scope open|tbd|pending)\b'
+  - '\bscope (?:open|tbd|to be (?:defined|determined))\b'
+  - '\bfit (?:unproven|tbd|unclear)\b'
+  - '\bnot (?:yet )?committed\b'
+  - '\bdirectionally (?:correct|right|aligned)\b'
+  - '\bunder (?:exploration|consideration|evaluation|investigation)\b'
+  - '\bin flight\b'
+  - '\bto be validated\b'
+  - '\bsubject to (?:validation|confirmation|alignment)\b'
+  - '\bpending (?:alignment|validation|confirmation|decision)\b'
+  - '\baspirational\b'
+  - '\bnascent\b'
+  - '\blighthouse (?:project|use case|customer|initiative)\b'
+  - '\bpathfinder\b'
+  - '\bexemplar\b'
+  - '\bstraw ?man\b'
+  - '\bnaming tbd\b'
+  - '\btbd\b'
+  - '\bwip\b'
