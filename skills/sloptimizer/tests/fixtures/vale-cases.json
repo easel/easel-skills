@@ -376,5 +376,64 @@
     "name": "worth_gerund_negative",
     "text": "The manual is a book worth reading before the migration.",
     "expected_rules": []
+  },
+  {
+    "name": "external_status_jargon_label",
+    "text": "The connector is a portability reference for the platform.",
+    "expected_rules": [
+      "StatusJargon"
+    ],
+    "audience": "external"
+  },
+  {
+    "name": "external_dressed_up_hedge",
+    "text": "Candidate, scope open. Fit unproven.",
+    "expected_rules": [
+      "StatusJargon"
+    ],
+    "audience": "external"
+  },
+  {
+    "name": "external_internal_taxonomy_zone_plane",
+    "text": "The check sits in Zone 6 and Plane 11.",
+    "expected_rules": [
+      "InternalTaxonomy"
+    ],
+    "audience": "external"
+  },
+  {
+    "name": "external_internal_taxonomy_principle_codes",
+    "text": "The check sits under P3 P4 P7 in the platform map.",
+    "expected_rules": [
+      "InternalTaxonomy"
+    ],
+    "audience": "external"
+  },
+  {
+    "name": "external_marketing_register",
+    "text": "We leverage a differentiated, governed conversational access layer.",
+    "expected_rules": [
+      "MarketingRegister"
+    ],
+    "audience": "external"
+  },
+  {
+    "name": "external_plain_status_passes",
+    "text": "In use since March. Checks every citation in the matter file.",
+    "expected_rules": [],
+    "audience": "external"
+  },
+  {
+    "name": "internal_audience_skips_external_style",
+    "text": "The connector is a portability reference for the platform.",
+    "expected_rules": []
+  },
+  {
+    "name": "external_doc_marketing_register",
+    "audience": "external",
+    "text": "Our platform is a best-of-breed, future-proof solution for your team.",
+    "expected_rules": [
+      "MarketingRegister"
+    ]
   }
 ]

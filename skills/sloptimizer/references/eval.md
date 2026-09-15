@@ -36,6 +36,31 @@ Skip this section for `work-item` and `plan` targets; use the next one.
 6. Are example values obvious placeholders rather than real names, and is
    tool-specific behavior scoped to the tool it belongs to?
 
+## Slides
+
+When the target is a `slide` or deck, after the prose checks above:
+
+1. Is every title a claim about what the slide shows, not a container label
+   ("Firm capabilities") or a self-justification ("Why we control it")?
+2. Are status labels plain states the reader already knows (in use, built,
+   specified, idea, not adopted, retired; not built, not decided, no owner
+   yet) rather than coined ones ("portability reference", "fit unproven")?
+3. Are self-justifying sections, aphoristic closers, and shouting all-caps
+   labels deleted rather than reworded, with no new aphorism in the old
+   one's place?
+4. Does each idea appear in one shape, with the subtitle, banner, and
+   takeaway no longer restating each other, and each card down to its first
+   sentence?
+5. Are internal taxonomy codes (Zone 6, Plane 11, P3) and compound coinages
+   gone from text the audience reads?
+6. Are unsourced numbers and stale names flagged for the user rather than
+   silently kept or silently cut?
+7. Was the layout rebalanced (cards shrunk to content, lower sections moved
+   up) without adding a section to fill space or shrinking the deck's font
+   sizes?
+8. Does the report say in three lines what was cut, what was renamed, and
+   what was left for the user's call?
+
 ## Work items and plans
 
 When the target is a work item or plan rather than prose:

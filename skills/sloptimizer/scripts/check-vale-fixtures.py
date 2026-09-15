@@ -22,6 +22,11 @@ PROFILE_STYLES = {
     "results": ["Sloptimizer", "SloptimizerResults"],
     "strict": ["Sloptimizer", "SloptimizerResults"],
 }
+# `--audience external` adds the external-register style on top of the profile styles.
+AUDIENCE_STYLES = {
+    "internal": [],
+    "external": ["SloptimizerExternal"],
+}
 
 
 def strip_markdown(text: str) -> str:
@@ -168,9 +173,9 @@ def find_raw_rules(text: str, profile: str) -> set[str]:
     return found
 
 
-def rules_for_profile(profile: str) -> list[dict[str, object]]:
+def rules_for_profile(profile: str, audience: str = "internal") -> list[dict[str, object]]:
     rules: list[dict[str, object]] = []
-    for style in PROFILE_STYLES[profile]:
+    for style in PROFILE_STYLES[profile] + AUDIENCE_STYLES[audience]:
         rules.extend(parse_rule(path) for path in sorted((STYLES_ROOT / style).glob("*.yml")))
     return rules
 
@@ -178,7 +183,7 @@ def rules_for_profile(profile: str) -> list[dict[str, object]]:
 def normalize_audit_checks(raw: str) -> set[str]:
     checks: set[str] = set()
     for match in re.finditer(
-        r"\b(?:Sloptimizer|SloptimizerResults|SloptimizerRaw|SloptimizerStrict|SloptimizerHeadline)\.([A-Za-z]+)\b",
+        r"\b(?:Sloptimizer|SloptimizerResults|SloptimizerExternal|SloptimizerShape|SloptimizerRaw|SloptimizerStrict|SloptimizerHeadline)\.([A-Za-z]+)\b",
         raw,
     ):
         checks.add(match.group(1))
@@ -196,6 +201,7 @@ def run_real_vale_cases(cases: list[dict[str, object]]) -> list[str]:
             if case.get("profile") == "strict":
                 continue
             profile = str(case.get("profile", "default"))
+            audience = str(case.get("audience", "internal"))
             path = tmp_path / f"case-{index}.md"
             path.write_text(str(case["text"]), encoding="utf-8")
             result = subprocess.run(
@@ -203,6 +209,8 @@ def run_real_vale_cases(cases: list[dict[str, object]]) -> list[str]:
                     str(SLOP_AUDIT),
                     "--profile",
                     profile,
+                    "--audience",
+                    audience,
                     str(path),
                 ],
                 check=False,
@@ -331,10 +339,15 @@ def run_raw_exit_status_smoke() -> list[str]:
 def main() -> int:
     cases = json.loads(FIXTURES.read_text(encoding="utf-8"))
     failures: list[str] = []
-    rule_cache = {profile: rules_for_profile(profile) for profile in PROFILE_STYLES}
+    rule_cache = {
+        (profile, audience): rules_for_profile(profile, audience)
+        for profile in PROFILE_STYLES
+        for audience in AUDIENCE_STYLES
+    }
     for case in cases:
         profile = str(case.get("profile", "default"))
-        rules = rule_cache[profile]
+        audience = str(case.get("audience", "internal"))
+        rules = rule_cache[(profile, audience)]
         actual = find_rules(case["text"], rules) | find_raw_rules(case["text"], profile)
         expected = set(case["expected_rules"])
         if actual != expected:

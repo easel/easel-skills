@@ -75,7 +75,12 @@ and these profile-specific constraints:
   `Sloptimizer.ManneredProse` flag the stock phrases.
 
 Rewrite the titles first and re-audit them before editing any body; a body
-written under a slop title inherits its shape.
+written under a slop title inherits its shape. Then run the unit bodies
+through `references/slides.md`: a `present` deck carries the same tells in
+its card labels (coined statuses), strips (principles served), and closers,
+and `slop-audit.sh --target slide` on the deliverable checks both layers
+(the `human-facing` profile is an external audience, which that target
+assumes).
 
 ## Useful Project Gates
 

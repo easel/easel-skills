@@ -149,3 +149,10 @@ output) and the target it must hit.
 Rewriting the item into `Export completes reliably for large datasets` would
 read better and execute no better. The test for a work item is whether an
 agent can finish it from the text alone.
+
+## Slides
+
+A slide is edited as shapes, not paragraphs, and the layout closes up after
+the cuts. The before-and-after for one slide (a container title over coined
+status cards, a principles strip, and an aphoristic closer) is in
+`references/slides.md` under Example, next to the checklist it exercises.
