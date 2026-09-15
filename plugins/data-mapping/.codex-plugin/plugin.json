@@ -1,6 +1,6 @@
 {
   "name": "data-mapping",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "Derive auditable mappings and survivorship rules.",
   "author": {
     "name": "Easel",

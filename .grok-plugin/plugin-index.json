@@ -2,7 +2,7 @@
   "version": 1,
   "plugins": {
     "all": {
-      "version": "0.4.2",
+      "version": "0.5.0",
       "components": {
         "skills": [
           {
@@ -43,10 +43,10 @@
           }
         ]
       },
-      "sha": "61907ea3161f1f2f0d1872d1f4db29c08e8d74ae"
+      "sha": "cb645ea0ee65f0e35ac3e7b3961ff6b98102a96a"
     },
     "sloptimizer": {
-      "version": "0.4.2",
+      "version": "0.5.0",
       "components": {
         "skills": [
           {
@@ -55,10 +55,10 @@
           }
         ]
       },
-      "sha": "38c69ec7dcb4a9376914ab1359b37e3145496f86"
+      "sha": "562d40fda5f15481097649539bb41b1073bb4324"
     },
     "adversarial-review": {
-      "version": "0.4.2",
+      "version": "0.5.0",
       "components": {
         "skills": [
           {
@@ -67,10 +67,10 @@
           }
         ]
       },
-      "sha": "0c121737d67f996718d9895544ddb5916864a7d9"
+      "sha": "c8699a46399508ff70c27459fec6650c528fdc79"
     },
     "release-management": {
-      "version": "0.4.2",
+      "version": "0.5.0",
       "components": {
         "skills": [
           {
@@ -79,10 +79,10 @@
           }
         ]
       },
-      "sha": "9761d71e71075ba3685ee7f8f482c29549856a05"
+      "sha": "7851e9d06acc3fbcabe4cf122c1081da45446186"
     },
     "repo-triage": {
-      "version": "0.4.2",
+      "version": "0.5.0",
       "components": {
         "skills": [
           {
@@ -91,10 +91,10 @@
           }
         ]
       },
-      "sha": "dce28defab53acee57ea3ada56036dd97711d881"
+      "sha": "25503da2b1c0caa14c143e047f1c5ea87413ea21"
     },
     "data-quality": {
-      "version": "0.4.2",
+      "version": "0.5.0",
       "components": {
         "skills": [
           {
@@ -103,10 +103,10 @@
           }
         ]
       },
-      "sha": "9601a4f04561a3c5b2f4e39e941d98a6a3e950ab"
+      "sha": "25d382f8c4d44dcd397839afb80c8510567034a7"
     },
     "data-documentation": {
-      "version": "0.4.2",
+      "version": "0.5.0",
       "components": {
         "skills": [
           {
@@ -115,10 +115,10 @@
           }
         ]
       },
-      "sha": "b8316d9e79ccc8304f0aba5815764bdb54112bff"
+      "sha": "5bf4f7bbe3c9753f06db8ea1433c84600495d881"
     },
     "data-mapping": {
-      "version": "0.4.2",
+      "version": "0.5.0",
       "components": {
         "skills": [
           {
@@ -127,10 +127,10 @@
           }
         ]
       },
-      "sha": "2603134ca7c45a138756e9d5c42b803b97c1e384"
+      "sha": "dd6ef70384f067cc7ee36e01b729b5884bdb2a02"
     },
     "research-review": {
-      "version": "0.4.2",
+      "version": "0.5.0",
       "components": {
         "skills": [
           {
@@ -139,10 +139,10 @@
           }
         ]
       },
-      "sha": "aed51a39a2f98b0c5d14a3d1e3e1742660c12509"
+      "sha": "ce77cc3b3140aa22a1ce398d74b0ae5848f98897"
     },
     "plan-lifecycle": {
-      "version": "0.4.2",
+      "version": "0.5.0",
       "components": {
         "skills": [
           {
@@ -151,7 +151,7 @@
           }
         ]
       },
-      "sha": "a52ae334dcc2ba83fb04d32e01dbca3a78807ed2"
+      "sha": "e64c1d41dbf9206be4c6026f383e983e1e7f76f6"
     }
   }
 }
