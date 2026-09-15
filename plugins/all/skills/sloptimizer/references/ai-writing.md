@@ -81,8 +81,10 @@ claim stand alone.
 
 ### Binary contrasts
 
+<!-- vale off -->
 "This is not X. It's Y." / "The question isn't X, it's Y." / "Not because X.
 Because Y." State Y directly.
+<!-- vale on -->
 
 ### Negative listing
 
@@ -161,8 +163,10 @@ us," "the market rewards," "the culture shifts." Name the actor.
 
 ### Chatbot residue
 
+<!-- vale off -->
 "I hope this helps," "Let me know if you have questions," "As an AI,"
 "Certainly!" "Great question!" Cut assistant chrome from shipped prose.
+<!-- vale on -->
 
 ### Formatting slop
 
@@ -219,9 +223,11 @@ the section's subject. Raw check: `SloptimizerRaw.FormulaicHeading`.
 
 ### Comma-and clause chains
 
+<!-- vale off -->
 "X is the typed table, and its form is the same for every transport." Two
 independent clauses joined with ", and" when a period would do. Split them, or
 subordinate one clause. Strict raw check: `SloptimizerStrict.CommaAndChain`.
+<!-- vale on -->
 
 ### Framing openers
 

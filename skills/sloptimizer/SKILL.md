@@ -52,7 +52,7 @@ the target is a work item or plan that must become executable.
    - Use `scripts/slop-audit.sh --target headline <paths...>` (or
      `scripts/headline-audit.py --all-lines <paths...>`) when every line of the
      file is a title, such as a titles-only outline or a pasted list of
-     headings. Exit 1 means at least one headline has a finding.
+     headings.
    - Use `scripts/slop-audit.sh --profile results <paths...>` for benchmark or
      comparison prose.
    - Use `scripts/slop-audit.sh --profile strict <paths...>` for house-style
@@ -61,6 +61,9 @@ the target is a work item or plan that must become executable.
      files in a git repo.
    - Use `scripts/redundancy-audit.py <paths...>` when the draft set may repeat
      the same point across files or sections.
+   - Every audit script exits `0` for no findings, `1` for at least one, and
+     `2` for a usage error such as a path that does not exist. A missing path
+     is never a silent pass. See `references/vale.md`.
 4. Apply the rubric:
    - Load `references/examples.md` before a first rewrite, for worked
      before-and-after passages and the sentences an edit must leave alone.

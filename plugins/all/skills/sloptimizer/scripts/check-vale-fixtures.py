@@ -258,6 +258,76 @@ def run_raw_strict_smoke() -> list[str]:
     return []
 
 
+def run_raw_suppression_smoke() -> list[str]:
+    """Fenced code, tilde fences, and vale-off regions must not be audited."""
+    body = "\n".join(
+        [
+            "# Intro",
+            "",
+            "<!-- vale off -->",
+            "It is not slow, it is deliberate.",
+            "The truth is, this is documentation of a pattern.",
+            "<!-- vale on -->",
+            "",
+            "~~~",
+            "The truth is, this sits in a tilde fence.",
+            "~~~",
+            "",
+            "```text",
+            "The truth is, this sits in a backtick fence.",
+            "```",
+            "",
+        ]
+    )
+    with tempfile.TemporaryDirectory() as tmp:
+        path = Path(tmp) / "suppressed.md"
+        path.write_text(body, encoding="utf-8")
+        result = subprocess.run(
+            ["python3", str(RAW_AUDIT), "--profile", "strict", str(path)],
+            check=False,
+            text=True,
+            capture_output=True,
+        )
+    failures = []
+    if result.stdout.strip():
+        failures.append(
+            f"raw suppression smoke: expected no findings, got {result.stdout.strip()!r}"
+        )
+    if result.returncode != 0:
+        failures.append(
+            f"raw suppression smoke: expected exit 0, got {result.returncode}"
+        )
+    return failures
+
+
+def run_raw_exit_status_smoke() -> list[str]:
+    """0 for clean, 1 for findings, 2 for a path that does not exist."""
+    failures = []
+    with tempfile.TemporaryDirectory() as tmp:
+        clean = Path(tmp) / "clean.md"
+        clean.write_text("# Intro\n\nThe worker retries once.\n", encoding="utf-8")
+        hit = Path(tmp) / "hit.md"
+        hit.write_text("# Intro\n\nThe truth is, we shipped it.\n", encoding="utf-8")
+        missing = Path(tmp) / "absent.md"
+        for label, target, expected in (
+            ("clean", clean, 0),
+            ("findings", hit, 1),
+            ("missing", missing, 2),
+        ):
+            result = subprocess.run(
+                ["python3", str(RAW_AUDIT), "--profile", "strict", str(target)],
+                check=False,
+                text=True,
+                capture_output=True,
+            )
+            if result.returncode != expected:
+                failures.append(
+                    f"raw exit status ({label}): expected {expected}, "
+                    f"got {result.returncode}"
+                )
+    return failures
+
+
 def main() -> int:
     cases = json.loads(FIXTURES.read_text(encoding="utf-8"))
     failures: list[str] = []
@@ -273,6 +343,8 @@ def main() -> int:
             )
     failures.extend(run_real_vale_cases(cases))
     failures.extend(run_raw_strict_smoke())
+    failures.extend(run_raw_suppression_smoke())
+    failures.extend(run_raw_exit_status_smoke())
     if failures:
         print("Fixture validation failed:", file=sys.stderr)
         for failure in failures:

@@ -113,7 +113,10 @@ if [[ "${changed}" == true ]]; then
     echo "slop-audit: --changed requires git inside a work tree" >&2
     exit 2
   fi
-  mapfile -t args < <(git diff --name-only --diff-filter=ACMR | grep -E '\.(md|mdx|txt|rst)$' || true)
+  args=()
+  while IFS= read -r changed_file; do
+    [[ -n "${changed_file}" ]] && args+=("${changed_file}")
+  done < <(git diff --name-only --diff-filter=ACMR | grep -E '\.(md|mdx|txt|rst)$' || true)
   if [[ "${#args[@]}" -eq 0 ]]; then
     echo "slop-audit: no changed prose files"
     exit 0
@@ -130,15 +133,38 @@ if [[ "${target}" == headline ]]; then
   exec python3 "${script_dir}/headline-audit.py" --all-lines "${args[@]}"
 fi
 
-mapfile -t vale_args < <(python3 "${script_dir}/prepare-vale-inputs.py" "${tmp_dir}/inputs" "${args[@]}")
+# Write to a file first so the exit status is visible; a process substitution
+# would hide a failure behind the while-read.
+if ! python3 "${script_dir}/prepare-vale-inputs.py" \
+    "${tmp_dir}/inputs" "${args[@]}" > "${tmp_dir}/vale-args"; then
+  exit 2
+fi
+
+vale_args=()
+while IFS= read -r vale_input; do
+  [[ -n "${vale_input}" ]] && vale_args+=("${vale_input}")
+done < "${tmp_dir}/vale-args"
+
+if [[ "${#vale_args[@]}" -eq 0 ]]; then
+  echo "slop-audit: no readable input files" >&2
+  exit 2
+fi
 
 set +e
 vale --no-global --config="${tmp_dir}/.vale.ini" "${vale_args[@]}"
 vale_status=$?
+python3 "${script_dir}/raw-profile-audit.py" --profile "${profile}" "${args[@]}"
+raw_status=$?
+# Section headings are headlines too; Vale rules skip them, so audit them here.
+python3 "${script_dir}/headline-audit.py" "${args[@]}"
+headline_status=$?
 set -e
 
-python3 "${script_dir}/raw-profile-audit.py" --profile "${profile}" "${args[@]}"
-# Section headings are headlines too; Vale rules skip them, so audit them here.
-python3 "${script_dir}/headline-audit.py" "${args[@]}" || true
-
-exit "${vale_status}"
+# 2 from the raw audit means a path could not be read; that is a usage error.
+if [[ "${raw_status}" -eq 2 ]]; then
+  exit 2
+fi
+if [[ "${vale_status}" -ne 0 || "${raw_status}" -ne 0 || "${headline_status}" -ne 0 ]]; then
+  exit 1
+fi
+exit 0

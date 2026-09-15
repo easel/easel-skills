@@ -25,5 +25,26 @@ scripts/slop-audit.sh docs/spec.md
 scripts/slop-audit.sh --changed
 ```
 
-The output is Vale's normal text output. Use the findings as a review aid, not
-as an automatic rewrite contract.
+The output is Vale's normal text output followed by the raw-profile and
+headline findings. Use the findings as a review aid, not as an automatic
+rewrite contract.
+
+## Exit Status
+
+`slop-audit.sh` and the scripts it calls share one contract:
+
+| Code | Meaning |
+|---|---|
+| `0` | No findings. |
+| `1` | At least one finding from Vale, the raw profile, or the headline rules. |
+| `2` | Usage error, including a path that does not exist. |
+| `127` | Vale is not installed. |
+
+A missing path is an error rather than a skip, so a typo cannot read as a
+clean audit. Findings are suggestions, so gate on exit `1` only where the
+house style is enforced.
+
+## Compatibility
+
+The scripts run under bash 3.2, the version macOS ships, so they avoid
+`mapfile` and other bash 4 builtins.
