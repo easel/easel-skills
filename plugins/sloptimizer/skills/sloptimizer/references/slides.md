@@ -11,26 +11,31 @@ checklist below. Each hit is a required edit, not a suggestion.
 ## Detect
 
 Run every text shape against this list. Deterministic owners are in the
-last column: `SloptimizerHeadline.*` and `SloptimizerSlide.*` come from
-`scripts/headline-audit.py --slide`, and the `SloptimizerSlide` Vale style
-runs on body shapes under `slop-audit.sh --target slide`. Name the pattern in
-detect findings.
+last column: `SloptimizerHeadline.*` and `SloptimizerShape.*` come from
+`scripts/headline-audit.py --slide`, and the `SloptimizerExternal` Vale style
+runs on body shapes because the slide target defaults to `--audience
+external`. None of these rules is slide-only: the same label, closer, and
+restatement checks run on documents and web pages, and the external phrase
+lists apply to any customer-facing text with `--audience external`. What is
+slide-specific is the layout (`---` between slides, the title placeholder,
+shape ids) and the rebalance step below. Name the pattern in detect
+findings.
 
 <!-- vale off -->
 | Pattern | Tell | Fix | Owner |
 |---|---|---|---|
 | Container title | The title names a category or grouping box ("Firm capabilities", "Foundations", "Platform layer") instead of a thing. | Title the slide with what it shows. If it shows nothing concrete, the slide should not exist; say so. | `SloptimizerHeadline.ContainerTitle` (slide titles and titles-only outlines; document headings such as `## Overview` are a convention and are not flagged) |
-| Invented status vocabulary | Labels the author coined for a state: "portability reference", "representative workload", "working hypothesis", "proposed contract", "candidate, scope open". | A state the reader already knows: `In use / Built / Specified / Idea / Not adopted / Retired`. | `SloptimizerSlide.StatusJargon` (Vale, body); `SloptimizerHeadline.StatusJargon` (titles, same token list) |
-| Dressed-up hedge | "fit unproven", "scope open", "not committed", "directionally correct", "in flight". | "not built", "not decided", "no owner yet". | `SloptimizerSlide.StatusJargon` |
+| Invented status vocabulary | Labels the author coined for a state: "portability reference", "representative workload", "working hypothesis", "proposed contract", "candidate, scope open". | A state the reader already knows: `In use / Built / Specified / Idea / Not adopted / Retired`. | `SloptimizerExternal.StatusJargon` (Vale, body); `SloptimizerHeadline.StatusJargon` (titles, same token list) |
+| Dressed-up hedge | "fit unproven", "scope open", "not committed", "directionally correct", "in flight". | "not built", "not decided", "no owner yet". | `SloptimizerExternal.StatusJargon` |
 | Self-justifying section | "Why we control it", "What stays fixed", "Design principles served P3 P4 P7", "How to read this slide". The slide argues for itself. | Delete the section. If one fact in it is load-bearing, move it into the subtitle. | `SelfJustifying` (title or shape) |
-| Aphoristic closer | A bottom line that sounds like a quote: "X is a request, not a capability", "That is what makes it portable". | Delete. Do not replace it with a different aphorism. | `SloptimizerSlide.Aphorism`, `SloptimizerSlide.ContrastiveReversal` |
-| Restatement stack | Subtitle, banner, and takeaway say the same idea in different words. | Keep one shape; delete the other two. | `SloptimizerSlide.Restatement` catches lexical overlap on one slide; paraphrase is editorial |
-| Compound coinage and marketing register | Modifier-noun coinages the reader must decode ("matter-aware", "governed conversational access") and marketing adjectives (leverage, differentiated, seamless, robust, universal experience). | The plain noun or verb: "firm-owned", "checked on every call", "the interface the firm controls". | `SloptimizerSlide.MarketingRegister` (Vale, body); `Sloptimizer.UnsupportedClaim`, `Sloptimizer.AISlop`; coinages are editorial |
-| Trailing commentary | The second sentence explains why the first is there: "Verifies citations. Built as the worked example for moving a check between products." | Keep the first sentence. If the second carries a status, move it into the status label. | `SloptimizerSlide.TrailingCommentary` |
+| Aphoristic closer | A bottom line that sounds like a quote: "X is a request, not a capability", "That is what makes it portable". | Delete. Do not replace it with a different aphorism. | `SloptimizerShape.Aphorism`, `SloptimizerShape.ContrastiveReversal` |
+| Restatement stack | Subtitle, banner, and takeaway say the same idea in different words. | Keep one shape; delete the other two. | `SloptimizerShape.Restatement` catches lexical overlap on one slide; paraphrase is editorial |
+| Compound coinage and marketing register | Modifier-noun coinages the reader must decode ("matter-aware", "governed conversational access") and marketing adjectives (leverage, differentiated, seamless, robust, universal experience). | The plain noun or verb: "firm-owned", "checked on every call", "the interface the firm controls". | `SloptimizerExternal.MarketingRegister` (Vale, body); `Sloptimizer.UnsupportedClaim`, `Sloptimizer.AISlop`; coinages are editorial |
+| Trailing commentary | The second sentence explains why the first is there: "Verifies citations. Built as the worked example for moving a check between products." | Keep the first sentence. If the second carries a status, move it into the status label. | `SloptimizerShape.TrailingCommentary` |
 | Unsourced number | A count the audience cannot trace ("102 use cases, 183 demos"). | Cut unless the user confirms the source and wants it kept. | Editorial; the user's call |
 | Stale name | Retired brands, old product names, "naming TBD". | Use the current name; flag to the user if unsure. | Editorial; `tbd` is in `StatusJargon` |
-| Shouting label | A letterspaced all-caps section label that tells the reader what to think: "WHAT EXISTS AND WHERE IT STANDS", "WHY THE FIRM OWNS IT". | Shorten to a plain noun ("Current list", "To add one") or delete. A two-word status label in caps (`IN USE`) is fine. | `SloptimizerSlide.ShoutingLabel` |
-| Internal taxonomy code | Zone, plane, pillar, and principle codes in body text ("Zone 6", "Plane 11", "P3 P4 P7"). The reader does not have the map. | Drop the code and name the thing. | `SloptimizerSlide.InternalTaxonomy` (Vale, body); `SloptimizerHeadline.Taxonomy` (titles) |
+| Shouting label | A letterspaced all-caps section label that tells the reader what to think: "WHAT EXISTS AND WHERE IT STANDS", "WHY THE FIRM OWNS IT". | Shorten to a plain noun ("Current list", "To add one") or delete. A two-word status label in caps (`IN USE`) is fine. | `SloptimizerShape.ShoutingLabel` |
+| Internal taxonomy code | Zone, plane, pillar, and principle codes in body text ("Zone 6", "Plane 11", "P3 P4 P7"). The reader does not have the map. | Drop the code and name the thing. | `SloptimizerExternal.InternalTaxonomy` (Vale, body); `SloptimizerHeadline.Taxonomy` (titles) |
 <!-- vale on -->
 
 The title also gets every rule in `references/headlines.md`; the shape rules
@@ -97,4 +102,5 @@ scripts/pptx-text.py deck.pptx > deck.md          # the extraction alone, shape 
 
 Exit 1 means at least one title or shape has a finding. Without Vale on the
 path the body-text phrase rules are skipped and the title and shape rules
-still run.
+still run. Pass `--audience internal` for a deck that stays inside the team
+and uses its own status vocabulary.

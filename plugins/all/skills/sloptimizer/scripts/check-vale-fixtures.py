@@ -22,10 +22,10 @@ PROFILE_STYLES = {
     "results": ["Sloptimizer", "SloptimizerResults"],
     "strict": ["Sloptimizer", "SloptimizerResults"],
 }
-# `--target slide` adds the slide-register style on top of the profile styles.
-TARGET_STYLES = {
-    "prose": [],
-    "slide": ["SloptimizerSlide"],
+# `--audience external` adds the external-register style on top of the profile styles.
+AUDIENCE_STYLES = {
+    "internal": [],
+    "external": ["SloptimizerExternal"],
 }
 
 
@@ -173,9 +173,9 @@ def find_raw_rules(text: str, profile: str) -> set[str]:
     return found
 
 
-def rules_for_profile(profile: str, target: str = "prose") -> list[dict[str, object]]:
+def rules_for_profile(profile: str, audience: str = "internal") -> list[dict[str, object]]:
     rules: list[dict[str, object]] = []
-    for style in PROFILE_STYLES[profile] + TARGET_STYLES[target]:
+    for style in PROFILE_STYLES[profile] + AUDIENCE_STYLES[audience]:
         rules.extend(parse_rule(path) for path in sorted((STYLES_ROOT / style).glob("*.yml")))
     return rules
 
@@ -183,7 +183,7 @@ def rules_for_profile(profile: str, target: str = "prose") -> list[dict[str, obj
 def normalize_audit_checks(raw: str) -> set[str]:
     checks: set[str] = set()
     for match in re.finditer(
-        r"\b(?:Sloptimizer|SloptimizerResults|SloptimizerSlide|SloptimizerRaw|SloptimizerStrict|SloptimizerHeadline)\.([A-Za-z]+)\b",
+        r"\b(?:Sloptimizer|SloptimizerResults|SloptimizerExternal|SloptimizerShape|SloptimizerRaw|SloptimizerStrict|SloptimizerHeadline)\.([A-Za-z]+)\b",
         raw,
     ):
         checks.add(match.group(1))
@@ -201,7 +201,7 @@ def run_real_vale_cases(cases: list[dict[str, object]]) -> list[str]:
             if case.get("profile") == "strict":
                 continue
             profile = str(case.get("profile", "default"))
-            target = str(case.get("target", "prose"))
+            audience = str(case.get("audience", "internal"))
             path = tmp_path / f"case-{index}.md"
             path.write_text(str(case["text"]), encoding="utf-8")
             result = subprocess.run(
@@ -209,8 +209,8 @@ def run_real_vale_cases(cases: list[dict[str, object]]) -> list[str]:
                     str(SLOP_AUDIT),
                     "--profile",
                     profile,
-                    "--target",
-                    target,
+                    "--audience",
+                    audience,
                     str(path),
                 ],
                 check=False,
@@ -340,14 +340,14 @@ def main() -> int:
     cases = json.loads(FIXTURES.read_text(encoding="utf-8"))
     failures: list[str] = []
     rule_cache = {
-        (profile, target): rules_for_profile(profile, target)
+        (profile, audience): rules_for_profile(profile, audience)
         for profile in PROFILE_STYLES
-        for target in TARGET_STYLES
+        for audience in AUDIENCE_STYLES
     }
     for case in cases:
         profile = str(case.get("profile", "default"))
-        target = str(case.get("target", "prose"))
-        rules = rule_cache[(profile, target)]
+        audience = str(case.get("audience", "internal"))
+        rules = rule_cache[(profile, audience)]
         actual = find_rules(case["text"], rules) | find_raw_rules(case["text"], profile)
         expected = set(case["expected_rules"])
         if actual != expected:

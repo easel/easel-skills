@@ -14,12 +14,12 @@ The bundled styles are stored under:
 ```text
 assets/vale/styles/Sloptimizer/          every profile
 assets/vale/styles/SloptimizerResults/   --profile results and strict
-assets/vale/styles/SloptimizerSlide/     --target slide, added to any profile
+assets/vale/styles/SloptimizerExternal/  --audience external, added to any profile (slide target default)
 ```
 
 Write tokens as RE2-compatible regular expressions (no lookaround; inline
 flags such as `(?i:...)` are fine). `scripts/headline-audit.py` reads the
-`tokens` lists of `ManneredProse.yml` and the `SloptimizerSlide` rules with
+`tokens` lists of `ManneredProse.yml` and the `SloptimizerExternal` rules with
 Python's `re`, so a token must compile in both engines.
 
 The script generates a temporary `.vale.ini` that points at the bundled style,
@@ -30,6 +30,7 @@ so projects do not need to commit Vale configuration to use the skill.
 ```bash
 scripts/slop-audit.sh docs/spec.md
 scripts/slop-audit.sh --changed
+scripts/slop-audit.sh --audience external docs/customer-guide.md
 scripts/slop-audit.sh --target slide deck.md
 scripts/slop-audit.sh deck.pptx
 ```

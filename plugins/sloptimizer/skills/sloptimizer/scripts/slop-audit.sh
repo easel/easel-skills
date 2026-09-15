@@ -5,12 +5,15 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 skill_dir="$(cd "${script_dir}/.." && pwd)"
 vale_assets="${skill_dir}/assets/vale"
 
-usage="usage: slop-audit.sh [--profile default|results|strict] [--target prose|headline|slide] [--changed|PATH ...]
+usage="usage: slop-audit.sh [--profile default|results|strict] [--target prose|headline|slide] [--audience internal|external] [--changed|PATH ...]
+       --audience external adds the SloptimizerExternal rules (invented status, taxonomy codes, marketing register)
+       for text a reader outside the team will see; the slide target defaults to external.
        PATH may be a .pptx deck; it is converted with scripts/pptx-text.py and audited as a slide target."
 
 profile="default"
 target="prose"
 target_explicit=false
+audience=""
 changed=false
 args=()
 while [[ "$#" -gt 0 ]]; do
@@ -31,6 +34,18 @@ while [[ "$#" -gt 0 ]]; do
     --target=*)
       target="${1#--target=}"
       target_explicit=true
+      shift
+      ;;
+    --audience)
+      if [[ -z "${2:-}" ]]; then
+        echo "slop-audit: --audience requires internal or external" >&2
+        exit 2
+      fi
+      audience="$2"
+      shift 2
+      ;;
+    --audience=*)
+      audience="${1#--audience=}"
       shift
       ;;
     --profile)
@@ -130,10 +145,22 @@ case "${profile}" in
     ;;
 esac
 
-# Slide text is short and label-heavy, so it also gets the slide-register rules
-# (invented status vocabulary, internal taxonomy codes, marketing adjectives).
-if [[ "${target}" == slide ]]; then
-  based_on="${based_on}, SloptimizerSlide"
+# Audience is independent of layout: a deck is read by people outside the team,
+# so the slide target defaults to external; a customer-facing document or a web
+# page opts in with --audience external.
+case "${audience}" in
+  "")
+    if [[ "${target}" == slide ]]; then audience="external"; else audience="internal"; fi
+    ;;
+  internal|external) ;;
+  *)
+    echo "slop-audit: unknown audience '${audience}' (expected internal or external)" >&2
+    exit 2
+    ;;
+esac
+audience_args=(--audience "${audience}")
+if [[ "${audience}" == external ]]; then
+  based_on="${based_on}, SloptimizerExternal"
 fi
 
 cat > "${tmp_dir}/.vale.ini" <<EOF
@@ -181,7 +208,7 @@ fi
 
 # A titles-only outline or a list of one-line claims: every line is a headline.
 if [[ "${target}" == headline ]]; then
-  exec python3 "${script_dir}/headline-audit.py" --all-lines "${args[@]}"
+  exec python3 "${script_dir}/headline-audit.py" --all-lines "${audience_args[@]}" "${args[@]}"
 fi
 
 vale_status=0
@@ -224,10 +251,10 @@ fi
 set +e
 if [[ "${target}" == slide ]]; then
   # Titles get the headline rules; every other text shape gets the slide rules.
-  python3 "${script_dir}/headline-audit.py" --slide "${args[@]}" > "${tmp_dir}/headline.out"
+  python3 "${script_dir}/headline-audit.py" --slide "${audience_args[@]}" "${args[@]}" > "${tmp_dir}/headline.out"
 else
-  # Section headings are headlines too; Vale rules skip them, so audit them here.
-  python3 "${script_dir}/headline-audit.py" "${args[@]}" > "${tmp_dir}/headline.out"
+  # Headings, standalone labels, and within-section restatement; Vale sees none of them.
+  python3 "${script_dir}/headline-audit.py" "${audience_args[@]}" "${args[@]}" > "${tmp_dir}/headline.out"
 fi
 headline_status=$?
 set -e

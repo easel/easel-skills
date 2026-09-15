@@ -51,7 +51,15 @@ the target is a work item or plan that must become executable.
    that; the checks below are the only non-judgment signal the skill has, so
    do not skip them for pasted drafts.
    - Use `scripts/slop-audit.sh <paths...>` for Vale-backed prose findings.
-     Markdown headings in those files also go through the headline rules.
+     Markdown headings in those files also go through the headline rules,
+     standalone labels (a web section eyebrow, a card title) through the
+     label rules, and paragraphs in one section through the restatement
+     check.
+   - Add `--audience external` for anything a reader outside the team will
+     see: a customer-facing document, a web page, a roadmap. It adds the
+     invented-status, internal-taxonomy, and marketing-register rules and
+     turns on the container-title check for headings. Layout and audience
+     are independent; the slide target defaults to external.
    - Use `scripts/slop-audit.sh --target headline <paths...>` (or
      `scripts/headline-audit.py --all-lines <paths...>`) when every line of the
      file is a title, such as a titles-only outline or a pasted list of
@@ -59,8 +67,8 @@ the target is a work item or plan that must become executable.
    - Use `scripts/slop-audit.sh --target slide <deck.md>` for a Markdown deck
      (`---` between slides) and `scripts/slop-audit.sh <deck.pptx>` for a
      PowerPoint file, which `scripts/pptx-text.py` extracts with shape ids.
-     Titles get the headline rules, other shapes the slide rules, body text
-     the prose rules plus the slide-register phrase lists.
+     Titles get the headline rules, other shapes the label and closer rules,
+     body text the prose rules plus the external-audience phrase lists.
    - Use `scripts/slop-audit.sh --profile results <paths...>` for benchmark or
      comparison prose.
    - Use `scripts/slop-audit.sh --profile strict <paths...>` for house-style

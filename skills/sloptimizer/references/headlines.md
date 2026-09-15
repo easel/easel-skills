@@ -30,10 +30,23 @@ findings.
 | `InventoryCount` | A verb of possession or coverage followed by a count of plural nouns: `ships with 53 templates`, `routes twenty-one modes`, `covers six hosts`. The size of the catalog is body; a count that is an outcome (`found three drifted specs`) is fine. | "HELIX answers with 53 document templates across a seven-activity loop" |
 | `Hedge` | A filler or softening adverb inside the title: `also`, `just`, `simply`, `really`, `actually`, `essentially`, `very`, `perhaps`, `somewhat`. | "Every layer also yields documents people outside engineering read" |
 | `Length` | More than 10 words (`--max-words`). The target is 8 or fewer: a title that fits one line at 36 pt. | any 11-word title |
-| `ContainerTitle` | The title is a category label, four words or fewer, ending in a grouping noun: `capabilities`, `foundations`, `layer`, `considerations`, `next steps`. Slide titles and titles-only outlines only (`--slide`, `--all-lines`); `## Overview` in a document is a convention. | "Firm capabilities" |
-| `SelfJustifying` | The title argues for the slide: `How to read this slide`, `Why we control it`, `Design principles served`, `What stays fixed`. Same modes as `ContainerTitle`. | "Why we own the interface" |
-| `ShoutingLabel` | An all-caps label of four or more words, or two or more opening with `WHAT`/`WHY`/`HOW`. A two-word status label in caps is fine. Same modes. | "WHAT EXISTS AND WHERE IT STANDS" |
-| `StatusJargon`, `Taxonomy`, `Marketing` | Under `--slide` only: the `SloptimizerSlide` Vale phrase lists (invented status labels, zone/plane/principle codes, marketing adjectives) applied to titles, which Vale's `~heading` scope never sees. | "Working hypothesis" |
+| `ContainerTitle` | The title is a category label, four words or fewer, ending in a grouping noun: `capabilities`, `foundations`, `layer`, `considerations`, `next steps`. On slide titles, titles-only outlines, standalone labels, and headings under `--audience external`; `## Overview` in an internal document is a convention and is not flagged. | "Firm capabilities" |
+| `SelfJustifying` | The title argues for the slide or section: `How to read this slide`, `Why we control it`, `Design principles served`, `What stays fixed`. Same scope as `ContainerTitle`. | "Why we own the interface" |
+| `ShoutingLabel` | An all-caps label of four or more words, or two or more opening with `WHAT`/`WHY`/`HOW`. A two-word status label in caps is fine. Every layout and audience. | "WHAT EXISTS AND WHERE IT STANDS" |
+| `StatusJargon`, `Taxonomy`, `Marketing` | Under `--audience external` (the default for `--slide` and `--all-lines`): the `SloptimizerExternal` Vale phrase lists (invented status labels, zone/plane/principle codes, marketing adjectives) applied to headings, which Vale's `~heading` scope never sees. | "Working hypothesis" |
+
+## Labels And Sections
+
+Titles are not the only title-shaped text. A web page's section eyebrow
+("WHAT WE DO"), a card title, a caption, or a pull-quote is a standalone
+short line with no terminal punctuation, and `headline-audit.py` treats any
+such line in any Markdown file as a label: it gets the container,
+self-justifying, and shouting checks plus the closer rules
+(`SloptimizerShape.*`) whatever the target. List items are parallel by
+design and are skipped. Within one heading section (or one slide), two
+units that share half their content words are reported as
+`SloptimizerShape.Restatement`; `redundancy-audit.py` remains the cross-file
+check. The deck-specific pieces are in `references/slides.md`.
 
 The audit is a suggestion, not proof. A title can pass every rule and still be
 a label; a title can trip `Triplet` on a legitimate three-item subject. Read

@@ -2,12 +2,13 @@
 """Run Sloptimizer headline and slide fixture checks.
 
 Fixture modes in tests/fixtures/headline-cases.json:
-  headline    (default) one title through audit_headline()
-  slide-title one slide title through audit_headline() with the label and slide-token rules
-  shape       one text shape through audit_shape()
-  headings    a Markdown file through headline-audit.py
-  all-lines   a titles-only outline through headline-audit.py --all-lines
-  slide       a deck file through headline-audit.py --slide
+  headline          (default) one internal-document heading through audit_headline()
+  slide-title       one title through audit_headline() with the container checks and external phrase lists
+  shape             one standalone unit (slide shape, web label) through audit_shape()
+  headings          a Markdown document through headline-audit.py (internal audience)
+  headings-external the same with --audience external
+  all-lines         a titles-only outline through headline-audit.py --all-lines
+  slide             a deck file through headline-audit.py --slide
 Then a .pptx built from raw XML goes through scripts/pptx-text.py and the slide audit.
 """
 from __future__ import annotations
@@ -44,6 +45,8 @@ def run_script(text: str, mode: str) -> set[str]:
             cmd.append("--all-lines")
         elif mode == "slide":
             cmd.append("--slide")
+        elif mode == "headings-external":
+            cmd += ["--audience", "external"]
         result = subprocess.run(cmd + [str(path)], check=False, text=True, capture_output=True)
     findings = json.loads(result.stdout or "[]")
     rules = {f["rule"].split(".", 1)[1] for f in findings}
@@ -101,7 +104,7 @@ def run_pptx_smoke() -> list[str]:
         audit = subprocess.run(["python3", str(HEADLINE_AUDIT), "--slide", "--format", "json", str(md)],
                                check=False, text=True, capture_output=True)
         rules = {f["rule"] for f in json.loads(audit.stdout or "[]")}
-    expected = {"SloptimizerHeadline.ContainerTitle", "SloptimizerSlide.ShoutingLabel", "SloptimizerSlide.TrailingCommentary"}
+    expected = {"SloptimizerHeadline.ContainerTitle", "SloptimizerShape.ShoutingLabel", "SloptimizerShape.TrailingCommentary"}
     if rules != expected:
         return [f"pptx smoke: slide audit expected {sorted(expected)}, got {sorted(rules)}"]
     return []
@@ -117,7 +120,7 @@ def main() -> int:
         if mode == "headline":
             actual = {rule for rule, _, _ in audit.audit_headline(case["headline"])}
         elif mode == "slide-title":
-            actual = {rule for rule, _, _ in audit.audit_headline(case["headline"], label_rules=True, slide_tokens=True)}
+            actual = {rule for rule, _, _ in audit.audit_headline(case["headline"], label_rules=True, external=True)}
         elif mode == "shape":
             actual = {rule for rule, _, _ in audit.audit_shape(case["headline"])}
         else:

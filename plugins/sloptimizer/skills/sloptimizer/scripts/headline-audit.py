@@ -11,25 +11,37 @@ inventory count (the size of a catalog offered as the claim), and the hedge
 word that softens a claim instead of scoping it.
 
 Usage:
-    headline-audit.py [--all-lines | --slide] [--max-words N] [--format text|json] PATH...
+    headline-audit.py [--all-lines | --slide] [--audience internal|external]
+                      [--max-words N] [--format text|json] PATH...
 
-By default every Markdown heading (`#` to `######`) is a headline; a leading
-unit number (`### 3. Title`) is stripped. With `--all-lines` every non-blank
-line outside code fences, tables, and frontmatter is a headline, after
-stripping list markers, which is the shape of a titles-only outline.
+Two independent axes:
 
+Layout (how the file is cut into units). By default every Markdown heading
+(`#` to `######`) is a headline (a leading unit number, `### 3. Title`, is
+stripped), every standalone short line with no terminal punctuation is a
+label (a web eyebrow, a card title, a caption), and every other blank-line
+separated block is a paragraph. Headings start a new section. With
+`--all-lines` every non-blank line is a headline (a titles-only outline).
 With `--slide` the file is a deck: `---` separates slides, each heading is a
-slide title and gets the headline rules, and every other non-blank line is a
-text shape (subtitle, card label, banner, closer) and gets the shape rules
-that Vale cannot see: the shouting all-caps label, the container title, the
-self-justifying section, trailing commentary on the previous sentence, and
-lexical restatement of another shape on the same slide. `scripts/pptx-text.py`
-produces this layout from a .pptx. Titles-only outlines (`--all-lines`) get
-the container and self-justifying checks too, because a slide title that is a
-category label is the first slide tell; ordinary document headings do not,
-because `## Overview` is a documentation convention.
+slide title, and every other non-blank line is a text shape.
+`scripts/pptx-text.py` produces that layout from a .pptx.
 
-Exit 1 when any headline or shape has a finding, 0 otherwise.
+Audience (which register rules apply). `--audience external` adds the
+`SloptimizerExternal` phrase lists (invented status vocabulary, internal
+taxonomy codes, marketing register) to headlines, and turns on the container
+and self-justifying checks for Markdown headings, which stay off for
+internal documents because `## Overview` and `## Rationale` are conventions
+there. `--slide` and `--all-lines` imply `external` unless `--audience
+internal` is given.
+
+Rules by unit: headlines get `SloptimizerHeadline.*`; labels and slide shapes
+get `SloptimizerShape.*` (shouting label, container title, self-justifying
+section, closer shapes, trailing commentary); and within one section or
+slide, any two units that restate each other lexically get
+`SloptimizerShape.Restatement`. Vale owns the phrase lists on body text, so
+labels do not repeat them here.
+
+Exit 1 when any unit has a finding, 0 otherwise.
 """
 from __future__ import annotations
 
@@ -40,19 +52,20 @@ import sys
 from pathlib import Path
 
 PREFIX = "SloptimizerHeadline"
-SHAPE_PREFIX = "SloptimizerSlide"
+SHAPE_PREFIX = "SloptimizerShape"
+LABEL_MAX_WORDS = 8
 DEFAULT_MAX_WORDS = 10
 TARGET_WORDS = 8
 STYLES = Path(__file__).resolve().parent.parent / "assets/vale/styles"
 MANNERED_RULE = STYLES / "Sloptimizer/ManneredProse.yml"
-# Slide-register phrase lists live in the SloptimizerSlide Vale style; headings
-# are outside those rules' scope, so slide titles get the same tokens here.
-SLIDE_TOKEN_RULES = (
-    ("StatusJargon", STYLES / "SloptimizerSlide/StatusJargon.yml",
+# External-audience phrase lists live in the SloptimizerExternal Vale style;
+# headings are outside those rules' scope, so titles get the same tokens here.
+EXTERNAL_TOKEN_RULES = (
+    ("StatusJargon", STYLES / "SloptimizerExternal/StatusJargon.yml",
      "Invented status. Use a state the reader already knows: in use, built, specified, idea, not adopted, retired."),
-    ("Taxonomy", STYLES / "SloptimizerSlide/InternalTaxonomy.yml",
+    ("Taxonomy", STYLES / "SloptimizerExternal/InternalTaxonomy.yml",
      "Internal taxonomy code. The reader does not have the map; name the thing or drop the code."),
-    ("Marketing", STYLES / "SloptimizerSlide/MarketingRegister.yml",
+    ("Marketing", STYLES / "SloptimizerExternal/MarketingRegister.yml",
      "Marketing register. Say the plain noun or verb, or the fact the reader can check."),
 )
 RESTATEMENT_THRESHOLD = 0.5
@@ -297,11 +310,12 @@ def _self_justifying(h: str) -> str | None:
 def _shouting_label(h: str) -> str | None:
     """An all-caps section label long enough to be a sentence telling the reader what to think."""
     letters = re.sub(r"[^A-Za-z]", "", h)
-    if len(letters) < 12 or letters != letters.upper():
+    if len(letters) < 6 or letters != letters.upper():
         return None
     n = words(h)
     starts_question = re.match(r"^(?:WHAT|WHY|HOW|WHERE|WHEN|WHO)\b", h.strip())
-    if n >= 4 or (n >= 2 and starts_question):
+    # "WHAT WE DO" is the web eyebrow; "IN USE" and "API SDK CLI" are labels and pass.
+    if (n >= 4 and len(letters) >= 12) or (n >= 2 and starts_question):
         return h.strip()
     return None
 
@@ -336,28 +350,33 @@ def _hedge(h: str) -> str | None:
     return m.group(0) if m else None
 
 
-SLIDE_TOKENS = tuple((rule, _vale_tokens(path), message) for rule, path, message in SLIDE_TOKEN_RULES)
+EXTERNAL_TOKENS = tuple((rule, _vale_tokens(path), message) for rule, path, message in EXTERNAL_TOKEN_RULES)
 
 
-def audit_label(h: str) -> list[tuple[str, str, str]]:
-    """Rules for a title or label that stands alone on a slide or in a titles-only outline."""
+def audit_label(h: str, *, container: bool = True) -> list[tuple[str, str, str]]:
+    """Rules for a title or label that stands alone: slide title, web eyebrow, card label.
+
+    `container` gates the container-title and self-justifying checks, which are
+    off for Markdown headings in internal documents (`## Overview` is a convention).
+    """
     out: list[tuple[str, str, str]] = []
-    m = _container_title(h)
-    if m:
-        out.append(("ContainerTitle", "Container title. Name what the slide shows, not the category it belongs to.", m))
-    m = _self_justifying(h)
-    if m:
-        out.append(("SelfJustifying", "Self-justifying section. The slide is arguing for itself; delete it or move the one load-bearing fact into the subtitle.", m))
+    if container:
+        m = _container_title(h)
+        if m:
+            out.append(("ContainerTitle", "Container title. Name what the slide or section shows, not the category it belongs to.", m))
+        m = _self_justifying(h)
+        if m:
+            out.append(("SelfJustifying", "Self-justifying section. The text is arguing for itself; delete it or move the one load-bearing fact into the subtitle.", m))
     m = _shouting_label(h)
     if m:
         out.append(("ShoutingLabel", "All-caps label telling the reader what to think. Shorten to a plain noun or delete.", m))
     return out
 
 
-def audit_slide_tokens(h: str) -> list[tuple[str, str, str]]:
-    """The SloptimizerSlide Vale phrase lists, for headings Vale never sees."""
+def audit_external_tokens(h: str) -> list[tuple[str, str, str]]:
+    """The SloptimizerExternal Vale phrase lists, for headings Vale never sees."""
     out: list[tuple[str, str, str]] = []
-    for rule, tokens, message in SLIDE_TOKENS:
+    for rule, tokens, message in EXTERNAL_TOKENS:
         m = _first(h, tokens)
         if m:
             out.append((rule, message, m))
@@ -365,7 +384,7 @@ def audit_slide_tokens(h: str) -> list[tuple[str, str, str]]:
 
 
 def audit_shape(h: str) -> list[tuple[str, str, str]]:
-    """Rules for a non-title text shape on a slide: subtitle, card, banner, closer."""
+    """Rules for a standalone non-title unit: a slide shape, a web label, a caption."""
     h = h.strip()
     out = audit_label(h)
     m = _reversal(h)
@@ -384,18 +403,21 @@ def audit_shape(h: str) -> list[tuple[str, str, str]]:
 
 
 def audit_headline(h: str, max_words: int = DEFAULT_MAX_WORDS, *, label_rules: bool = False,
-                   slide_tokens: bool = False) -> list[tuple[str, str, str]]:
+                   external: bool = False, slide_tokens: bool | None = None) -> list[tuple[str, str, str]]:
     """Return (rule, message, match) findings for one headline.
 
-    `label_rules` adds the container/self-justifying/shouting checks (slide titles
-    and titles-only outlines); `slide_tokens` adds the SloptimizerSlide phrase lists.
+    `label_rules` turns on the container and self-justifying checks (slide
+    titles, titles-only outlines, external documents); the shouting-label check
+    always runs. `external` adds the SloptimizerExternal phrase lists.
+    `slide_tokens` is the pre-rename spelling of `external`.
     """
+    if slide_tokens is not None:
+        external = slide_tokens
     h = h.strip()
     out: list[tuple[str, str, str]] = []
-    if label_rules:
-        out.extend(audit_label(h))
-    if slide_tokens:
-        out.extend(audit_slide_tokens(h))
+    out.extend(audit_label(h, container=label_rules))
+    if external:
+        out.extend(audit_external_tokens(h))
     m = _reversal(h)
     if m:
         out.append(("ContrastiveReversal", "Contrastive reversal. State the positive claim and drop the 'not X' half.", m))
@@ -446,57 +468,112 @@ def scrub_inline(text: str) -> str:
     return re.sub(r"\*\*([^*]+)\*\*", r"\1", text)
 
 
-def iter_headlines(path: Path, all_lines: bool, slide: bool = False):
-    """Yield (line_number, text, kind, slide_index, shape).
+SKIP_PREFIXES = ("|", "<!--", "**", "![", "<", ">", "{{", "[^")
+LIST_MARKER = re.compile(r"^(?:[-*+]|\d+[.)])\s+")
+SHAPE_MARKER = re.compile(r'^<!--\s*(slide \d+: (?:shape \S+(?: "[^"]*")?|table))\s*-->$')
 
-    kind is "headline" for a heading (or every line under --all-lines) and
-    "shape" for a non-heading line under --slide. slide_index increments at
-    each `---` separator or `<!-- slide N -->` marker so restatement is checked
-    within one slide only. shape is the last `<!-- slide N: shape ID "Name" -->`
-    marker written by pptx-text.py, or "" when the file has none.
+
+def is_label(text: str) -> bool:
+    """A standalone short line with no terminal punctuation: a title-shaped unit that is not a heading."""
+    if words(text) > LABEL_MAX_WORDS or not re.search(r"[A-Za-z]", text):
+        return False
+    return not re.search(r"[.!?;:,]$", text)
+
+
+def iter_units(path: Path, all_lines: bool = False, slide: bool = False):
+    """Yield (line_number, text, kind, section, shape_marker) for one file.
+
+    kind is "headline" for a heading (or every line under --all-lines),
+    "shape" for a slide text shape or a document label, and "paragraph" for a
+    blank-line separated prose block (used for restatement only). section
+    increments at each heading in a document and at each `---` separator or
+    `<!-- slide N -->` marker in a deck, so restatement is checked within one
+    section or slide only. shape_marker is the last `<!-- slide N: shape ID
+    "Name" -->` comment written by pptx-text.py, or "".
     """
+    lines = path.read_text(encoding="utf-8").splitlines()
     in_fence = False
     in_frontmatter = False
-    slide_index = 1
+    section = 1
     shape = ""
-    for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-        if line_number == 1 and line.strip() == "---":
+    para: list[tuple[int, str]] = []
+
+    def flush():
+        nonlocal para
+        if not para:
+            return
+        first_line, first_text = para[0]
+        if len(para) == 1 and is_label(first_text):
+            yield first_line, first_text, "shape", section, shape
+        else:
+            yield first_line, " ".join(t for _, t in para), "paragraph", section, shape
+        para = []
+
+    for line_number, line in enumerate(lines, 1):
+        stripped = line.strip()
+        if line_number == 1 and stripped == "---":
             in_frontmatter = True
             continue
         if in_frontmatter:
-            if line.strip() == "---":
+            if stripped == "---":
                 in_frontmatter = False
             continue
         if re.match(r"^\s*```", line):
             in_fence = not in_fence
+            yield from flush()
             continue
         if in_fence:
             continue
-        stripped = line.strip()
+        if not stripped:
+            yield from flush()
+            continue
         if slide and (re.fullmatch(r"-{3,}|\*{3,}", stripped) or re.match(r"^<!--\s*slide \d+\s*-->$", stripped)):
-            slide_index += 1
+            yield from flush()
+            section += 1
             shape = ""
             continue
-        marker = re.match(r'^<!--\s*(slide \d+: (?:shape \S+(?: "[^"]*")?|table))\s*-->$', stripped)
-        if slide and marker:
-            shape = marker.group(1)
+        marker = SHAPE_MARKER.match(stripped)
+        if marker:
+            yield from flush()
+            if slide:
+                shape = marker.group(1)
             continue
         heading = re.match(r"^\s*#{1,6}\s+(.*?)\s*#*\s*$", line)
-        kind = "headline"
         if heading:
-            text = heading.group(1)
-        elif all_lines or slide:
-            if not stripped or stripped.startswith(("|", "<!--", "---", "**", "![", "<")):
-                continue
-            text = re.sub(r"^(?:[-*+]|\d+[.)])\s+", "", stripped)
-            text = re.sub(r"^>\s+", "", text)
-            if slide:
-                kind = "shape"
-        else:
+            yield from flush()
+            if not slide and not all_lines:
+                section += 1
+            text = re.sub(r"^\d+\.\s+", "", scrub_inline(heading.group(1))).strip()
+            if text:
+                yield line_number, text, "headline", section, shape
             continue
-        text = re.sub(r"^\d+\.\s+", "", scrub_inline(text)).strip()
-        if text:
-            yield line_number, text, kind, slide_index, shape
+        if stripped.startswith(SKIP_PREFIXES) or re.fullmatch(r"-{3,}|\*{3,}|_{3,}", stripped):
+            yield from flush()
+            continue
+        if all_lines:
+            text = scrub_inline(LIST_MARKER.sub("", stripped)).strip()
+            text = re.sub(r"^\d+\.\s+", "", text)
+            if text:
+                yield line_number, text, "headline", section, shape
+            continue
+        if slide:
+            text = scrub_inline(LIST_MARKER.sub("", stripped)).strip()
+            if text:
+                yield line_number, text, "shape", section, shape
+            continue
+        if LIST_MARKER.match(stripped):
+            # List items are parallel by design; not labels, not restatement candidates.
+            yield from flush()
+            continue
+        para.append((line_number, scrub_inline(stripped)))
+    yield from flush()
+
+
+def iter_headlines(path: Path, all_lines: bool, slide: bool = False):
+    """Headline units only; kept for callers of the pre-refactor name."""
+    for line_number, text, kind, section, shape in iter_units(path, all_lines, slide):
+        if kind == "headline":
+            yield line_number, text, kind, section, shape
 
 
 def main() -> int:
@@ -505,37 +582,45 @@ def main() -> int:
     mode.add_argument("--all-lines", action="store_true", help="treat every non-blank line as a headline")
     mode.add_argument("--slide", action="store_true",
                       help="deck layout: headings are slide titles, other lines are text shapes, --- separates slides")
+    parser.add_argument("--audience", choices=("internal", "external"), default=None,
+                        help="external adds the SloptimizerExternal phrase lists and the container checks on headings; "
+                             "--slide and --all-lines default to external")
     parser.add_argument("--max-words", type=int, default=DEFAULT_MAX_WORDS)
     parser.add_argument("--format", choices=("text", "json"), default="text")
     parser.add_argument("paths", nargs="+")
     args = parser.parse_args()
+
+    external = args.audience == "external" or (args.audience is None and (args.slide or args.all_lines))
+    label_rules = args.slide or args.all_lines or external
 
     findings: list[dict] = []
     for raw in args.paths:
         path = Path(raw)
         if not path.is_file():
             continue
-        label_rules = args.all_lines or args.slide
-        shapes_by_slide: dict[int, list[tuple[int, str]]] = {}
+        pool: dict[int, list[tuple[int, str]]] = {}
         shape_at: dict[int, str] = {}
-        for line_number, text, kind, slide_index, shape in iter_headlines(path, args.all_lines, args.slide):
+        for line_number, text, kind, section, shape in iter_units(path, args.all_lines, args.slide):
             if kind == "headline":
                 prefix = PREFIX
-                hits = audit_headline(text, args.max_words, label_rules=label_rules, slide_tokens=args.slide)
-            else:
+                hits = audit_headline(text, args.max_words, label_rules=label_rules, external=external)
+            elif kind == "shape":
                 prefix = SHAPE_PREFIX
                 hits = audit_shape(text)
+            else:
+                prefix = SHAPE_PREFIX
+                hits = []
             for rule, message, match in hits:
                 findings.append({"path": str(path), "line": line_number, "rule": f"{prefix}.{rule}",
                                  "message": message, "match": match, "headline": text, "shape": shape})
-            if args.slide:
-                shapes_by_slide.setdefault(slide_index, []).append((line_number, text))
-                shape_at[line_number] = shape
-        for shapes in shapes_by_slide.values():
-            for line_number, text, other_line in restatements(shapes):
+            pool.setdefault(section, []).append((line_number, text))
+            shape_at[line_number] = shape
+        for units in pool.values():
+            for line_number, text, other_line in restatements(units):
+                where = "slide" if args.slide else "section"
                 findings.append({"path": str(path), "line": line_number, "rule": f"{SHAPE_PREFIX}.Restatement",
-                                 "message": f"Restates line {other_line} on the same slide. Keep one shape and delete the other.",
-                                 "match": text, "headline": text, "shape": shape_at.get(line_number, "")})
+                                 "message": f"Restates line {other_line} in the same {where}. Keep one and delete the other.",
+                                 "match": text[:120], "headline": text, "shape": shape_at.get(line_number, "")})
         findings.sort(key=lambda f: (f["path"], f["line"]))
     if args.format == "json":
         print(json.dumps(findings, indent=2))
