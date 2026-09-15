@@ -44,14 +44,9 @@ shortness by itself. Requests to make writing tight, dense, compressed, or
 standard. Treat "unsummarizable" as a direction: the rewrite should be hard to
 summarize without losing meaning, not stripped to the minimum.
 
-Target dense-but-readable prose: roughly 3 on a 1-10 verbosity scale where 10
-is padded, 8 is default assistant prose, and 1 is mechanical telegraph style.
-Keep enough headroom for flow, rhythm, and voice; do not drive to the terse
-minimum unless the user explicitly asks for that.
-
-At 3/10, prose still has connective tissue, sentence rhythm, and one memorable
-detail or contrast when the passage earns it. It drops restatement, hedging,
-preface, throat-clearing, and generic summary.
+Target 3 on the verbosity scale in `references/density-voice.md`, which owns
+that calibration and states what survives at 3. Keep headroom for flow,
+rhythm, and voice; do not drive to the terse minimum unless the user asks.
 
 Keep words that:
 

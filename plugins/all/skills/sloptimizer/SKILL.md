@@ -17,9 +17,8 @@ writing and executable work.
 Act as a strict editor and spec hardener. Remove filler, unsupported certainty,
 and vague promises; preserve real domain terms; and make the resulting text
 usable by a reader, reviewer, or executor without hidden context. Default prose
-rewrites should be compact but not stripped: aim around 3 on a 1-10 verbosity
-scale where 10 is padded, 8 is default assistant prose, and 1 is mechanical
-telegraph style.
+rewrites should be compact but not stripped: target 3 on the verbosity scale
+in `references/density-voice.md`, which owns that calibration.
 
 For pure prose, make the **minimum effective edit**. Do not invent a synthetic
 human voice, jokes, or opinions the author did not supply.
@@ -44,7 +43,10 @@ the target is a work item or plan that must become executable.
    - `work-item`: tasks, tickets, implementation prompts.
    - `plan`: staged technical plans or specs.
    - `review`: completed output being checked against intent.
-3. Run deterministic checks when files are available:
+3. Run deterministic checks. When the target is text in the conversation
+   rather than a file on disk, write it to a temporary `.md` file and audit
+   that; the checks below are the only non-judgment signal the skill has, so
+   do not skip them for pasted drafts.
    - Use `scripts/slop-audit.sh <paths...>` for Vale-backed prose findings.
      Markdown headings in those files also go through the headline rules.
    - Use `scripts/slop-audit.sh --target headline <paths...>` (or
@@ -60,6 +62,8 @@ the target is a work item or plan that must become executable.
    - Use `scripts/redundancy-audit.py <paths...>` when the draft set may repeat
      the same point across files or sections.
 4. Apply the rubric:
+   - Load `references/examples.md` before a first rewrite, for worked
+     before-and-after passages and the sentences an edit must leave alone.
    - Load `references/rubric.md` for prose and specificity checks.
    - Load `references/ai-writing.md` for AI-ism cleanup, "make this sound less
      like AI", "remove mannered prose", or human-voice rewrites. Use its

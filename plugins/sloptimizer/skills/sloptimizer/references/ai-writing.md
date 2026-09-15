@@ -38,6 +38,30 @@ unclear passages. Leave strong human sentences alone. Do not invent opinions,
 jokes, rough edges, or a synthetic "human voice." Preserve the writer's real
 cadence, bluntness, humor, uncertainty, and digressions when present.
 
+## Highest-Yield Patterns
+
+Most AI drafts fail on the same eight tells. Clear these first; the rest of
+the catalog covers the long tail.
+
+1. Unsupported quality claims (`robust`, `production-ready`, `seamless`).
+   Cite the evidence or cut the adjective.
+2. Filler transitions and throat-clearing openers (`At its core`,
+   `Here's the thing`, `In conclusion`). Delete and open with the claim.
+3. Binary contrasts and negation reversal (`This is not X. It's Y.`).
+   State Y.
+4. Capability verbs with no actor (`enables`, `supports`, `streamlines`).
+   Name who does what to what.
+5. Importance puffery and mannered prose (`plays a vital role`,
+   `earns its keep`). State the fact or the number.
+6. Summary-recap endings and fake-profound kickers. Stop on the last concrete
+   point already in the draft.
+7. Colon reveals (`The best part: it learns`). Write the plain sentence.
+8. Forced groups of three. Use the number of items the point needs.
+
+A draft cleared of those eight usually stops reading as generated. Work the
+full catalog when the first pass leaves the draft still sounding off, or when
+the target is a headline, a work item, or data-bearing prose.
+
 ## Named Patterns
 
 Use these names in `detect` findings and in the **What changed** summary after
@@ -282,6 +306,29 @@ the slogan ("X is the new Y"), and the mannered phrase ("Documentation earns
 its keep"). Sentence checks skip headings, so these
 have their own rules and rewrite procedure in `references/headlines.md`. Raw
 check: `SloptimizerHeadline.*` from `scripts/headline-audit.py`.
+
+## When The Pattern Is Fine
+
+Every editorial pattern above has a legitimate twin. Flagging one of these is
+a false positive, and rewriting it is the over-editing that the
+proportional-cutting principle in `references/eval.md` exists to catch.
+
+| Pattern | Legitimate twin |
+|---|---|
+| Binary contrast | A real distinction the reader would otherwise get wrong: "The check runs at merge, not at push." |
+| Colon reveal | A label, list, quote, ratio, or definition: "Exit code 2: bad arguments." |
+| Dramatic fragmentation | The writer's established cadence, or a short answer carrying weight: "Nobody did." |
+| Forced group of three | A subject with exactly three members: "bronze, silver, and gold". |
+| Repeated sentence opening | A deliberate parallel that makes items comparable: three requirements each opening "The worker must". |
+| Hollow intensifier | A named contrast the word works for: "the query is slow, but the write path is genuinely broken". |
+| Mannered prose | An image the writer chose to draw a distinction the plain phrase cannot make, used once. |
+| Meta-narration | Reference documentation that must orient the reader: "This section describes the retry contract." |
+| Count preview | A number the reader needs up front, when the list is long or split across sections. |
+| Universal claim | A claim the draft then scopes or proves with a number. |
+
+The test is whether the phrasing does work the plain version cannot. When it
+does, leave it alone and say so in the change summary rather than preserving
+it silently.
 
 ## Rubric-Only Signals
 
