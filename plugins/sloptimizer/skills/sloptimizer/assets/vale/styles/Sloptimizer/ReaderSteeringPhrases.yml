@@ -7,6 +7,7 @@ scope:
 tokens:
   - '\bit(?:''|’|`)?s worth (?:noting|saying|flagging|mentioning|remembering|checking|exploring)\b'
   - '\bit is worth (?:noting|saying|flagging|mentioning|remembering|checking|exploring)\b'
+  - '\b(?:a|an|one|the) (?:[\w-]+ ){0,2}worth (?:asking|making|drawing|varying|noting|naming|stating|watching|tracking|considering|revisiting|testing|checking|exploring|flagging|remembering|repeating|unpacking|pausing on|dwelling on|calling out|spelling out|keeping in mind)\b'
   - '\b(?:honestly|interestingly|notably|importantly)\b'
   - '\bwhat stands out\b'
   - '\bhere(?:''|’|`)?s what(?:''|’|`)?s interesting\b'

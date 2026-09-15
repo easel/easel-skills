@@ -3,8 +3,10 @@
 This reference folds useful AI-writing cleanup patterns into Sloptimizer so the
 skill can handle both deterministic checks and editorial rewrites. It adapts
 patterns from field skills such as Peter Yang's `no-ai-slop`, Hardik Pandya's
-`stop-slop`, and from Easel work on HELIX, Lucebox, and 7th Sense prose. Keep
-this provenance visible when editing or extending the pattern set.
+`stop-slop`, from Anthropic's definition of mannered prose in its Claude
+Fable 5.1 prompting guide, and from Easel work on HELIX, Lucebox, and 7th
+Sense prose. Keep this provenance visible when editing or extending the
+pattern set.
 
 ## Modes
 
@@ -17,8 +19,8 @@ this provenance visible when editing or extending the pattern set.
 ## Check Profiles
 
 - `default`: conservative prose checks for unsupported claims, vague capability
-  verbs, filler transitions, token-cost phrases, repeated openings, and
-  reader-steering phrases.
+  verbs, filler transitions, token-cost phrases, repeated openings,
+  reader-steering phrases, and mannered stock metaphors.
 - `results`: default checks plus benchmark and comparison verbs that need
   dataset, metric, run, or time-window scope.
 - `strict`: results checks plus source-level AI-tell checks for em dashes, bold
@@ -35,6 +37,30 @@ evidence.
 unclear passages. Leave strong human sentences alone. Do not invent opinions,
 jokes, rough edges, or a synthetic "human voice." Preserve the writer's real
 cadence, bluntness, humor, uncertainty, and digressions when present.
+
+## Highest-Yield Patterns
+
+Most AI drafts fail on the same eight tells. Clear these first; the rest of
+the catalog covers the long tail.
+
+1. Unsupported quality claims (`robust`, `production-ready`, `seamless`).
+   Cite the evidence or cut the adjective.
+2. Filler transitions and throat-clearing openers (`At its core`,
+   `Here's the thing`, `In conclusion`). Delete and open with the claim.
+3. Binary contrasts and negation reversal (`This is not X. It's Y.`).
+   State Y.
+4. Capability verbs with no actor (`enables`, `supports`, `streamlines`).
+   Name who does what to what.
+5. Importance puffery and mannered prose (`plays a vital role`,
+   `earns its keep`). State the fact or the number.
+6. Summary-recap endings and fake-profound kickers. Stop on the last concrete
+   point already in the draft.
+7. Colon reveals (`The best part: it learns`). Write the plain sentence.
+8. Forced groups of three. Use the number of items the point needs.
+
+A draft cleared of those eight usually stops reading as generated. Work the
+full catalog when the first pass leaves the draft still sounding off, or when
+the target is a headline, a work item, or data-bearing prose.
 
 ## Named Patterns
 
@@ -224,6 +250,85 @@ time the coined term appears. Define the term once, then use the name. This is
 the rule-of-three pattern applied to a single concept, and Vale does not own it
 because the same triple can be a legitimate subject ("bronze, silver, and
 gold").
+
+### Mannered prose
+
+Metaphor or flourish standing in for a direct statement: "a dial worth
+turning" for a parameter to try, "earns its keep" for still matters, "does the
+heavy lifting", "under the hood", "moves the needle", "table stakes",
+"a first-class citizen". The phrase displays the writer instead of carrying
+the idea,
+and it is imprecise: the metaphor drags in connotations the writer did not
+choose. Say what you mean. Name the thing, the action, or the number.
+
+The rewrite target is what a person would write, not the literal gloss of
+the metaphor. "A parameter worth varying" is the gloss of "a dial worth
+turning", and no one writes it either; the "X worth Y-ing" frame announces
+value instead of stating it (Vale: `ReaderSteeringPhrases.yml`). Write the
+action: "Try batch sizes 8 through 64 before the full run."
+
+```text
+Mannered: The alignment check earns its keep on every review.
+Gloss:    The alignment check is still worth running on every review.
+Plain:    The alignment check caught 3 of the 4 drift cases in the last review.
+```
+
+Keep a metaphor the writer chose to make a distinction the literal phrase
+cannot make, once, in their own voice; see the guardrail in
+`references/density-voice.md`. Cut the stock one that any model would reach
+for. Related: false agency (the concept doing a human verb), fake-profound
+kickers (the metaphor as closing line), importance puffery. Vale:
+`ManneredProse.yml` for sentence prose; `SloptimizerHeadline.Mannered` reuses
+the same phrase list for titles.
+
+This pattern is model-neutral. To ask any model for the same thing directly,
+add to the prompt:
+
+```text
+Remove all mannered prose. Mannered prose substitutes metaphor and flourish
+for direct statement ("a dial worth turning" for a setting to try, "earns
+its keep" for still matters). The phrase exists to display the writer, not
+to convey the idea, and it is imprecise because the metaphor carries
+connotations the writer did not choose. Say what you mean: when a plain
+phrase is available, use it, and prefer the concrete action or number over
+an evaluative frame such as "worth varying".
+```
+
+### Headline slop
+
+Titles carry the same tells in compressed form: a contrastive reversal ("a
+methodology you adopt, not a platform you join"), a colon list ("Three
+failures repeat: drift, local decisions, lost context"), an imperative chain
+("Write the brief, check alignment, plan the work"), a listicle count ("Five
+things change"), stacked negation ("no runtime, no tracker, and no
+technology choice"), flattery ("your best teams", "we hold ourselves to"),
+the slogan ("X is the new Y"), and the mannered phrase ("Documentation earns
+its keep"). Sentence checks skip headings, so these
+have their own rules and rewrite procedure in `references/headlines.md`. Raw
+check: `SloptimizerHeadline.*` from `scripts/headline-audit.py`.
+
+## When The Pattern Is Fine
+
+Every editorial pattern above has a legitimate twin. Flagging one of these is
+a false positive, and rewriting it is the over-editing that the
+proportional-cutting principle in `references/eval.md` exists to catch.
+
+| Pattern | Legitimate twin |
+|---|---|
+| Binary contrast | A real distinction the reader would otherwise get wrong: "The check runs at merge, not at push." |
+| Colon reveal | A label, list, quote, ratio, or definition: "Exit code 2: bad arguments." |
+| Dramatic fragmentation | The writer's established cadence, or a short answer carrying weight: "Nobody did." |
+| Forced group of three | A subject with exactly three members: "bronze, silver, and gold". |
+| Repeated sentence opening | A deliberate parallel that makes items comparable: three requirements each opening "The worker must". |
+| Hollow intensifier | A named contrast the word works for: "the query is slow, but the write path is genuinely broken". |
+| Mannered prose | An image the writer chose to draw a distinction the plain phrase cannot make, used once. |
+| Meta-narration | Reference documentation that must orient the reader: "This section describes the retry contract." |
+| Count preview | A number the reader needs up front, when the list is long or split across sections. |
+| Universal claim | A claim the draft then scopes or proves with a number. |
+
+The test is whether the phrasing does work the plain version cannot. When it
+does, leave it alone and say so in the change summary rather than preserving
+it silently.
 
 ## Rubric-Only Signals
 

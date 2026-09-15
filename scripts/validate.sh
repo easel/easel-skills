@@ -10,6 +10,7 @@ while IFS= read -r -d '' script; do
   bash -n "$script"
 done < <(find scripts skills -name '*.sh' -print0)
 python3 skills/sloptimizer/scripts/check-vale-fixtures.py
+python3 skills/sloptimizer/scripts/check-headline-fixtures.py
 python3 skills/sloptimizer/scripts/redundancy-audit.py skills --threshold 0.95 --top 5
 
 echo "OK: all validation checks passed"

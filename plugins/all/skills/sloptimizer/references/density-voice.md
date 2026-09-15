@@ -44,6 +44,13 @@ cadence, emphasis, tension, surprise, humor, image, or a memorable distinction.
 Cut voice-like ornament when it is generic cleverness, throat-clearing,
 performative emphasis, or rhythm without information.
 
+An image passes this test when the writer chose it and it draws a distinction
+the plain phrase cannot. It fails when it is the stock metaphor any model
+reaches for in place of a plain statement ("does the heavy lifting", "earns
+its keep", "under the hood"): that is mannered prose, and the fix is the
+plain thing, action, or number, not the literal gloss of the metaphor. See
+the pattern in `references/ai-writing.md`.
+
 ## Compression Pass
 
 1. Remove throat-clearing, signposting, duplicate abstraction, and generic

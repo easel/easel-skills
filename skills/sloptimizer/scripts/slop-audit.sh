@@ -5,19 +5,28 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 skill_dir="$(cd "${script_dir}/.." && pwd)"
 vale_assets="${skill_dir}/assets/vale"
 
-if ! command -v vale >/dev/null 2>&1; then
-  echo "slop-audit: vale is not installed or not on PATH" >&2
-  echo "Install Vale 3.14.2, then rerun this command." >&2
-  exit 127
-fi
+usage="usage: slop-audit.sh [--profile default|results|strict] [--target prose|headline] [--changed|PATH ...]"
 
 profile="default"
+target="prose"
 changed=false
 args=()
 while [[ "$#" -gt 0 ]]; do
   case "$1" in
     --changed)
       changed=true
+      shift
+      ;;
+    --target)
+      if [[ -z "${2:-}" ]]; then
+        echo "slop-audit: --target requires prose or headline" >&2
+        exit 2
+      fi
+      target="$2"
+      shift 2
+      ;;
+    --target=*)
+      target="${1#--target=}"
       shift
       ;;
     --profile)
@@ -33,7 +42,7 @@ while [[ "$#" -gt 0 ]]; do
       shift
       ;;
     --help|-h)
-      echo "usage: slop-audit.sh [--profile default|results|strict] [--changed|PATH ...]"
+      echo "${usage}"
       exit 0
       ;;
     *)
@@ -42,6 +51,20 @@ while [[ "$#" -gt 0 ]]; do
       ;;
   esac
 done
+
+case "${target}" in
+  prose|headline) ;;
+  *)
+    echo "slop-audit: unknown target '${target}' (expected prose or headline)" >&2
+    exit 2
+    ;;
+esac
+
+if [[ "${target}" == prose ]] && ! command -v vale >/dev/null 2>&1; then
+  echo "slop-audit: vale is not installed or not on PATH" >&2
+  echo "Install Vale 3.14.2, then rerun this command." >&2
+  exit 127
+fi
 
 case "${profile}" in
   default)
@@ -98,8 +121,13 @@ if [[ "${changed}" == true ]]; then
 fi
 
 if [[ "${#args[@]}" -eq 0 ]]; then
-  echo "usage: slop-audit.sh [--profile default|results|strict] [--changed|PATH ...]" >&2
+  echo "${usage}" >&2
   exit 2
+fi
+
+# A titles-only outline or a list of one-line claims: every line is a headline.
+if [[ "${target}" == headline ]]; then
+  exec python3 "${script_dir}/headline-audit.py" --all-lines "${args[@]}"
 fi
 
 mapfile -t vale_args < <(python3 "${script_dir}/prepare-vale-inputs.py" "${tmp_dir}/inputs" "${args[@]}")
@@ -110,5 +138,7 @@ vale_status=$?
 set -e
 
 python3 "${script_dir}/raw-profile-audit.py" --profile "${profile}" "${args[@]}"
+# Section headings are headlines too; Vale rules skip them, so audit them here.
+python3 "${script_dir}/headline-audit.py" "${args[@]}" || true
 
 exit "${vale_status}"

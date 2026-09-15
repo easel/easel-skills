@@ -1,7 +1,7 @@
 # Sloptimizer Eval
 
-Run this after a rewrite (and after re-audit when files are available). Answer
-each check pass or fail. If any check fails, fix the draft before returning it.
+Run this after a rewrite, and after the re-audit when files are available.
+Answer each check pass or fail. Fix any failure before returning the draft.
 
 For `detect` requests, confirm the response names each pattern with a quoted
 line and a short fix, without rewriting the draft or claiming AI authorship.
@@ -10,41 +10,31 @@ line and a short fix, without rewriting the draft or claiming AI authorship.
 
 1. Does the edit preserve the user's point without inventing claims, examples,
    stats, quotes, or opinions?
-2. Does it preserve distinctive vocabulary, cadence, bluntness, humor,
-   uncertainty, digressions, and polish when those are present?
-3. Does it leave strong human sentences alone instead of rewriting them for
-   consistency?
-4. Is the amount of cutting proportional to the actual slop, with no aggressive
-   compression that strips character the writer already had?
-5. Do retained sentences earn their place with concrete facts, actors, or
+2. Does it leave strong human sentences alone, keeping distinctive vocabulary,
+   cadence, bluntness, humor, uncertainty, and digressions?
+3. Is the cutting proportional to the actual slop, rather than compression
+   that strips character the writer already had?
+4. Do the retained sentences earn their place with concrete facts, actors, or
    decisions?
-6. Are genuinely tangled sentences fixed while clear spoken cadence remains?
 
 ## Patterns (prose targets only)
 
-Skip this section when the target is a `work-item` or `plan`. Those use the
-section below instead.
+Skip this section for `work-item` and `plan` targets; use the next one.
 
-1. Are throat-clearing openers, faux-insight setups, binary contrasts, and
-   negative listings removed or rewritten as direct claims?
-2. Are colon reveals, superficial `-ing` analysis, importance puffery, and
-   weasel attribution fixed or flagged?
-3. Are synonym cycling, dramatic fragmentation, rhetorical setups, and robotic
-   rhythm addressed?
-4. Are fake-profound kickers and summary-recap endings cut so the piece ends on
-   a concrete takeaway or next action?
-5. Is chatbot residue ("I hope this helps!", "Great question!") removed from
-   shipped prose?
-6. Is formatting slop removed when it is decorative rather than structural?
-7. Is meta-narration ("this post argues") cut, are enumerated parades ("The
-   first is / The second is") rewritten, and is each coined term defined once
-   rather than re-described on every mention?
-8. Are count previews ("four cases show") deleted or turned into a named list,
-   and are headings specific to the section rather than templates ("Where X
-   breaks", "Key takeaways")?
-9. Are comma-and clause chains split, framing openers ("With that settled,")
-   cut, tool-specific behavior scoped to the tool, and example values
-   obvious placeholders rather than real names?
+1. Are the eight tells under "Highest-Yield Patterns" in
+   `references/ai-writing.md` gone, and does a scan of the full catalog in
+   that file turn up nothing still unaddressed?
+2. Did the rewrite introduce fresh ones? A second pass often adds filler,
+   broad claims, or reader-steering labels while fixing the first set.
+3. Does every catalog pattern left in the draft survive the "When The Pattern
+   Is Fine" test in the same file, and does the change summary say why it
+   stayed?
+4. Do headings and titles pass `references/headlines.md`? The sentence rules
+   skip them, so a clean prose audit says nothing about them.
+5. Is assistant chrome gone ("I hope this helps!"), and is every bullet, bold
+   span, and heading structural rather than decorative?
+6. Are example values obvious placeholders rather than real names, and is
+   tool-specific behavior scoped to the tool it belongs to?
 
 ## Work items and plans
 

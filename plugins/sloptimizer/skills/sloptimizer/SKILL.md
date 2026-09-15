@@ -1,7 +1,7 @@
 ---
 name: sloptimizer
-description: Audit and rewrite AI-generated prose, plans, specs, prompts, and work items by removing AI-isms, vague claims, filler, generic phrasing, missing actors, weak acceptance criteria, and unsupported implementation promises. Use when asked to reduce AI slop, make text sound less like AI, tighten writing, make writing as tight as possible, make prose unsummarizable or hard to summarize without losing meaning, make a task executable, harden a spec, audit only, rewrite, or run Vale-backed prose checks.
-when-to-use: reduce AI slop, make text sound less like AI, tighten writing, harden a spec, audit prose, rewrite work items, or run Vale-backed prose checks
+description: Audit and rewrite AI-generated prose, plans, specs, prompts, and work items by removing AI-isms, mannered prose, vague claims, filler, generic phrasing, missing actors, weak acceptance criteria, and unsupported implementation promises. Use when asked to reduce AI slop, remove mannered prose, make text sound less like AI, tighten writing, make writing as tight as possible, make prose unsummarizable or hard to summarize without losing meaning, make a task executable, harden a spec, audit only, rewrite, or run Vale-backed prose checks.
+when-to-use: reduce AI slop, remove mannered prose, make text sound less like AI, tighten writing, harden a spec, audit prose, rewrite work items, or run Vale-backed prose checks
 metadata:
   short-description: "Remove AI-isms, vague claims, and task slop"
   author: Easel
@@ -17,9 +17,8 @@ writing and executable work.
 Act as a strict editor and spec hardener. Remove filler, unsupported certainty,
 and vague promises; preserve real domain terms; and make the resulting text
 usable by a reader, reviewer, or executor without hidden context. Default prose
-rewrites should be compact but not stripped: aim around 3 on a 1-10 verbosity
-scale where 10 is padded, 8 is default assistant prose, and 1 is mechanical
-telegraph style.
+rewrites should be compact but not stripped: target 3 on the verbosity scale
+in `references/density-voice.md`, which owns that calibration.
 
 For pure prose, make the **minimum effective edit**. Do not invent a synthetic
 human voice, jokes, or opinions the author did not supply.
@@ -39,11 +38,21 @@ the target is a work item or plan that must become executable.
    concise clarifying question or state the assumed mode.
 2. Classify the target:
    - `prose`: docs, posts, summaries, PR descriptions.
+   - `headline`: deck and slide titles, section headings, one-line claims,
+     titles-only outlines. Sentence rules skip these; use the headline rules.
    - `work-item`: tasks, tickets, implementation prompts.
    - `plan`: staged technical plans or specs.
    - `review`: completed output being checked against intent.
-3. Run deterministic checks when files are available:
+3. Run deterministic checks. When the target is text in the conversation
+   rather than a file on disk, write it to a temporary `.md` file and audit
+   that; the checks below are the only non-judgment signal the skill has, so
+   do not skip them for pasted drafts.
    - Use `scripts/slop-audit.sh <paths...>` for Vale-backed prose findings.
+     Markdown headings in those files also go through the headline rules.
+   - Use `scripts/slop-audit.sh --target headline <paths...>` (or
+     `scripts/headline-audit.py --all-lines <paths...>`) when every line of the
+     file is a title, such as a titles-only outline or a pasted list of
+     headings. Exit 1 means at least one headline has a finding.
    - Use `scripts/slop-audit.sh --profile results <paths...>` for benchmark or
      comparison prose.
    - Use `scripts/slop-audit.sh --profile strict <paths...>` for house-style
@@ -53,10 +62,14 @@ the target is a work item or plan that must become executable.
    - Use `scripts/redundancy-audit.py <paths...>` when the draft set may repeat
      the same point across files or sections.
 4. Apply the rubric:
+   - Load `references/examples.md` before a first rewrite, for worked
+     before-and-after passages and the sentences an edit must leave alone.
    - Load `references/rubric.md` for prose and specificity checks.
    - Load `references/ai-writing.md` for AI-ism cleanup, "make this sound less
-     like AI", or human-voice rewrites. Use its **named patterns** in detect
-     findings and change summaries.
+     like AI", "remove mannered prose", or human-voice rewrites. Use its
+     **named patterns** in detect findings and change summaries.
+   - Load `references/headlines.md` for `headline` targets: the detection
+     rules, the rewrite procedure, and the titles-only read.
    - Load `references/density-voice.md` for "tight as possible",
      "unsummarizable", compact-by-default, or voice-preserving compression.
    - Load `references/work-items.md` for task or acceptance-criteria cleanup.
@@ -93,6 +106,9 @@ For `rewrite` mode, return:
 - Prefer the exact domain noun, field, artifact, command, status, metric, or
   constraint over a broad synonym.
 - Replace broad adjectives with observable facts or delete them.
+- Say what you mean. Replace a stock metaphor or flourish ("earns its keep",
+  "under the hood", "a dial worth turning") with the plain thing, action, or
+  number a person would write, not with the metaphor's literal gloss.
 - For prose rewrites, optimize for idea density, not brevity alone: remove
   compressible phrasing while preserving nuance, evidence, concrete examples,
   and consequential distinctions. Explicit "tight" requests intensify this

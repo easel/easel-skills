@@ -326,5 +326,55 @@
     "profile": "strict",
     "text": "The table has keys, types, and a checksum column.",
     "expected_rules": []
+  },
+  {
+    "name": "mannered_earns_its_keep",
+    "text": "This point earns its keep because the parser reads it twice.",
+    "expected_rules": [
+      "ManneredProse"
+    ]
+  },
+  {
+    "name": "mannered_dial_worth_turning",
+    "text": "Batch size is a dial worth turning before the run.",
+    "expected_rules": [
+      "ManneredProse"
+    ]
+  },
+  {
+    "name": "mannered_heavy_lifting",
+    "text": "The reconciler does the heavy lifting for typed sources.",
+    "expected_rules": [
+      "ManneredProse"
+    ]
+  },
+  {
+    "name": "mannered_doing_a_lot_of_work",
+    "text": "The word optional is doing a lot of work in that sentence.",
+    "expected_rules": [
+      "ManneredProse"
+    ]
+  },
+  {
+    "name": "mannered_literal_negative",
+    "text": "Try batch sizes 8 through 64 before the full run. The parser reads this point twice, so it stays.",
+    "expected_rules": []
+  },
+  {
+    "name": "mannered_inline_code_negative",
+    "text": "Set `north_star` to the metric name in the config.",
+    "expected_rules": []
+  },
+  {
+    "name": "worth_gerund_frame",
+    "text": "Batch size is a parameter worth varying before the run.",
+    "expected_rules": [
+      "ReaderSteeringPhrases"
+    ]
+  },
+  {
+    "name": "worth_gerund_negative",
+    "text": "The manual is a book worth reading before the migration.",
+    "expected_rules": []
   }
 ]
