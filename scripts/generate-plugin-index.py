@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -46,19 +48,31 @@ def truncate(text: str, limit: int = 140) -> str:
 
 
 def plugin_tree_sha(plugin_name: str) -> str | None:
+    """Git tree sha of plugins/<name> as it exists in the working tree.
+
+    Reading `HEAD:<rel>` instead would return the tree of the *previous*
+    commit, so every commit touching plugins/ would leave the index stale and
+    need a follow-up "refresh shas" commit. Staging into a scratch index makes
+    prepare.sh a fixed point within a single commit.
+    """
     rel = f"plugins/{plugin_name}"
-    try:
-        result = subprocess.run(
-            ["git", "rev-parse", f"HEAD:{rel}"],
-            cwd=ROOT,
-            check=False,
-            capture_output=True,
-            text=True,
-        )
-    except OSError:
+    if not (ROOT / rel).is_dir():
         return None
-    if result.returncode != 0:
-        return None
+    with tempfile.TemporaryDirectory() as tmp:
+        env = {**os.environ, "GIT_INDEX_FILE": str(Path(tmp) / "index")}
+        try:
+            for args in (
+                ["git", "add", "-A", "--", rel],
+                ["git", "write-tree", f"--prefix={rel}"],
+            ):
+                result = subprocess.run(
+                    args, cwd=ROOT, env=env, check=False,
+                    capture_output=True, text=True,
+                )
+                if result.returncode != 0:
+                    return None
+        except OSError:
+            return None
     sha = result.stdout.strip()
     return sha or None
 

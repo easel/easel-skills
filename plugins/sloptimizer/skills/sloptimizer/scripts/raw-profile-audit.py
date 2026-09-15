@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import sys
 from pathlib import Path
 
 
@@ -70,14 +71,35 @@ STRICT_CHECKS = (
 )
 
 
+FINDINGS = 0
+
+
+def report(path: Path, line_number: int, check: str, message: str) -> None:
+    global FINDINGS
+    FINDINGS += 1
+    print(f"{path}:{line_number}: suggestion {check}: {message}")
+
+
 def scrub_inline(text: str) -> str:
     text = re.sub(r"`[^`]+`", " ", text)
     return re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)
 
 
-def iter_audited_lines(path: Path):
+FENCE_RE = re.compile(r"^\s*(?:```|~~~)")
+VALE_OFF_RE = re.compile(r"<!--\s*vale\s+off\s*-->", re.IGNORECASE)
+VALE_ON_RE = re.compile(r"<!--\s*vale\s+on\s*-->", re.IGNORECASE)
+
+
+def iter_source_lines(path: Path):
+    """Yield (line_number, line) for lines a prose check should see.
+
+    Skips frontmatter, fenced code (``` and ~~~), and `<!-- vale off -->`
+    regions. Vale honors those comments, so a raw check that ignored them
+    flagged the very docs that document a pattern.
+    """
     in_fence = False
     in_frontmatter = False
+    vale_off = False
     for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
         if line_number == 1 and line == "---":
             in_frontmatter = True
@@ -86,10 +108,25 @@ def iter_audited_lines(path: Path):
             if line == "---":
                 in_frontmatter = False
             continue
-        if re.match(r"^\s*```", line):
+        if FENCE_RE.match(line):
             in_fence = not in_fence
             continue
-        if in_fence or re.match(r"^\s*#{1,6}\s+", line):
+        if in_fence:
+            continue
+        if VALE_OFF_RE.search(line):
+            vale_off = True
+            continue
+        if VALE_ON_RE.search(line):
+            vale_off = False
+            continue
+        if vale_off:
+            continue
+        yield line_number, line
+
+
+def iter_audited_lines(path: Path):
+    for line_number, line in iter_source_lines(path):
+        if re.match(r"^\s*#{1,6}\s+", line):
             continue
         yield line_number, scrub_inline(line)
 
@@ -103,22 +140,18 @@ def audit_repeated_opening(path: Path, line_number: int, line: str) -> None:
         opening = match.group(1).lower()
         openings[opening] = openings.get(opening, 0) + 1
         if openings[opening] > 1:
-            print(
-                f"{path}:{line_number}: suggestion {REPEATED_OPENING}: "
-                "Repeated sentence opening. Vary structure only when the sentence earns its place. "
-                f"Match: {match.group(1)!r}"
+            report(
+                path, line_number, REPEATED_OPENING,
+                "Repeated sentence opening. Vary structure only when the sentence "
+                f"earns its place. Match: {match.group(1)!r}",
             )
             return
 
 
 def iter_headings(path: Path):
-    in_fence = False
-    for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-        if re.match(r"^\s*```", line):
-            in_fence = not in_fence
-            continue
+    for line_number, line in iter_source_lines(path):
         match = re.match(r"^\s*#{1,6}\s+(.*?)\s*#*\s*$", line)
-        if in_fence or not match:
+        if not match:
             continue
         yield line_number, scrub_inline(match.group(1)).strip()
 
@@ -127,10 +160,10 @@ def audit_formulaic_heading(path: Path) -> None:
     for line_number, heading in iter_headings(path):
         for pattern in FORMULAIC_HEADING_PATTERNS:
             if pattern.match(heading):
-                print(
-                    f"{path}:{line_number}: suggestion {FORMULAIC_HEADING}: "
-                    "Formulaic heading. Name the subject of the section instead of a template. "
-                    f"Match: {heading!r}"
+                report(
+                    path, line_number, FORMULAIC_HEADING,
+                    "Formulaic heading. Name the subject of the section instead of "
+                    f"a template. Match: {heading!r}",
                 )
                 break
 
@@ -144,10 +177,10 @@ def audit_enumerated_parade(path: Path, lines: list[tuple[int, str]]) -> None:
         seen += 1
         if seen < 2:
             continue
-        print(
-            f"{path}:{line_number}: suggestion {ENUMERATED_PARADE}: "
-            "Enumerated parade. Lead each paragraph with the item itself, or fold the items into one list. "
-            f"Match: {ENUMERATED_OPENER.match(line).group(0)!r}"
+        report(
+            path, line_number, ENUMERATED_PARADE,
+            "Enumerated parade. Lead each paragraph with the item itself, or fold "
+            f"the items into one list. Match: {ENUMERATED_OPENER.match(line).group(0)!r}",
         )
 
 
@@ -156,15 +189,16 @@ def audit_checks(path: Path, line_number: int, line: str, checks: tuple) -> None
         match = pattern.search(line)
         if not match:
             continue
-        print(
-            f"{path}:{line_number}: suggestion {check}: {message} "
-            f"Match: {match.group(0)!r}"
-        )
+        report(path, line_number, check, f"{message} Match: {match.group(0)!r}")
 
 
-def audit_profile(profile: str, paths: list[Path]) -> None:
+def audit_profile(profile: str, paths: list[Path]) -> int:
+    """Audit each path. Returns the number of paths that could not be read."""
+    missing = 0
     for path in paths:
         if not path.is_file():
+            print(f"raw-profile-audit: no such file: {path}", file=sys.stderr)
+            missing += 1
             continue
         lines = list(iter_audited_lines(path))
         audit_formulaic_heading(path)
@@ -175,6 +209,7 @@ def audit_profile(profile: str, paths: list[Path]) -> None:
             if profile != "strict":
                 continue
             audit_checks(path, line_number, line, STRICT_CHECKS)
+    return missing
 
 
 def main() -> int:
@@ -183,8 +218,10 @@ def main() -> int:
     parser.add_argument("paths", nargs="+")
     args = parser.parse_args()
 
-    audit_profile(args.profile, [Path(path) for path in args.paths])
-    return 0
+    missing = audit_profile(args.profile, [Path(path) for path in args.paths])
+    if missing:
+        return 2
+    return 1 if FINDINGS else 0
 
 
 if __name__ == "__main__":

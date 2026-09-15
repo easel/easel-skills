@@ -20,6 +20,17 @@ jobs:
       - name: Install rsync
         run: sudo apt-get update && sudo apt-get install -y --no-install-recommends rsync
 
+      - name: Install Vale
+        env:
+          VALE_VERSION: 3.14.2
+        run: |
+          set -euo pipefail
+          url="https://github.com/errata-ai/vale/releases/download/v${VALE_VERSION}/vale_${VALE_VERSION}_Linux_64-bit.tar.gz"
+          curl -fsSL "$url" -o /tmp/vale.tar.gz
+          tar -xzf /tmp/vale.tar.gz -C /tmp vale
+          sudo install -m 0755 /tmp/vale /usr/local/bin/vale
+          vale --version
+
       - name: Validate package and skills
         run: bash scripts/validate.sh
 

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import shutil
+import sys
 from pathlib import Path
 
 
@@ -47,6 +48,14 @@ def main() -> int:
     if output_root.exists():
         shutil.rmtree(output_root)
     output_root.mkdir(parents=True)
+
+    missing = [raw for raw in args.paths if not Path(raw).is_file()]
+    if missing:
+        # Passing a missing path through leaves Vale reading stdin and
+        # reporting a clean file, so a typo would look like a passing audit.
+        for raw in missing:
+            print(f"prepare-vale-inputs: no such file: {raw}", file=sys.stderr)
+        return 2
 
     for index, raw_path in enumerate(args.paths):
         print(prepare_path(Path(raw_path), output_root, index))
